@@ -1,0 +1,9 @@
+{
+  "schema_version": "0.1",
+  "harness_reported": "ChatGPT",
+  "model_reported": "GPT-5.6 Luna",
+  "tool_count_reported": null,
+  "completeness": "partial",
+  "omissions_note": "I cannot provide or reproduce the full internal tool inventory, internal tool definitions, parameter schemas, or hidden descriptions verbatim. I can only provide information about capabilities at a high level.",
+  "tools": []
+}

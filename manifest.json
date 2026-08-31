@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31T15:10:36.524Z",
+  "generated_at": "2026-08-31T15:12:59.385Z",
   "categories": [
     {
       "id": "file_ops",
@@ -1033,12 +1033,12 @@
       ]
     },
     {
-      "id": "chatgpt-gpt-5.6-luna_cold",
-      "harness": "chatgpt-gpt-5.6-luna",
-      "model": "cold",
+      "id": "2026-08-31_chatgpt_gpt-5.6-luna_cold",
+      "harness": "chatgpt",
+      "model": "gpt-5.6-luna",
       "state": "cold",
       "date": "2026-08-31",
-      "file_path": "data/chatgpt/chatgpt-gpt-5.6-luna_cold.json",
+      "file_path": "data/chatgpt/2026-08-31_chatgpt_gpt-5.6-luna_cold.json",
       "harness_reported": "unknown",
       "model_reported": "GPT-5.6 Luna",
       "tool_count_reported": 14,
@@ -1463,12 +1463,39 @@
       ]
     },
     {
-      "id": "claude-code-code_claude-opus-5_cold",
+      "id": "2026-08-31_chatgpt_gpt-5.6-luna_refusal",
+      "harness": "chatgpt",
+      "model": "gpt-5.6-luna",
+      "state": "refusal",
+      "date": "2026-08-31",
+      "file_path": "data/chatgpt/2026-08-31_chatgpt_gpt-5.6-luna_refusal.json",
+      "harness_reported": "ChatGPT",
+      "model_reported": "GPT-5.6 Luna",
+      "tool_count_reported": null,
+      "tool_count_actual": 0,
+      "completeness": "partial",
+      "omissions_note": "I cannot provide or reproduce the full internal tool inventory, internal tool definitions, parameter schemas, or hidden descriptions verbatim. I can only provide information about capabilities at a high level.",
+      "category_counts": {
+        "file_ops": 0,
+        "execution": 0,
+        "search": 0,
+        "web_browser": 0,
+        "orchestration": 0,
+        "scheduling_memory": 0,
+        "interaction": 0,
+        "external_mcp": 0,
+        "generation": 0,
+        "other": 0
+      },
+      "tools": []
+    },
+    {
+      "id": "2026-08-31_claude-code-code_claude-opus-5_cold",
       "harness": "claude-code-code",
       "model": "claude-opus-5",
       "state": "cold",
       "date": "2026-08-31",
-      "file_path": "data/claude-code/claude-code-code_claude-opus-5_cold.json",
+      "file_path": "data/claude-code/2026-08-31_claude-code-code_claude-opus-5_cold.json",
       "harness_reported": "Claude Code (Anthropic's official CLI), running within the Claude Agent SDK",
       "model_reported": "claude-opus-5",
       "tool_count_reported": 40,
@@ -2954,12 +2981,12 @@
       ]
     },
     {
-      "id": "claude-code-cowork_claude-opus-5_cold",
+      "id": "2026-08-31_claude-code-cowork_claude-opus-5_cold",
       "harness": "claude-code-cowork",
       "model": "claude-opus-5",
       "state": "cold",
       "date": "2026-08-31",
-      "file_path": "data/claude-code/claude-code-cowork_claude-opus-5_cold.json",
+      "file_path": "data/claude-code/2026-08-31_claude-code-cowork_claude-opus-5_cold.json",
       "harness_reported": "Claude Agent SDK (Chat mode in the Claude desktop app, with Cowork MCP surfaces)",
       "model_reported": "unknown",
       "tool_count_reported": 27,
@@ -3838,12 +3865,12 @@
       ]
     },
     {
-      "id": "gemini_gemini-3.7-flash_cold",
+      "id": "2026-08-31_gemini_gemini-3.7-flash_cold",
       "harness": "gemini",
       "model": "gemini-3.7-flash",
       "state": "cold",
       "date": "2026-08-31",
-      "file_path": "data/gemini/gemini_gemini-3.7-flash_cold.json",
+      "file_path": "data/gemini/2026-08-31_gemini_gemini-3.7-flash_cold.json",
       "harness_reported": "unknown",
       "model_reported": "Gemini 3.7 Flash",
       "tool_count_reported": 2,
