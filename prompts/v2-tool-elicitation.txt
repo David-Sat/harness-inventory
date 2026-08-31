@@ -1,0 +1,37 @@
+List every tool available to you right now.
+
+Fill out the JSON skeleton below and return it as a single JSON object.
+
+Rules:
+- Copy `name`, `description`, and all parameter names, types, and descriptions VERBATIM from your internal tool definitions. Do not paraphrase, shorten, or tidy them.
+- Report `type` exactly as it appears to you, including casing (for example STRING vs string).
+- Include every tool, including internal, trivial, or secondary tools.
+- Set `tool_count_reported` to your total tool count before listing them.
+- If you do not know a value, use null or "unknown".
+- If you cannot see your full tool list, state so in `completeness` and `omissions_note`.
+- Do not categorise or rank the tools.
+- Return only the JSON object, with no surrounding prose or markdown fences.
+
+{
+  "schema_version": "0.1",
+  "harness_reported": "",
+  "model_reported": "",
+  "tool_count_reported": 0,
+  "completeness": "complete | partial | unsure",
+  "omissions_note": "",
+  "tools": [
+    {
+      "name": "",
+      "description": "",
+      "parameters": [
+        {
+          "name": "",
+          "type": "",
+          "required": false,
+          "enum": null,
+          "description": ""
+        }
+      ]
+    }
+  ]
+}

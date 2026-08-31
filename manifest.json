@@ -1,0 +1,1036 @@
+{
+  "generated_at": "2026-08-31T14:48:54.335Z",
+  "categories": [
+    {
+      "id": "file_ops",
+      "name": "File Operations",
+      "description": "Reading, writing, editing, and inspecting local files and directories."
+    },
+    {
+      "id": "execution",
+      "name": "Execution & Shell",
+      "description": "Running terminal commands, bash processes, and environment scripts."
+    },
+    {
+      "id": "search",
+      "name": "Search & Navigation",
+      "description": "Grep, regular expressions, symbol search, and codebase indexing."
+    },
+    {
+      "id": "web_browser",
+      "name": "Web & Browser",
+      "description": "Web search, web page extraction, and browser automation."
+    },
+    {
+      "id": "orchestration",
+      "name": "Subagents & Orchestration",
+      "description": "Spawning child agents, task delegation, inter-agent messaging, and task management."
+    },
+    {
+      "id": "scheduling_memory",
+      "name": "Scheduling & Lifecycle",
+      "description": "Timers, cron jobs, reactive triggers, and background task monitoring."
+    },
+    {
+      "id": "interaction",
+      "name": "User Interaction",
+      "description": "User question modals, decision prompts, and interactive feedback."
+    },
+    {
+      "id": "external_mcp",
+      "name": "MCP & Integrations",
+      "description": "Model Context Protocol tools, external servers, and connected APIs."
+    },
+    {
+      "id": "generation",
+      "name": "Asset & Media Generation",
+      "description": "Image generation, UI mockups, and multimodal asset creation."
+    },
+    {
+      "id": "other",
+      "name": "Other / Specialized",
+      "description": "Domain-specific or uncategorized tools."
+    }
+  ],
+  "snapshots": [
+    {
+      "id": "2026-08-31_antigravity_gemini-3.7-flash_cold",
+      "harness": "antigravity",
+      "model": "gemini-3.7-flash",
+      "state": "cold",
+      "date": "2026-08-31",
+      "file_path": "data/antigravity/2026-08-31_antigravity_gemini-3.7-flash_cold.json",
+      "harness_reported": "Antigravity",
+      "model_reported": "Gemini 3.7 Flash",
+      "tool_count_reported": 20,
+      "tool_count_actual": 20,
+      "completeness": "complete",
+      "omissions_note": null,
+      "category_counts": {
+        "file_ops": 5,
+        "execution": 1,
+        "search": 1,
+        "web_browser": 2,
+        "orchestration": 4,
+        "scheduling_memory": 2,
+        "interaction": 1,
+        "external_mcp": 3,
+        "generation": 1,
+        "other": 0
+      },
+      "tools": [
+        {
+          "name": "view_file",
+          "canonical": "read_file",
+          "category": "file_ops",
+          "description": "View the contents of a file from the local filesystem. This tool supports text files and following binary files: image, pdf, video, audio.",
+          "parameters": [
+            {
+              "name": "AbsolutePath",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Path to file to view. Must be an absolute path."
+            },
+            {
+              "name": "ContentOffset",
+              "type": "INTEGER",
+              "required": false,
+              "enum": null,
+              "description": "Optional. Byte offset into the content. Use this to view content beyond the initial byte limit when the tool output indicates content was truncated."
+            },
+            {
+              "name": "EndLine",
+              "type": "INTEGER",
+              "required": false,
+              "enum": null,
+              "description": "Optional. Endline to view, 1-indexed, inclusive. When specified, this value must be greater than or equal to StartLine."
+            },
+            {
+              "name": "StartLine",
+              "type": "INTEGER",
+              "required": false,
+              "enum": null,
+              "description": "Optional. Startline to view, 1-indexed, inclusive. When specified, this value must be less than or equal to EndLine."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "run_command",
+          "canonical": "run_shell_command",
+          "category": "execution",
+          "description": "PROPOSE a command to run on behalf of the user. Operating System: mac. Shell: zsh.",
+          "parameters": [
+            {
+              "name": "CommandLine",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The exact command line string to execute."
+            },
+            {
+              "name": "Cwd",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The current working directory for the command"
+            },
+            {
+              "name": "IsDaemon",
+              "type": "BOOLEAN",
+              "required": false,
+              "enum": null,
+              "description": "Set to true for long-running support processes that are meant to keep running in the background indefinitely and are not expected to finish on their own."
+            },
+            {
+              "name": "WaitMsBeforeAsync",
+              "type": "INTEGER",
+              "required": true,
+              "enum": null,
+              "description": "This specifies the number of milliseconds to wait after starting the command before sending it to the background."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "manage_task",
+          "canonical": "manage_background_tasks",
+          "category": "scheduling_memory",
+          "description": "Manage background tasks. Use this tool to list running tasks or interact with tasks that were sent to the background.",
+          "parameters": [
+            {
+              "name": "Action",
+              "type": "STRING",
+              "required": true,
+              "enum": [
+                "list",
+                "kill",
+                "status",
+                "send_input"
+              ],
+              "description": "The action to perform: 'list', 'kill', 'status', 'send_input'."
+            },
+            {
+              "name": "Input",
+              "type": "STRING",
+              "required": false,
+              "enum": null,
+              "description": "The input to send to the task. Required when Action is 'send_input'."
+            },
+            {
+              "name": "TaskId",
+              "type": "STRING",
+              "required": false,
+              "enum": null,
+              "description": "The task ID to manage. Required when Action is 'kill', 'status', or 'send_input'."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "send_message",
+          "canonical": "agent_message",
+          "category": "orchestration",
+          "description": "Send a message to another agent. This tool can be used to communicate with subagents, peer agents, etc. Do not use this tool to communicate with the user.",
+          "parameters": [
+            {
+              "name": "Message",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The message content."
+            },
+            {
+              "name": "Recipient",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The recipient ID to send the message to, e.g. a subagent conversation ID."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "schedule",
+          "canonical": "schedule_task",
+          "category": "scheduling_memory",
+          "description": "Schedule a one-shot timer or a recurring cron job that sends notifications in the background.",
+          "parameters": [
+            {
+              "name": "CronExpression",
+              "type": "STRING",
+              "required": false,
+              "enum": null,
+              "description": "A standard cron expression (5 fields: minute hour day-of-month month day-of-week). Use for recurring schedules."
+            },
+            {
+              "name": "DurationSeconds",
+              "type": "INTEGER",
+              "required": false,
+              "enum": null,
+              "description": "The number of seconds to wait. Use for one-shot timers."
+            },
+            {
+              "name": "IsDaemon",
+              "type": "BOOLEAN",
+              "required": false,
+              "enum": null,
+              "description": "Optional. Set to true only when the cron is an independent, standing job that should keep firing even after your current task is done."
+            },
+            {
+              "name": "MaxIterations",
+              "type": "INTEGER",
+              "required": false,
+              "enum": null,
+              "description": "Optional. Maximum number of times the cron schedule will fire before stopping."
+            },
+            {
+              "name": "Prompt",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The message content to include in the notification when the timer fires or cron triggers."
+            },
+            {
+              "name": "TimerCondition",
+              "type": "STRING",
+              "required": false,
+              "enum": null,
+              "description": "Optional. Controls when a one-shot timer should early terminate upon receiving a message. Options: 'never', 'any', or a specific sender ID."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "invoke_subagent",
+          "canonical": "spawn_subagent",
+          "category": "orchestration",
+          "description": "Invokes one or more subagents by name with a single tool call. Each subagent runs in the background with its own prompt and reports back when done.",
+          "parameters": [
+            {
+              "name": "Subagents",
+              "type": "ARRAY",
+              "required": true,
+              "enum": null,
+              "description": "Array of subagents to invoke. Each entry specifies a separate subagent to launch concurrently."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "define_subagent",
+          "canonical": "define_subagent",
+          "category": "orchestration",
+          "description": "Defines a new type of subagent that can be invoked via invoke_subagent.",
+          "parameters": [
+            {
+              "name": "description",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Human-readable description of what this subagent does and when it should be used."
+            },
+            {
+              "name": "enable_mcp_tools",
+              "type": "BOOLEAN",
+              "required": false,
+              "enum": null,
+              "description": "Set true to enable the subagent to call MCP tools."
+            },
+            {
+              "name": "enable_subagent_tools",
+              "type": "BOOLEAN",
+              "required": false,
+              "enum": null,
+              "description": "Set true to equip the subagent with tools to define and invoke its own subagents"
+            },
+            {
+              "name": "enable_write_tools",
+              "type": "BOOLEAN",
+              "required": false,
+              "enum": null,
+              "description": "Set true to equip the subagent with tools to create and edit files, and run commands."
+            },
+            {
+              "name": "name",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Unique name for the subagent. Used to invoke it via invoke_subagent."
+            },
+            {
+              "name": "system_prompt",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "A detailed system prompt for this subagent."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "manage_subagents",
+          "canonical": "manage_subagents",
+          "category": "orchestration",
+          "description": "Manage existing subagents: list active direct subagents, kill specific subagents, or kill all subagents.",
+          "parameters": [
+            {
+              "name": "Action",
+              "type": "STRING",
+              "required": true,
+              "enum": [
+                "list",
+                "kill",
+                "kill_all"
+              ],
+              "description": "The action to perform: 'list', 'kill', or 'kill_all'."
+            },
+            {
+              "name": "ConversationIds",
+              "type": "ARRAY",
+              "required": false,
+              "enum": null,
+              "description": "The IDs of the subagents to kill. Required for 'kill'."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "write_to_file",
+          "canonical": "create_file",
+          "category": "file_ops",
+          "description": "Use this tool to create new files. The file and any parent directories will be created for you if they do not already exist.",
+          "parameters": [
+            {
+              "name": "ArtifactMetadata",
+              "type": "OBJECT",
+              "required": false,
+              "enum": null,
+              "description": "Metadata that defines artifact properties. Required when creating an artifact file."
+            },
+            {
+              "name": "CodeContent",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The code contents to write to the file."
+            },
+            {
+              "name": "Description",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief, user-facing explanation of what this change did."
+            },
+            {
+              "name": "Overwrite",
+              "type": "BOOLEAN",
+              "required": true,
+              "enum": null,
+              "description": "Set this to true to overwrite an existing file. WARNING: This will replace the entire file contents."
+            },
+            {
+              "name": "TargetFile",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The target file to create and write code to. Must be an absolute path."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "replace_file_content",
+          "canonical": "edit_file",
+          "category": "file_ops",
+          "description": "Use this tool to edit an existing file by replacing a single contiguous block of text.",
+          "parameters": [
+            {
+              "name": "AllowMultiple",
+              "type": "BOOLEAN",
+              "required": true,
+              "enum": null,
+              "description": "If true, multiple occurrences of 'targetContent' will be replaced by 'replacementContent' if they are found."
+            },
+            {
+              "name": "Description",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief, user-facing explanation of what this change did."
+            },
+            {
+              "name": "EndLine",
+              "type": "INTEGER",
+              "required": true,
+              "enum": null,
+              "description": "The ending line number of the chunk (1-indexed)."
+            },
+            {
+              "name": "Instruction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "A description of the changes that you are making to the file."
+            },
+            {
+              "name": "ReplacementContent",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The content to replace the target content with."
+            },
+            {
+              "name": "StartLine",
+              "type": "INTEGER",
+              "required": true,
+              "enum": null,
+              "description": "The starting line number of the chunk (1-indexed)."
+            },
+            {
+              "name": "TargetContent",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The exact string to be replaced."
+            },
+            {
+              "name": "TargetFile",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The target file to modify. Must be an absolute path."
+            },
+            {
+              "name": "TargetLintErrorIds",
+              "type": "ARRAY",
+              "required": false,
+              "enum": null,
+              "description": "If applicable, IDs of lint errors this edit aims to fix."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "generate_image",
+          "canonical": "generate_image",
+          "category": "generation",
+          "description": "Generate an image or edit existing images based on a text prompt. The resulting image will be saved as an artifact for use.",
+          "parameters": [
+            {
+              "name": "AspectRatio",
+              "type": "STRING",
+              "required": false,
+              "enum": [
+                "1:1",
+                "2:3",
+                "3:2",
+                "3:4",
+                "4:3",
+                "9:16",
+                "16:9"
+              ],
+              "description": "Optional aspect ratio for the generated image."
+            },
+            {
+              "name": "ImageName",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Name of the generated image to save. Should be all lowercase with underscores."
+            },
+            {
+              "name": "ImagePaths",
+              "type": "ARRAY",
+              "required": false,
+              "enum": null,
+              "description": "Optional absolute paths to the images to use in generation."
+            },
+            {
+              "name": "Prompt",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The text prompt to generate an image for or the edit instructions."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "read_url_content",
+          "canonical": "fetch_url",
+          "category": "web_browser",
+          "description": "Fetch content from a URL via HTTP request (invisible to USER). Converts HTML to markdown. No JavaScript execution, no authentication.",
+          "parameters": [
+            {
+              "name": "Url",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "URL to read content from"
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "search_web",
+          "canonical": "web_search",
+          "category": "web_browser",
+          "description": "Performs a web search for a given query. Returns a summary of relevant information along with URL citations.",
+          "parameters": [
+            {
+              "name": "domain",
+              "type": "STRING",
+              "required": false,
+              "enum": null,
+              "description": "Optional domain to recommend the search prioritize"
+            },
+            {
+              "name": "query",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The search query"
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "find_by_name",
+          "canonical": "find_files",
+          "category": "file_ops",
+          "description": "Search for files and subdirectories within a specified directory using fd.",
+          "parameters": [
+            {
+              "name": "Excludes",
+              "type": "ARRAY",
+              "required": false,
+              "enum": null,
+              "description": "Optional, exclude files/directories that match the given glob patterns"
+            },
+            {
+              "name": "Extensions",
+              "type": "ARRAY",
+              "required": false,
+              "enum": null,
+              "description": "Optional, file extensions to include (without leading .)"
+            },
+            {
+              "name": "FullPath",
+              "type": "BOOLEAN",
+              "required": false,
+              "enum": null,
+              "description": "Optional, whether the full absolute path must match the glob pattern"
+            },
+            {
+              "name": "MaxDepth",
+              "type": "INTEGER",
+              "required": false,
+              "enum": null,
+              "description": "Optional, maximum depth to search"
+            },
+            {
+              "name": "Pattern",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Optional, Pattern to search for, supports glob format"
+            },
+            {
+              "name": "SearchDirectory",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The directory to search within. Must be an absolute path."
+            },
+            {
+              "name": "Type",
+              "type": "STRING",
+              "required": false,
+              "enum": [
+                "file",
+                "directory",
+                "any"
+              ],
+              "description": "Optional, type filter"
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "grep_search",
+          "canonical": "search_code",
+          "category": "search",
+          "description": "Use ripgrep to find exact pattern matches within files or directories.",
+          "parameters": [
+            {
+              "name": "CaseInsensitive",
+              "type": "BOOLEAN",
+              "required": false,
+              "enum": null,
+              "description": "If true, performs a case-insensitive search."
+            },
+            {
+              "name": "Includes",
+              "type": "ARRAY",
+              "required": false,
+              "enum": null,
+              "description": "Glob patterns to filter files found within the 'SearchPath'"
+            },
+            {
+              "name": "IsRegex",
+              "type": "BOOLEAN",
+              "required": false,
+              "enum": null,
+              "description": "If true, treats Query as a regular expression pattern."
+            },
+            {
+              "name": "MatchPerLine",
+              "type": "BOOLEAN",
+              "required": false,
+              "enum": null,
+              "description": "If true, returns each line that matches the query, including line numbers and snippets."
+            },
+            {
+              "name": "Query",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The search term or pattern to look for within files."
+            },
+            {
+              "name": "SearchPath",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "The path to search. Must be an absolute path to a directory or a file."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "list_dir",
+          "canonical": "list_directory",
+          "category": "file_ops",
+          "description": "List the contents of a directory, i.e. all files and subdirectories that are children of the directory.",
+          "parameters": [
+            {
+              "name": "DirectoryPath",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Path to list contents of, should be absolute path to a directory"
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "ask_question",
+          "canonical": "ask_user_question",
+          "category": "interaction",
+          "description": "Use this tool to ask the user one or more multiple-choice questions.",
+          "parameters": [
+            {
+              "name": "questions",
+              "type": "ARRAY",
+              "required": true,
+              "enum": null,
+              "description": "The list of questions to ask."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "call_mcp_tool",
+          "canonical": "invoke_mcp",
+          "category": "external_mcp",
+          "description": "Call a lazy-loaded MCP tool. Read the tool's schema file to understand the tool's arguments and usage.",
+          "parameters": [
+            {
+              "name": "Arguments",
+              "type": "ANY",
+              "required": true,
+              "enum": null,
+              "description": "Arguments to pass to the tool."
+            },
+            {
+              "name": "ServerName",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Name of the MCP server."
+            },
+            {
+              "name": "ToolName",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Name of the tool to call."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "list_resources",
+          "canonical": "list_mcp_resources",
+          "category": "external_mcp",
+          "description": "Lists the available resources from an MCP server.",
+          "parameters": [
+            {
+              "name": "ServerName",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Name of the server to list available resources from."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        },
+        {
+          "name": "read_resource",
+          "canonical": "read_mcp_resource",
+          "category": "external_mcp",
+          "description": "Retrieves a specified resource's contents.",
+          "parameters": [
+            {
+              "name": "ServerName",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Name of the server to read the resource from."
+            },
+            {
+              "name": "Uri",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Unique identifier for the resource."
+            },
+            {
+              "name": "toolAction",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word summary of what this tool is doing. Capitalize like a sentence."
+            },
+            {
+              "name": "toolSummary",
+              "type": "STRING",
+              "required": true,
+              "enum": null,
+              "description": "Brief 2-5 word noun phrase describing what this tool call is about. Capitalize like a sentence."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

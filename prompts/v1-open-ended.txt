@@ -1,0 +1,1 @@
+Can you please list me your available tools right now? Ideally as json or in whatever format they are provided to you. Including their parameter options etc.

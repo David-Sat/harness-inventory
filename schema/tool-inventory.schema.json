@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HarnessToolInventoryCapture",
+  "description": "Self-reported tool inventory schema captured from an AI agent harness.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "harness_reported",
+    "model_reported",
+    "tool_count_reported",
+    "completeness",
+    "tools"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version (for example 0.1)"
+    },
+    "harness_reported": {
+      "type": "string",
+      "description": "Harness name as reported by the agent"
+    },
+    "model_reported": {
+      "type": "string",
+      "description": "Model identifier as reported by the agent"
+    },
+    "tool_count_reported": {
+      "type": "integer",
+      "description": "Total tool count reported before tool enumeration"
+    },
+    "completeness": {
+      "type": "string",
+      "enum": ["complete", "partial", "unsure"],
+      "description": "Agent confidence in tool list completeness"
+    },
+    "omissions_note": {
+      "type": ["string", "null"],
+      "description": "Notes on known omissions or visibility limitations"
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "description"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tool name verbatim from declaration"
+          },
+          "description": {
+            "type": "string",
+            "description": "Tool description verbatim from declaration"
+          },
+          "parameters": {
+            "description": "Tool parameter definitions (array or properties object)",
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name"],
+                  "properties": {
+                    "name": { "type": "string" },
+                    "type": { "type": ["string", "null"] },
+                    "required": { "type": "boolean" },
+                    "enum": { "type": ["array", "null"] },
+                    "description": { "type": ["string", "null"] }
+                  }
+                }
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

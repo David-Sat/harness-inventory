@@ -1,0 +1,54 @@
+{
+  "categories": [
+    {
+      "id": "file_ops",
+      "name": "File Operations",
+      "description": "Reading, writing, editing, and inspecting local files and directories."
+    },
+    {
+      "id": "execution",
+      "name": "Execution & Shell",
+      "description": "Running terminal commands, bash processes, and environment scripts."
+    },
+    {
+      "id": "search",
+      "name": "Search & Navigation",
+      "description": "Grep, regular expressions, symbol search, and codebase indexing."
+    },
+    {
+      "id": "web_browser",
+      "name": "Web & Browser",
+      "description": "Web search, web page extraction, and browser automation."
+    },
+    {
+      "id": "orchestration",
+      "name": "Subagents & Orchestration",
+      "description": "Spawning child agents, task delegation, inter-agent messaging, and task management."
+    },
+    {
+      "id": "scheduling_memory",
+      "name": "Scheduling & Lifecycle",
+      "description": "Timers, cron jobs, reactive triggers, and background task monitoring."
+    },
+    {
+      "id": "interaction",
+      "name": "User Interaction",
+      "description": "User question modals, decision prompts, and interactive feedback."
+    },
+    {
+      "id": "external_mcp",
+      "name": "MCP & Integrations",
+      "description": "Model Context Protocol tools, external servers, and connected APIs."
+    },
+    {
+      "id": "generation",
+      "name": "Asset & Media Generation",
+      "description": "Image generation, UI mockups, and multimodal asset creation."
+    },
+    {
+      "id": "other",
+      "name": "Other / Specialized",
+      "description": "Domain-specific or uncategorized tools."
+    }
+  ]
+}

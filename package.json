@@ -1,0 +1,10 @@
+{
+  "name": "harness-inventory",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Self-reported inventory of tools and capabilities across AI agent harnesses",
+  "scripts": {
+    "build": "node scripts/build-manifest.js"
+  },
+  "license": "MIT"
+}
