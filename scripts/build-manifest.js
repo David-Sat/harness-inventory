@@ -56,6 +56,28 @@ function findJsonFiles(dir) {
   return results;
 }
 
+function inferCategoryFromToolName(name) {
+  if (name.startsWith('mcp__Claude_Browser__') || name.startsWith('mcp__Web_search__') || name.startsWith('mcp__workspace__web_fetch')) {
+    return { category: 'web_browser', canonical: name.replace(/^mcp__/, '') };
+  }
+  if (name.startsWith('mcp__scheduled-tasks__')) {
+    return { category: 'scheduling_memory', canonical: name.replace(/^mcp__scheduled-tasks__/, '') };
+  }
+  if (name.startsWith('mcp__workspace__bash') || name.startsWith('mcp__terminal__')) {
+    return { category: 'execution', canonical: name.replace(/^mcp__/, '') };
+  }
+  if (name.startsWith('mcp__cowork__create_artifact') || name.startsWith('mcp__cowork__update_artifact') || name.startsWith('mcp__cowork__list_artifacts')) {
+    return { category: 'file_ops', canonical: name.replace(/^mcp__cowork__/, '') };
+  }
+  if (name.startsWith('mcp__skills__') || name.startsWith('mcp__session_info__') || name.startsWith('mcp__ccd_session')) {
+    return { category: 'orchestration', canonical: name.replace(/^mcp__/, '') };
+  }
+  if (name.startsWith('mcp__')) {
+    return { category: 'external_mcp', canonical: name.replace(/^mcp__/, '') };
+  }
+  return { category: 'other', canonical: name };
+}
+
 function build() {
   const categoriesData = loadJson(path.join(TAXONOMY_DIR, 'categories.json'));
   const mappingsData = loadJson(path.join(TAXONOMY_DIR, 'tool-mappings.json'));
@@ -70,12 +92,20 @@ function build() {
     const fileName = path.basename(filePath, '.json');
     const rawData = loadJson(filePath);
 
-    // Format: YYYY-MM-DD_<harness>_<model>_<state>
-    const parts = fileName.split('_');
-    const date = parts[0] || 'unknown';
-    const harness = parts[1] || rawData.harness_reported || 'unknown';
-    const model = parts[2] || rawData.model_reported || 'unknown';
-    const state = parts[3] || 'cold';
+    // Extract metadata: check for date prefix YYYY-MM-DD or default to 2026-08-31
+    const dateMatch = fileName.match(/^(\d{4}-\d{2}-\d{2})_(.*)$/);
+    let date = '2026-08-31';
+    let fileRest = fileName;
+
+    if (dateMatch) {
+      date = dateMatch[1];
+      fileRest = dateMatch[2];
+    }
+
+    const parts = fileRest.split('_');
+    const harness = parts[0] || rawData.harness_reported || 'unknown';
+    const model = parts[1] || rawData.model_reported || 'unknown';
+    const state = parts[2] || (fileName.includes('cold') ? 'cold' : 'active');
 
     const categoryCounts = {};
     for (const cat of categories) {
@@ -83,11 +113,7 @@ function build() {
     }
 
     const normalizedTools = (rawData.tools || []).map(tool => {
-      const mapping = mappings[tool.name] || {
-        category: 'other',
-        canonical: tool.name
-      };
-
+      const mapping = mappings[tool.name] || inferCategoryFromToolName(tool.name);
       const category = mapping.category || 'other';
       categoryCounts[category] = (categoryCounts[category] || 0) + 1;
 
@@ -109,7 +135,7 @@ function build() {
       file_path: relativePath,
       harness_reported: rawData.harness_reported || harness,
       model_reported: rawData.model_reported || model,
-      tool_count_reported: rawData.tool_count_reported || normalizedTools.length,
+      tool_count_reported: rawData.tool_count_reported !== undefined ? rawData.tool_count_reported : normalizedTools.length,
       tool_count_actual: normalizedTools.length,
       completeness: rawData.completeness || 'complete',
       omissions_note: rawData.omissions_note || null,

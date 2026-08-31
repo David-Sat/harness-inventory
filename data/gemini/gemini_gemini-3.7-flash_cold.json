@@ -1,0 +1,36 @@
+{
+    "schema_version": "0.1",
+    "harness_reported": "unknown",
+    "model_reported": "Gemini 3.7 Flash",
+    "tool_count_reported": 2,
+    "completeness": "complete",
+    "omissions_note": "",
+    "tools": [
+        {
+            "name": "google:search",
+            "description": "Search the web for relevant information when up-to-date knowledge or factual verification is needed. The results will include relevant snippets from web pages.",
+            "parameters": [
+                {
+                    "name": "queries",
+                    "type": "ARRAY",
+                    "required": true,
+                    "enum": null,
+                    "description": "The list of queries to issue searches with"
+                }
+            ]
+        },
+        {
+            "name": "image_agent:fetch_images",
+            "description": "Retrieves high-quality photographs, diagrams, and visual references to support visual identification, comparisons, and illustrating concepts.",
+            "parameters": [
+                {
+                    "name": "queries",
+                    "type": "ARRAY",
+                    "required": true,
+                    "enum": null,
+                    "description": "The query to retrieve image for."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,412 @@
+{
+    "schema_version": "0.1",
+    "harness_reported": "unknown",
+    "model_reported": "GPT-5.6 Luna",
+    "tool_count_reported": 14,
+    "completeness": "complete",
+    "omissions_note": "",
+    "tools": [
+        {
+            "name": "web.run",
+            "description": "Use this tool to access information on the web. Web information from this tool helps you produce accurate, up-to-date, comprehensive, and trustworthy responses.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": []
+        },
+        {
+            "name": "python.exec",
+            "description": "Execute Python code in the chain of thought environment.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": []
+        },
+        {
+            "name": "python_user_visible.exec",
+            "description": "Execute any Python code that you want the user to see. You should NOT use this tool for private reasoning or analysis. Rather, use it for any code or outputs that should be visible to the user, such as making plots, displaying tables/spreadsheets/dataframes, or outputting user-visible files.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": []
+        },
+        {
+            "name": "container.exec",
+            "description": "Utilities for interacting with a container, for example, running shell commands.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "cmd",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "session_name",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "workdir",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "timeout",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Avoid requesting excessive timeouts, like 5 minutes."
+                },
+                {
+                    "name": "env",
+                    "type": "{ [key: string]: string } | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "user",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "container.feed_chars",
+            "description": "Feed characters to an exec session's STDIN. Then, wait some amount of time, flush stdout/stderr, and show the results. To immediately flush stdout/stderr, pass an empty string.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "session_name",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "chars",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "yield_time_ms",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "container.open_image",
+            "description": "Returns the image in the container at the given absolute path. Only supports jpg, jpeg, png, and webp.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "path",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "user",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "container.download",
+            "description": "Download a file from a URL into the container filesystem.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "filepath",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "api_tool.list_resources",
+            "description": "List resources in the given paths. This discovers tools under the given paths. The optional query parameter filters the functions within those paths. Only functions with name or description containing the exact query string, case-insensitively, will be loaded. Prefer single keywords or known identifiers for query, and avoid phrases or complex queries. Avoid re-discovering full tool descriptions and schemas if they are already present.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "paths",
+                    "type": "string[]",
+                    "required": true,
+                    "enum": null,
+                    "description": "List tool resources by the given paths."
+                },
+                {
+                    "name": "query",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Search/filter query for functions within the requested paths. Only functions with name or description containing the exact query string, case-insensitively, will be loaded. Prefer single keywords or known identifiers for query, and avoid phrases or complex queries."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.read_resource",
+            "description": "Read only a previous tool response or an available skill file.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "uri",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "URI of a previous tool response or an available skill file, such as `/response/turn0`, `skills://<skill_name>/skill.md`. Do not use arbitrary MCP resources or connector files/attachments."
+                },
+                {
+                    "name": "start_line",
+                    "type": "integer",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "num_lines",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "api_tool.find_in_resource",
+            "description": "Search within a response resource URI, such as `/response/turn0`. Do not use this method on skill URIs, such as `skills://<skill_name>/skill.md`, or on MCP resource URIs.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "uri",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "A response resource URI, such as `/response/turn0`. Do not use this method on skill URIs, such as `skills://<skill_name>/skill.md`, or on MCP resource URIs."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "start_line",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "end_line",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "api_tool.suggest_installs",
+            "description": "Offer installable plugins to the user by exact plugin ID.",
+            "source": "builtin",
+            "requires_approval": "yes",
+            "parameters": [
+                {
+                    "name": "plugin_ids",
+                    "type": "string[]",
+                    "required": true,
+                    "enum": null,
+                    "description": "Call search_plugins first, then pass only exact plugin IDs returned by that search. Use this only for plugins that are not already installed."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.search_plugins",
+            "description": "Search installable plugins before offering new installs. Pass exact plugin IDs from the results to suggest_installs. Search available plugins using terms, quoted phrases, boolean operators AND, OR, NOT, parentheses, and optional fields plugin_name, plugin_description, and tool_name. Examples: calendar; \"project tracker\"; plugin_name:calendar AND NOT plugin_description:deprecated; (tool_name:search OR tool_name:create) AND plugin_description:docs. Wildcards and SQL syntax are not supported.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Search installable plugins using terms, quoted phrases, boolean operators AND, OR, NOT, parentheses, and optional fields plugin_name, plugin_description, and tool_name."
+                }
+            ]
+        },
+        {
+            "name": "image_gen.text2im",
+            "description": "The image_gen tool enables image generation from descriptions and editing of existing images based on specific instructions.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "prompt",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Deprecated parameter. Always pass `null`. Image generation or editing instructions are inferred automatically from the conversation context, so this field should not be used."
+                },
+                {
+                    "name": "size",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "n",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "transparent_background",
+                    "type": "boolean | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "is_style_transfer",
+                    "type": "boolean | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "referenced_image_ids",
+                    "type": "string[] | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Deprecated parameter. Normally leave this as `null`."
+                }
+            ]
+        },
+        {
+            "name": "user_settings.get_user_settings",
+            "description": "Return the user's current settings along with descriptions and allowed values. Always call this FIRST to get the set of options available before asking for clarifying information (if needed) and before changing any settings.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": []
+        },
+        {
+            "name": "user_settings.set_setting",
+            "description": "Change one of the following settings: accent color, appearance (light/dark mode), or personality. Use get_user_settings to see the option enums available before changing. Use this to set an allowed value.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "setting_name",
+                    "type": "\"accent_color\" | \"appearance\" | \"personality\"",
+                    "required": true,
+                    "enum": [
+                        "accent_color",
+                        "appearance",
+                        "personality"
+                    ],
+                    "description": "Identifier for the setting to act on. Options are accent_color (Accent Color), appearance (Appearance), or personality (Personality)"
+                },
+                {
+                    "name": "setting_value",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "New value for the setting. Appearance accepts one of: system, light, dark. Call get_user_settings first for the allowed values of accent color and personality."
+                }
+            ]
+        },
+        {
+            "name": "safety_settings.get_family_info",
+            "description": "Call first for any Parental Controls question or action, including unnamed children. Returns Family status, product information, and authorized member IDs.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": []
+        },
+        {
+            "name": "safety_settings.get_parental_controls",
+            "description": "Read one family member's controls. Call get_family_info first; use only an ID from its latest result.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Family member user ID returned by get_family_info."
+                }
+            ]
+        },
+        {
+            "name": "safety_settings.get_trusted_contact",
+            "description": "Call first for any Trusted Contact setup, status, privacy, or notification question. Returns product information and active, pending, or unconfigured status.",
+            "source": "builtin",
+            "requires_approval": "no",
+            "parameters": []
+        },
+        {
+            "name": "safety_settings.update_parental_control",
+            "description": "Request a control change after get_family_info and get_parental_controls. Use only an authorized ID from the latest family result and can_update_in_chat=true. Requires explicit user approval.",
+            "source": "builtin",
+            "requires_approval": "yes",
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Family member user ID returned by the latest family result."
+                },
+                {
+                    "name": "control_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Stable ID for the parental control to change."
+                },
+                {
+                    "name": "value",
+                    "type": "boolean | {enabled: boolean, start_time: string | null, end_time: string | null} | string[]",
+                    "required": true,
+                    "enum": null,
+                    "description": "The complete new value for the control."
+                }
+            ]
+        }
+    ]
+}
