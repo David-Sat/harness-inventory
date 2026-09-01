@@ -135,6 +135,4 @@ Tools are grouped using canonical categories defined in `taxonomy/categories.jso
 
 ## Formatting Rules
 
-- No emojis in code, documentation, or commit messages.
-- No emdashes in documentation; use standard hyphens, colons, or parentheses.
 - Raw capture files must preserve original casing and verbatim declarations.
