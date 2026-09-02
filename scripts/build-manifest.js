@@ -78,6 +78,25 @@ function inferCategoryFromToolName(name) {
   return { category: 'other', canonical: name };
 }
 
+function inferSurfaceAndFamily(harnessOrDir, fileName) {
+  const s = (harnessOrDir + ' ' + fileName).toLowerCase();
+  let surface = 'web';
+  if (s.includes('desktop') || s.includes('cowork')) surface = 'desktop';
+  else if (s.includes('claude-code-code') || s.includes('cli')) surface = 'cli';
+  else if (s.includes('antigravity')) surface = 'ide';
+  else if (s.includes('mobile') || s.includes('ios') || s.includes('android')) surface = 'mobile';
+  else if (s.includes('codex')) surface = 'desktop';
+  else if (s.includes('browser') || s.includes('web') || s.includes('gemini')) surface = 'web';
+
+  let family = 'other';
+  if (s.includes('chatgpt') || s.includes('codex') || s.includes('openai')) family = 'openai';
+  else if (s.includes('claude') || s.includes('anthropic')) family = 'anthropic';
+  else if (s.includes('gemini') || s.includes('antigravity') || s.includes('google')) family = 'google';
+  else if (s.includes('deepseek')) family = 'deepseek';
+
+  return { surface, family };
+}
+
 function build() {
   const categoriesData = loadJson(path.join(TAXONOMY_DIR, 'categories.json'));
   const mappingsData = loadJson(path.join(TAXONOMY_DIR, 'tool-mappings.json'));
@@ -90,9 +109,10 @@ function build() {
   for (const filePath of jsonFiles) {
     const relativePath = path.relative(ROOT_DIR, filePath);
     const fileName = path.basename(filePath, '.json');
+    const parentDir = path.basename(path.dirname(filePath));
     const rawData = loadJson(filePath);
 
-    // Extract metadata: check for date prefix YYYY-MM-DD or default to 2026-08-31
+    // Extract metadata: check for date prefix YYYY-MM-DD
     const dateMatch = fileName.match(/^(\d{4}-\d{2}-\d{2})_(.*)$/);
     let date = '2026-08-31';
     let fileRest = fileName;
@@ -103,9 +123,16 @@ function build() {
     }
 
     const parts = fileRest.split('_');
-    const harness = parts[0] || rawData.harness_reported || 'unknown';
-    const model = parts[1] || rawData.model_reported || 'unknown';
-    const state = parts[2] || (fileName.includes('cold') ? 'cold' : 'active');
+    const harness = parts[0] || parentDir || rawData.harness_reported || 'unknown';
+    let model = parts[1] || rawData.model_reported || 'unknown';
+    const state = parts[2] || (fileName.includes('refusal') ? 'refusal' : (fileName.includes('cold') ? 'cold' : 'active'));
+
+    // If model is unknown or parts combined
+    if (harness.includes('codex-5.6-terra')) {
+      model = '5.6-terra';
+    }
+
+    const { surface, family } = inferSurfaceAndFamily(parentDir + ' ' + harness, fileName);
 
     const categoryCounts = {};
     for (const cat of categories) {
@@ -129,6 +156,8 @@ function build() {
     snapshots.push({
       id: fileName,
       harness,
+      family,
+      surface,
       model,
       state,
       date,

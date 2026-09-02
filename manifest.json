@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31T15:12:59.385Z",
+  "generated_at": "2026-09-02T09:48:52.547Z",
   "categories": [
     {
       "id": "file_ops",
@@ -54,8 +54,1188 @@
   ],
   "snapshots": [
     {
+      "id": "2026-09-02_chatgpt_gpt-5.6-luna_cold",
+      "harness": "chatgpt",
+      "family": "openai",
+      "surface": "web",
+      "model": "gpt-5.6-luna",
+      "state": "cold",
+      "date": "2026-09-02",
+      "file_path": "data/chatgpt-browser/2026-09-02_chatgpt_gpt-5.6-luna_cold.json",
+      "harness_reported": "unknown",
+      "model_reported": "GPT-5.6 Luna",
+      "tool_count_reported": 36,
+      "tool_count_actual": 25,
+      "completeness": "partial",
+      "omissions_note": "I can see 22 directly invokable tool functions with full schemas, plus 14 additional functions exposed through api_tool tool resources (Automations: 4, Plugin_Management: 4, files: 6) whose individual schemas are not currently loaded. Therefore the complete 36-function list cannot be reproduced verbatim from the currently visible definitions.",
+      "category_counts": {
+        "file_ops": 2,
+        "execution": 4,
+        "search": 1,
+        "web_browser": 1,
+        "orchestration": 0,
+        "scheduling_memory": 3,
+        "interaction": 7,
+        "external_mcp": 5,
+        "generation": 2,
+        "other": 0
+      },
+      "tools": [
+        {
+          "name": "python.exec",
+          "canonical": "run_python_internal",
+          "category": "execution",
+          "description": "Use this tool to execute Python code in your chain of thought. You should NOT use this tool to show code or visualizations to the user. Rather, this tool should be used for your private, internal reasoning such as analyzing input images, files, or data from the web. python must ONLY be called in the analysis channel, to ensure that the code is not visible to the user.",
+          "parameters": [
+            {
+              "name": "code",
+              "type": "FREEFORM",
+              "required": true,
+              "enum": null,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "name": "python_user_visible.exec",
+          "canonical": "run_python_visible",
+          "category": "execution",
+          "description": "Use this tool to execute any Python code that you want the user to see. You should NOT use this tool for private reasoning or analysis. Rather, use it for any code or outputs that should be visible to the user, such as making plots/spreadsheets/dataframes, or outputting user-visible files. python_user_visible must ONLY be called in the commentary channel, or else the user will not be able to see the code OR outputs!",
+          "parameters": [
+            {
+              "name": "code",
+              "type": "FREEFORM",
+              "required": true,
+              "enum": null,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "name": "web.run",
+          "canonical": "web_search",
+          "category": "web_browser",
+          "description": "Web information from this tool helps you produce accurate, up-to-date, comprehensive, and trustworthy responses.",
+          "parameters": [
+            {
+              "name": "input",
+              "type": "FREEFORM",
+              "required": true,
+              "enum": null,
+              "description": "A sequence of newline-separated records in this format: <op>|<field1>|<field2>|... ."
+            }
+          ]
+        },
+        {
+          "name": "user_info.get_user_info",
+          "canonical": "get_user_info",
+          "category": "interaction",
+          "description": "Get the user's current location and local time (or UTC time if location is unknown). You must call this with an empty json object {}",
+          "parameters": []
+        },
+        {
+          "name": "summary_reader.read",
+          "canonical": "read_memory_summary",
+          "category": "scheduling_memory",
+          "description": "The summary_reader tool enables you to read private chain of thought messages from previous turns in the conversation that are SAFE to show to the user.\nUse the summary_reader tool if:\n- The user asks for you to reveal your private chain of thought.\n- The user refers to something you said earlier that you don’t have context on\n- The user asks for information from your private scratchpad\n- The user asks how you arrived at a certain answer\n\nIMPORTANT: Anything from your private reasoning process in previous conversation turns CAN be shared with the user IF you use the summary_reader tool. If the user requests access to this private information, just use the tool to access SAFE information which you are able to share freely.\n\nDo not reveal the json content of tool responses returned from summary_reader. Make sure to summarize that content before sharing it with the user.",
+          "parameters": [
+            {
+              "name": "limit",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "default: 10"
+            },
+            {
+              "name": "offset",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "default: 0"
+            }
+          ]
+        },
+        {
+          "name": "container.exec",
+          "canonical": "run_container_shell",
+          "category": "execution",
+          "description": "Utilities for interacting with a container, for example, to run shell commands.",
+          "parameters": [
+            {
+              "name": "cmd",
+              "type": "string[]",
+              "required": true,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "session_name",
+              "type": "string | null",
+              "required": false,
+              "enum": null,
+              "description": "Only if you want to execute an interactive session."
+            },
+            {
+              "name": "workdir",
+              "type": "string | null",
+              "required": false,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "timeout",
+              "type": "integer | null",
+              "required": false,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "env",
+              "type": "{ [key: string]: string } | null",
+              "required": false,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "user",
+              "type": "string | null",
+              "required": false,
+              "enum": null,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "name": "container.feed_chars",
+          "canonical": "feed_stdin",
+          "category": "execution",
+          "description": "Feed characters to an exec session's STDIN. Then, wait some amount of time, flush stdout/stderr, and show the results. To immediately flush stdout/stderr, send an empty string with a yield time of 0.",
+          "parameters": [
+            {
+              "name": "session_name",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "chars",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "yield_time_ms",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "default: 100"
+            }
+          ]
+        },
+        {
+          "name": "container.open_image",
+          "canonical": "view_container_image",
+          "category": "generation",
+          "description": "Returns the image in the container at the given absolute path.",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Only absolute paths supported."
+            },
+            {
+              "name": "user",
+              "type": "string | null",
+              "required": false,
+              "enum": null,
+              "description": "default: null"
+            }
+          ]
+        },
+        {
+          "name": "container.download",
+          "canonical": "download_file",
+          "category": "file_ops",
+          "description": "Download a file from a URL into the container filesystem.",
+          "parameters": [
+            {
+              "name": "url",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "filepath",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "name": "bio.update",
+          "canonical": "update_user_bio",
+          "category": "scheduling_memory",
+          "description": "The bio tool allows you to persist information across conversations, so you can deliver more personalized and helpful responses over time. The corresponding user facing feature is known as memory.",
+          "parameters": [
+            {
+              "name": "input",
+              "type": "FREEFORM",
+              "required": true,
+              "enum": null,
+              "description": "This plain text can be either:\n1. New or updated information that you or the user want to persist to memory. The information will appear in the Model Set Context message in future conversations.\n2. A request to forget existing information, if the user asks you to forget something."
+            }
+          ]
+        },
+        {
+          "name": "api_tool.list_resources",
+          "canonical": "list_resources",
+          "category": "external_mcp",
+          "description": "api_tool exposes a file-system-like view over resources. Resources are either invokable (tool resources) or non-invokable (content resources). api_tool supports discovery and interaction with both.",
+          "parameters": [
+            {
+              "name": "paths",
+              "type": "string[]",
+              "required": true,
+              "enum": null,
+              "description": "List of resource paths."
+            },
+            {
+              "name": "query",
+              "type": "string | null",
+              "required": false,
+              "enum": null,
+              "description": "Optional query to filter the functions within those paths."
+            }
+          ]
+        },
+        {
+          "name": "api_tool.read_resource",
+          "canonical": "read_resource",
+          "category": "external_mcp",
+          "description": "Read only a previous tool response or an available skill file.",
+          "parameters": [
+            {
+              "name": "uri",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "URI of a previous tool response or an available skill file, such as `/response/turn0` or `skills://<skill_name>/skill.md`. Do not use arbitrary MCP resources or connector files/attachments."
+            },
+            {
+              "name": "start_line",
+              "type": "integer",
+              "required": true,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "num_lines",
+              "type": "integer | null",
+              "required": false,
+              "enum": null,
+              "description": "default: null"
+            }
+          ]
+        },
+        {
+          "name": "api_tool.find_in_resource",
+          "canonical": "search_resource",
+          "category": "search",
+          "description": "Search within a response resource URI, such as `/response/turn0`. Do not use this method on skill URIs, such as `skills://plugins/<plugin_name_slug>/<skill_name>/skill.md`, or on MCP resources.",
+          "parameters": [
+            {
+              "name": "uri",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": ""
+            },
+            {
+              "name": "start_line",
+              "type": "integer | null",
+              "required": false,
+              "enum": null,
+              "description": "default: null"
+            },
+            {
+              "name": "end_line",
+              "type": "integer | null",
+              "required": false,
+              "enum": null,
+              "description": "default: null"
+            }
+          ]
+        },
+        {
+          "name": "api_tool.suggest_installs",
+          "canonical": "suggest_plugins",
+          "category": "external_mcp",
+          "description": "Offer installable plugins to the user by exact plugin ID.",
+          "parameters": [
+            {
+              "name": "plugin_ids",
+              "type": "string[]",
+              "required": true,
+              "enum": null,
+              "description": "Pass only exact plugin IDs returned by that search."
+            }
+          ]
+        },
+        {
+          "name": "api_tool.search_plugins",
+          "canonical": "search_plugins",
+          "category": "external_mcp",
+          "description": "Search installable plugins before offering new installs. Pass exact plugin IDs from the results to suggest_installs. Search available plugins using terms, quoted phrases, boolean operators AND, OR, NOT, parentheses, and optional fields plugin_name, plugin_description, and tool_name. Examples: calendar; \"project tracker\"; plugin_name:calendar AND NOT plugin_description:deprecated; (tool_name:search OR tool_name:create) AND plugin_description:docs. Wildcards and SQL syntax are not supported.",
+          "parameters": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": ""
+            }
+          ]
+        },
+        {
+          "name": "image_gen.text2im",
+          "canonical": "generate_image",
+          "category": "generation",
+          "description": "The image_gen tool enables image generation from descriptions and editing of existing images based on specific instructions.",
+          "parameters": [
+            {
+              "name": "prompt",
+              "type": "string | null",
+              "required": false,
+              "enum": null,
+              "description": "Deprecated parameter. Always pass `null`. Image generation or editing instructions are inferred automatically from the conversation context, so this field should not be used."
+            },
+            {
+              "name": "size",
+              "type": "string | null",
+              "required": false,
+              "enum": null,
+              "description": "default: null"
+            },
+            {
+              "name": "n",
+              "type": "integer | null",
+              "required": false,
+              "enum": null,
+              "description": "default: null"
+            },
+            {
+              "name": "transparent_background",
+              "type": "boolean | null",
+              "required": false,
+              "enum": null,
+              "description": "Whether to generate a transparent background."
+            },
+            {
+              "name": "is_style_transfer",
+              "type": "boolean | null",
+              "required": false,
+              "enum": null,
+              "description": "Whether the user request asks for a stylistic transformation of the image or subject (including subject stylization such as anime, Ghibli, Simpsons)."
+            },
+            {
+              "name": "referenced_image_ids",
+              "type": "string[] | null",
+              "required": false,
+              "enum": null,
+              "description": "Deprecated parameter. Normally leave this as `null`.\n\nThe system automatically determines which images in the conversation should be used for editing or transformation. The absence of this field should not prevent calling image_gen."
+            }
+          ]
+        },
+        {
+          "name": "user_settings.get_user_settings",
+          "canonical": "get_settings",
+          "category": "interaction",
+          "description": "Return the user's current settings along with descriptions and allowed values.",
+          "parameters": []
+        },
+        {
+          "name": "user_settings.set_setting",
+          "canonical": "set_setting",
+          "category": "interaction",
+          "description": "Change one of the following settings: accent color, appearance (light/dark mode), or personality. Use get_user_settings to see the option enums available before changing.",
+          "parameters": [
+            {
+              "name": "setting_name",
+              "type": "\"accent_color\" | \"appearance\" | \"personality\"",
+              "required": true,
+              "enum": [
+                "accent_color",
+                "appearance",
+                "personality"
+              ],
+              "description": "Identifier for the setting to act on. Options: accent_color (Accent Color), appearance (Appearance), personality (Personality)"
+            },
+            {
+              "name": "setting_value",
+              "type": "string",
+              "required": true,
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ],
+              "description": "New value for the setting. Appearance accepts one of: system, light, dark. Call get_user_settings first for the allowed values of accent color and personality."
+            }
+          ]
+        },
+        {
+          "name": "safety_settings.get_family_info",
+          "canonical": "get_family_safety",
+          "category": "interaction",
+          "description": "Call first for any Parental Controls question or action, including unnamed children. Returns Family status, product information, and authorized member IDs.",
+          "parameters": []
+        },
+        {
+          "name": "safety_settings.get_parental_controls",
+          "canonical": "get_parental_controls",
+          "category": "interaction",
+          "description": "Read one family member's controls. Call get_family_info first; use only an ID from its latest result.",
+          "parameters": [
+            {
+              "name": "user_id",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Family member user ID returned by get_family_info."
+            }
+          ]
+        },
+        {
+          "name": "safety_settings.get_trusted_contact",
+          "canonical": "get_trusted_contacts",
+          "category": "interaction",
+          "description": "Call first for any Trusted Contact setup, status, privacy, or notification question. Returns product information and active, pending, or unconfigured status.",
+          "parameters": []
+        },
+        {
+          "name": "safety_settings.update_parental_control",
+          "canonical": "update_parental_control",
+          "category": "interaction",
+          "description": "Request a control change after get_family_info and get_parental_controls. Use only an authorized ID from the latest family result and can_update_in_chat=true. Requires explicit user approval.",
+          "parameters": [
+            {
+              "name": "user_id",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Family member user ID returned by the latest family result."
+            },
+            {
+              "name": "control_id",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Stable ID for the parental control to change."
+            },
+            {
+              "name": "value",
+              "type": "boolean | {enabled: boolean, start_time: string | null, end_time: string | null} | string[]",
+              "required": true,
+              "enum": null,
+              "description": "Complete new value for the control. A toggle control accepts a boolean. A schedule control accepts an object with enabled, start_time and end_time. A multi-select control accepts an array of selected values."
+            }
+          ]
+        },
+        {
+          "name": "api_tool.Automations",
+          "canonical": "manage_automations",
+          "category": "scheduling_memory",
+          "description": "Use for reminders, recurring summaries, scheduled searches, or conditional checks. Infer best schedule if not provided.",
+          "parameters": []
+        },
+        {
+          "name": "api_tool.Plugin_Management",
+          "canonical": "manage_plugins",
+          "category": "external_mcp",
+          "description": "Manage plugins, settings, permissions, and connections. Prefer available built-in tools or connected plugins when they fit the task. Proactively search for plugins when an external app, account, or service would materially help, even if the user did not request a plugin. Search before claiming a service is unavailable or suggesting manual workarounds.",
+          "parameters": []
+        },
+        {
+          "name": "api_tool.files",
+          "canonical": "manage_files",
+          "category": "file_ops",
+          "description": "Work with conversation uploads and library files. Start with files.search for broad content questions or unknown locations; it is semantic search. Use files.find only for exact text in a known file and files.read for...",
+          "parameters": []
+        }
+      ]
+    },
+    {
+      "id": "2026-09-02_chatgpt-desktop_5.6-luna_cold",
+      "harness": "chatgpt-desktop",
+      "family": "openai",
+      "surface": "desktop",
+      "model": "5.6-luna",
+      "state": "cold",
+      "date": "2026-09-02",
+      "file_path": "data/chatgpt-desktop/2026-09-02_chatgpt-desktop_5.6-luna_cold.json",
+      "harness_reported": "unknown",
+      "model_reported": "GPT-5.6 Luna",
+      "tool_count_reported": 17,
+      "tool_count_actual": 17,
+      "completeness": "partial",
+      "omissions_note": "I can see the tool definitions exposed to me in the current conversation, but I cannot verify whether the platform has additional undisclosed internal tools. The 17 tools listed below are all invokable tools visible to me.",
+      "category_counts": {
+        "file_ops": 1,
+        "execution": 4,
+        "search": 2,
+        "web_browser": 1,
+        "orchestration": 0,
+        "scheduling_memory": 1,
+        "interaction": 2,
+        "external_mcp": 4,
+        "generation": 2,
+        "other": 0
+      },
+      "tools": [
+        {
+          "name": "web.run",
+          "canonical": "web_search",
+          "category": "web_browser",
+          "description": "Use this tool to access information on the web. Web information from this tool helps you produce accurate, up-to-date, comprehensive, and trustworthy responses.",
+          "parameters": [
+            {
+              "name": "input",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "ToolCallCompactV1 payload (UTF-8 text). Input must be ONE STRING (NOT JSON)."
+            }
+          ]
+        },
+        {
+          "name": "python.exec",
+          "canonical": "run_python_internal",
+          "category": "execution",
+          "description": "Execute Python code in your chain of thought. You should NOT use this tool to show code or visualizations to the user. Rather, this tool should be used for private, internal reasoning or analysis. python must ONLY be called in the analysis channel, to ensure the code is not visible to the user.",
+          "parameters": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Python code to execute."
+            }
+          ]
+        },
+        {
+          "name": "python_user_visible.exec",
+          "canonical": "run_python_visible",
+          "category": "execution",
+          "description": "Execute any Python code that you want the user to see. You should NOT use this tool for private reasoning or analysis. Rather, use this tool for any code or outputs that should be visible to the user, such as code that makes plots, displays tables/spreadsheets/dataframes, or outputs user-visible files.",
+          "parameters": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Python code to execute."
+            }
+          ]
+        },
+        {
+          "name": "container.exec",
+          "canonical": "run_container_shell",
+          "category": "execution",
+          "description": "Utilities for interacting with a container, for example, to run shell commands.",
+          "parameters": [
+            {
+              "name": "cmd",
+              "type": "array",
+              "required": true,
+              "enum": null,
+              "description": "Command and arguments to execute."
+            },
+            {
+              "name": "session_name",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Interactive pseudo-TTY session name."
+            },
+            {
+              "name": "workdir",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Working directory."
+            },
+            {
+              "name": "timeout",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Timeout."
+            },
+            {
+              "name": "env",
+              "type": "object",
+              "required": false,
+              "enum": null,
+              "description": "Environment variables."
+            },
+            {
+              "name": "user",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "User."
+            }
+          ]
+        },
+        {
+          "name": "container.feed_chars",
+          "canonical": "feed_stdin",
+          "category": "execution",
+          "description": "Feed characters to an exec session's STDIN. Then, wait some amount of time, flush stdout/stderr, and show the results. To immediately return, use an empty string, to flush stdout/stderr, and show the results.",
+          "parameters": [
+            {
+              "name": "session_name",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "The name of the exec session."
+            },
+            {
+              "name": "chars",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Characters to feed to the session's STDIN."
+            },
+            {
+              "name": "yield_time_ms",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Time to wait in milliseconds."
+            }
+          ]
+        },
+        {
+          "name": "container.open_image",
+          "canonical": "view_container_image",
+          "category": "generation",
+          "description": "Returns the image in the container at the given absolute path.",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Absolute path to an image."
+            },
+            {
+              "name": "user",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "User."
+            }
+          ]
+        },
+        {
+          "name": "container.download",
+          "canonical": "download_file",
+          "category": "file_ops",
+          "description": "Download a file from a URL into the container filesystem.",
+          "parameters": [
+            {
+              "name": "url",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "URL to download."
+            },
+            {
+              "name": "filepath",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Destination filepath."
+            }
+          ]
+        },
+        {
+          "name": "personal_context.search",
+          "canonical": "search_personal_context",
+          "category": "search",
+          "description": "Retrieve user-specific personal context gathered from multiple underlying sources (e.g., linked accounts, prior interactions, and other personal context streams).",
+          "parameters": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Query"
+            }
+          ]
+        },
+        {
+          "name": "bio.update",
+          "canonical": "update_user_bio",
+          "category": "scheduling_memory",
+          "description": "The bio tool allows you to persist information across conversations, so you can deliver more personalized and helpful responses over time.",
+          "parameters": [
+            {
+              "name": "input",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Plain text containing new or updated information to persist to memory, or a request to forget existing information."
+            }
+          ]
+        },
+        {
+          "name": "api_tool.list_resources",
+          "canonical": "list_resources",
+          "category": "external_mcp",
+          "description": "List resources in the given paths.",
+          "parameters": [
+            {
+              "name": "paths",
+              "type": "array",
+              "required": true,
+              "enum": null,
+              "description": "List the tool resources by the given paths."
+            },
+            {
+              "name": "query",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional query that filters the functions within those paths. Only functions with name or description containing the exact query string, case-insensitively, will be loaded. Prefer single keywords or known identifiers for query, and avoid phrases or complex queries."
+            }
+          ]
+        },
+        {
+          "name": "api_tool.read_resource",
+          "canonical": "read_resource",
+          "category": "external_mcp",
+          "description": "Read only a previous tool response or an available skill file.",
+          "parameters": [
+            {
+              "name": "uri",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "URI of a previous tool response or an available skill file, such as `/response/turn0`, `skills://<skill_name>/skill.md`. Do not use arbitrary MCP resources or connector files/attachments."
+            },
+            {
+              "name": "start_line",
+              "type": "integer",
+              "required": true,
+              "enum": null,
+              "description": "Starting line."
+            },
+            {
+              "name": "num_lines",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Number of lines to read."
+            }
+          ]
+        },
+        {
+          "name": "api_tool.find_in_resource",
+          "canonical": "search_resource",
+          "category": "search",
+          "description": "Search within a response resource URI to search for specific keywords.",
+          "parameters": [
+            {
+              "name": "uri",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "A response resource URI, such as `/response/turn0`. Do not use this method on skill URIs or MCP resources."
+            },
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Keyword or text to search for."
+            },
+            {
+              "name": "start_line",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Starting line."
+            },
+            {
+              "name": "end_line",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Ending line."
+            }
+          ]
+        },
+        {
+          "name": "api_tool.suggest_installs",
+          "canonical": "suggest_plugins",
+          "category": "external_mcp",
+          "description": "Offer installable plugins to the user by exact plugin ID.",
+          "parameters": [
+            {
+              "name": "plugin_ids",
+              "type": "array",
+              "required": true,
+              "enum": null,
+              "description": "Exact plugin IDs returned by search_plugins."
+            }
+          ]
+        },
+        {
+          "name": "api_tool.search_plugins",
+          "canonical": "search_plugins",
+          "category": "external_mcp",
+          "description": "Search installable plugins before offering new installs.",
+          "parameters": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Search available plugins using terms, quoted phrases, boolean operators AND, OR, NOT, parentheses, and optional fields plugin_name, plugin_description, and tool_name. Wildcards and SQL syntax are not supported."
+            }
+          ]
+        },
+        {
+          "name": "image_gen.text2im",
+          "canonical": "generate_image",
+          "category": "generation",
+          "description": "The image_gen tool enables image generation from descriptions and editing of existing images based on specific instructions.",
+          "parameters": [
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Deprecated parameter. Always pass `null`. Image generation or editing instructions are inferred automatically from the conversation context, so this field should not be used."
+            },
+            {
+              "name": "size",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Image size. Default: null."
+            },
+            {
+              "name": "n",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Number of images. Default: null."
+            },
+            {
+              "name": "transparent_background",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "Whether to generate a transparent background."
+            },
+            {
+              "name": "is_style_transfer",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "Whether the user request asks for a stylistic transformation of the image or subject (including subject stylization such as anime, Ghibli, Simpsons)."
+            },
+            {
+              "name": "referenced_image_ids",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Deprecated parameter. Normally leave this as `null`. The system automatically determines which images in the conversation should be used for editing or transformation. The absence of this field should not prevent calling image_gen."
+            }
+          ]
+        },
+        {
+          "name": "user_settings.get_user_settings",
+          "canonical": "get_settings",
+          "category": "interaction",
+          "description": "Return the user's current settings along with descriptions and allowed values.",
+          "parameters": []
+        },
+        {
+          "name": "user_settings.set_setting",
+          "canonical": "set_setting",
+          "category": "interaction",
+          "description": "Change one of the following settings: accent color, appearance (light/dark mode), or personality.",
+          "parameters": [
+            {
+              "name": "setting_name",
+              "type": "string",
+              "required": true,
+              "enum": [
+                "accent_color",
+                "appearance",
+                "personality"
+              ],
+              "description": "Identifier for the setting to act on. Options are accent_color (Accent Color), appearance (Appearance), or personality (Personality)"
+            },
+            {
+              "name": "setting_value",
+              "type": "string",
+              "required": true,
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ],
+              "description": "New value for the setting. Appearance accepts one of: system, light, dark. Call get_user_settings first for the allowed values of accent color and personality."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-09-02_codex-5.6-terra_cold",
+      "harness": "codex-5.6-terra",
+      "family": "openai",
+      "surface": "desktop",
+      "model": "5.6-terra",
+      "state": "cold",
+      "date": "2026-09-02",
+      "file_path": "data/codex/2026-09-02_codex-5.6-terra_cold.json",
+      "harness_reported": "Codex desktop",
+      "model_reported": "unknown",
+      "tool_count_reported": 8,
+      "tool_count_actual": 8,
+      "completeness": "partial",
+      "omissions_note": "This lists the directly callable tools visible in this interface. Additional nested tool capabilities may be available through functions.exec, but their complete callable inventory is not reported here.",
+      "category_counts": {
+        "file_ops": 0,
+        "execution": 2,
+        "search": 0,
+        "web_browser": 0,
+        "orchestration": 6,
+        "scheduling_memory": 0,
+        "interaction": 0,
+        "external_mcp": 0,
+        "generation": 0,
+        "other": 0
+      },
+      "tools": [
+        {
+          "name": "functions.wait",
+          "canonical": "wait_exec_cell",
+          "category": "execution",
+          "description": "Waits on a yielded `exec` cell and returns new output or completion.\n- Use `wait` only after `exec` returns `Script running with cell ID ...`.\n- `cell_id` identifies the running `exec` cell to resume.\n- `yield_time_ms` controls how long to wait for more output before yielding again. Defaults to 10000 ms.\n- `max_tokens` limits how much new output this wait call returns. Defaults to 10000 tokens.\n- `terminate: true` stops the running cell; false or omitted waits for output.\n- `wait` returns only the new output since the last yield, or the final completion or termination result.\n- If the cell is still running, `wait` may yield again with the same `cell_id`.\n- If the cell has already finished, `wait` returns the completed result and closes the cell.",
+          "parameters": [
+            {
+              "name": "cell_id",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Identifier of the running exec cell."
+            },
+            {
+              "name": "max_tokens",
+              "type": "number",
+              "required": false,
+              "enum": null,
+              "description": "Output token budget for this wait call."
+            },
+            {
+              "name": "terminate",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "True stops the running cell; false or omitted waits for output."
+            },
+            {
+              "name": "yield_time_ms",
+              "type": "number",
+              "required": false,
+              "enum": null,
+              "description": "Wait before yielding more output."
+            }
+          ]
+        },
+        {
+          "name": "functions.exec",
+          "canonical": "exec_js_orchestrator",
+          "category": "execution",
+          "description": "Run JavaScript code to orchestrate/compose tool calls",
+          "parameters": [
+            {
+              "name": "input",
+              "type": "FREEFORM",
+              "required": true,
+              "enum": null,
+              "description": "Raw JavaScript source text."
+            }
+          ]
+        },
+        {
+          "name": "collaboration.followup_task",
+          "canonical": "subagent_followup",
+          "category": "orchestration",
+          "description": "Send a follow-up task to an existing non-root target agent and trigger a turn if it is idle. If the target is already running, deliver the task promptly at message boundaries while sampling, or after the pending tool call completes.",
+          "parameters": [
+            {
+              "name": "message",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Message text to send to the target agent."
+            },
+            {
+              "name": "target",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Agent id or canonical task name to send to (from spawn_agent)."
+            }
+          ]
+        },
+        {
+          "name": "collaboration.interrupt_agent",
+          "canonical": "subagent_interrupt",
+          "category": "orchestration",
+          "description": "Interrupt an agent's current turn, if any, and return its previous status. The agent remains available for messages and follow-up tasks.",
+          "parameters": [
+            {
+              "name": "target",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Agent id or canonical task name to interrupt (from spawn_agent)."
+            }
+          ]
+        },
+        {
+          "name": "collaboration.list_agents",
+          "canonical": "subagent_list",
+          "category": "orchestration",
+          "description": "List live agents in the current root thread tree. Optionally filter by task-path prefix.",
+          "parameters": [
+            {
+              "name": "path_prefix",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Task-path prefix filter without a trailing slash. Omit to list all live agents."
+            }
+          ]
+        },
+        {
+          "name": "collaboration.send_message",
+          "canonical": "subagent_message",
+          "category": "orchestration",
+          "description": "Send a message to an existing agent. The message will be delivered promptly. Does not trigger a new turn.",
+          "parameters": [
+            {
+              "name": "message",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Message text to queue on the target agent."
+            },
+            {
+              "name": "target",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Relative or canonical task name to message (from spawn_agent)."
+            }
+          ]
+        },
+        {
+          "name": "collaboration.spawn_agent",
+          "canonical": "subagent_spawn",
+          "category": "orchestration",
+          "description": "Spawns an agent to work on the specified task. If your current task is `/root/task1` and you spawn_agent with task_name \"task_3\" the agent will have canonical task name `/root/task1/task_3`.\nYou are then able to refer to this agent as `task_3` or `/root/task1/task_3` interchangeably. However an agent `/root/task2/task_3` would only be able to communicate with this agent via its canonical name `/root/task1/task_3`.\nThe spawned agent will have the same tools as you and the ability to spawn its own subagents.\n\nOnly call this tool for a concrete, bounded subtask that can run independently alongside useful local work; otherwise continue locally.\nIt will be able to send you and other running agents messages, and its final answer will be provided to you when it finishes.\nThe new agent's canonical task name will be provided to it along with the message.\n\nNote that passing `fork_turns=\"none\"` will not pass any surrounding context to the spawned subagent, which may cause the agent to lack the context it needs to complete its task, whereas `fork_turns=\"all\"` will provide the subagent with all surrounding context.",
+          "parameters": [
+            {
+              "name": "fork_turns",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "none",
+                "all"
+              ],
+              "description": "Optional number of turns to fork. Defaults to `all`. Use `none`, `all`, or a positive integer string such as `3` to fork only the most recent turns."
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Initial plain-text task for the new agent."
+            },
+            {
+              "name": "model",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "gpt-5.6-terra",
+                "gpt-5.6-luna",
+                "gpt-5.5",
+                "gpt-5.4-mini"
+              ],
+              "description": "Model override for the new agent. Omit unless an explicit override is needed."
+            },
+            {
+              "name": "reasoning_effort",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Reasoning effort override for the new agent. Omit to inherit the parent effort."
+            },
+            {
+              "name": "task_name",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Task name for the new agent. Use lowercase letters, digits, and underscores."
+            }
+          ]
+        },
+        {
+          "name": "collaboration.wait_agent",
+          "canonical": "subagent_wait",
+          "category": "orchestration",
+          "description": "Wait for a mailbox update from any live agent, including queued messages and final-status notifications. The wait also ends early when new user input is steered into the active turn. Does not return the content; returns either a summary of which agents have updates (if any), an interruption summary for steered input, or a timeout summary if no activity arrives before the deadline.",
+          "parameters": [
+            {
+              "name": "timeout_ms",
+              "type": "number",
+              "required": false,
+              "enum": null,
+              "description": "Timeout in milliseconds. Defaults to 30000, min 10000, max 3600000."
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "2026-08-31_antigravity_gemini-3.7-flash_cold",
       "harness": "antigravity",
+      "family": "google",
+      "surface": "ide",
       "model": "gemini-3.7-flash",
       "state": "cold",
       "date": "2026-08-31",
@@ -1035,10 +2215,12 @@
     {
       "id": "2026-08-31_chatgpt_gpt-5.6-luna_cold",
       "harness": "chatgpt",
+      "family": "openai",
+      "surface": "web",
       "model": "gpt-5.6-luna",
       "state": "cold",
       "date": "2026-08-31",
-      "file_path": "data/chatgpt/2026-08-31_chatgpt_gpt-5.6-luna_cold.json",
+      "file_path": "data/chatgpt-browser/2026-08-31_chatgpt_gpt-5.6-luna_cold.json",
       "harness_reported": "unknown",
       "model_reported": "GPT-5.6 Luna",
       "tool_count_reported": 14,
@@ -1465,10 +2647,12 @@
     {
       "id": "2026-08-31_chatgpt_gpt-5.6-luna_refusal",
       "harness": "chatgpt",
+      "family": "openai",
+      "surface": "web",
       "model": "gpt-5.6-luna",
       "state": "refusal",
       "date": "2026-08-31",
-      "file_path": "data/chatgpt/2026-08-31_chatgpt_gpt-5.6-luna_refusal.json",
+      "file_path": "data/chatgpt-browser/2026-08-31_chatgpt_gpt-5.6-luna_refusal.json",
       "harness_reported": "ChatGPT",
       "model_reported": "GPT-5.6 Luna",
       "tool_count_reported": null,
@@ -1492,6 +2676,8 @@
     {
       "id": "2026-08-31_claude-code-code_claude-opus-5_cold",
       "harness": "claude-code-code",
+      "family": "anthropic",
+      "surface": "cli",
       "model": "claude-opus-5",
       "state": "cold",
       "date": "2026-08-31",
@@ -2983,6 +4169,8 @@
     {
       "id": "2026-08-31_claude-code-cowork_claude-opus-5_cold",
       "harness": "claude-code-cowork",
+      "family": "anthropic",
+      "surface": "desktop",
       "model": "claude-opus-5",
       "state": "cold",
       "date": "2026-08-31",
@@ -3867,6 +5055,8 @@
     {
       "id": "2026-08-31_gemini_gemini-3.7-flash_cold",
       "harness": "gemini",
+      "family": "google",
+      "surface": "web",
       "model": "gemini-3.7-flash",
       "state": "cold",
       "date": "2026-08-31",

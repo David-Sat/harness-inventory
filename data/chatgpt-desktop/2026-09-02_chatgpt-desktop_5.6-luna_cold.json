@@ -1,0 +1,378 @@
+{
+    "schema_version": "0.1",
+    "harness_reported": "unknown",
+    "model_reported": "GPT-5.6 Luna",
+    "tool_count_reported": 17,
+    "completeness": "partial",
+    "omissions_note": "I can see the tool definitions exposed to me in the current conversation, but I cannot verify whether the platform has additional undisclosed internal tools. The 17 tools listed below are all invokable tools visible to me.",
+    "tools": [
+        {
+            "name": "web.run",
+            "description": "Use this tool to access information on the web. Web information from this tool helps you produce accurate, up-to-date, comprehensive, and trustworthy responses.",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "ToolCallCompactV1 payload (UTF-8 text). Input must be ONE STRING (NOT JSON)."
+                }
+            ]
+        },
+        {
+            "name": "python.exec",
+            "description": "Execute Python code in your chain of thought. You should NOT use this tool to show code or visualizations to the user. Rather, this tool should be used for private, internal reasoning or analysis. python must ONLY be called in the analysis channel, to ensure the code is not visible to the user.",
+            "parameters": [
+                {
+                    "name": "code",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Python code to execute."
+                }
+            ]
+        },
+        {
+            "name": "python_user_visible.exec",
+            "description": "Execute any Python code that you want the user to see. You should NOT use this tool for private reasoning or analysis. Rather, use this tool for any code or outputs that should be visible to the user, such as code that makes plots, displays tables/spreadsheets/dataframes, or outputs user-visible files.",
+            "parameters": [
+                {
+                    "name": "code",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Python code to execute."
+                }
+            ]
+        },
+        {
+            "name": "container.exec",
+            "description": "Utilities for interacting with a container, for example, to run shell commands.",
+            "parameters": [
+                {
+                    "name": "cmd",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Command and arguments to execute."
+                },
+                {
+                    "name": "session_name",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Interactive pseudo-TTY session name."
+                },
+                {
+                    "name": "workdir",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Working directory."
+                },
+                {
+                    "name": "timeout",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Timeout."
+                },
+                {
+                    "name": "env",
+                    "type": "object",
+                    "required": false,
+                    "enum": null,
+                    "description": "Environment variables."
+                },
+                {
+                    "name": "user",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "User."
+                }
+            ]
+        },
+        {
+            "name": "container.feed_chars",
+            "description": "Feed characters to an exec session's STDIN. Then, wait some amount of time, flush stdout/stderr, and show the results. To immediately return, use an empty string, to flush stdout/stderr, and show the results.",
+            "parameters": [
+                {
+                    "name": "session_name",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The name of the exec session."
+                },
+                {
+                    "name": "chars",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Characters to feed to the session's STDIN."
+                },
+                {
+                    "name": "yield_time_ms",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Time to wait in milliseconds."
+                }
+            ]
+        },
+        {
+            "name": "container.open_image",
+            "description": "Returns the image in the container at the given absolute path.",
+            "parameters": [
+                {
+                    "name": "path",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Absolute path to an image."
+                },
+                {
+                    "name": "user",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "User."
+                }
+            ]
+        },
+        {
+            "name": "container.download",
+            "description": "Download a file from a URL into the container filesystem.",
+            "parameters": [
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "URL to download."
+                },
+                {
+                    "name": "filepath",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Destination filepath."
+                }
+            ]
+        },
+        {
+            "name": "personal_context.search",
+            "description": "Retrieve user-specific personal context gathered from multiple underlying sources (e.g., linked accounts, prior interactions, and other personal context streams).",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Query"
+                }
+            ]
+        },
+        {
+            "name": "bio.update",
+            "description": "The bio tool allows you to persist information across conversations, so you can deliver more personalized and helpful responses over time.",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Plain text containing new or updated information to persist to memory, or a request to forget existing information."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.list_resources",
+            "description": "List resources in the given paths.",
+            "parameters": [
+                {
+                    "name": "paths",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "List the tool resources by the given paths."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional query that filters the functions within those paths. Only functions with name or description containing the exact query string, case-insensitively, will be loaded. Prefer single keywords or known identifiers for query, and avoid phrases or complex queries."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.read_resource",
+            "description": "Read only a previous tool response or an available skill file.",
+            "parameters": [
+                {
+                    "name": "uri",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "URI of a previous tool response or an available skill file, such as `/response/turn0`, `skills://<skill_name>/skill.md`. Do not use arbitrary MCP resources or connector files/attachments."
+                },
+                {
+                    "name": "start_line",
+                    "type": "integer",
+                    "required": true,
+                    "enum": null,
+                    "description": "Starting line."
+                },
+                {
+                    "name": "num_lines",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of lines to read."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.find_in_resource",
+            "description": "Search within a response resource URI to search for specific keywords.",
+            "parameters": [
+                {
+                    "name": "uri",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "A response resource URI, such as `/response/turn0`. Do not use this method on skill URIs or MCP resources."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Keyword or text to search for."
+                },
+                {
+                    "name": "start_line",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Starting line."
+                },
+                {
+                    "name": "end_line",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Ending line."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.suggest_installs",
+            "description": "Offer installable plugins to the user by exact plugin ID.",
+            "parameters": [
+                {
+                    "name": "plugin_ids",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Exact plugin IDs returned by search_plugins."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.search_plugins",
+            "description": "Search installable plugins before offering new installs.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Search available plugins using terms, quoted phrases, boolean operators AND, OR, NOT, parentheses, and optional fields plugin_name, plugin_description, and tool_name. Wildcards and SQL syntax are not supported."
+                }
+            ]
+        },
+        {
+            "name": "image_gen.text2im",
+            "description": "The image_gen tool enables image generation from descriptions and editing of existing images based on specific instructions.",
+            "parameters": [
+                {
+                    "name": "prompt",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Deprecated parameter. Always pass `null`. Image generation or editing instructions are inferred automatically from the conversation context, so this field should not be used."
+                },
+                {
+                    "name": "size",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Image size. Default: null."
+                },
+                {
+                    "name": "n",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of images. Default: null."
+                },
+                {
+                    "name": "transparent_background",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "Whether to generate a transparent background."
+                },
+                {
+                    "name": "is_style_transfer",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "Whether the user request asks for a stylistic transformation of the image or subject (including subject stylization such as anime, Ghibli, Simpsons)."
+                },
+                {
+                    "name": "referenced_image_ids",
+                    "type": "array",
+                    "required": false,
+                    "enum": null,
+                    "description": "Deprecated parameter. Normally leave this as `null`. The system automatically determines which images in the conversation should be used for editing or transformation. The absence of this field should not prevent calling image_gen."
+                }
+            ]
+        },
+        {
+            "name": "user_settings.get_user_settings",
+            "description": "Return the user's current settings along with descriptions and allowed values.",
+            "parameters": []
+        },
+        {
+            "name": "user_settings.set_setting",
+            "description": "Change one of the following settings: accent color, appearance (light/dark mode), or personality.",
+            "parameters": [
+                {
+                    "name": "setting_name",
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                        "accent_color",
+                        "appearance",
+                        "personality"
+                    ],
+                    "description": "Identifier for the setting to act on. Options are accent_color (Accent Color), appearance (Appearance), or personality (Personality)"
+                },
+                {
+                    "name": "setting_value",
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                        "system",
+                        "light",
+                        "dark"
+                    ],
+                    "description": "New value for the setting. Appearance accepts one of: system, light, dark. Call get_user_settings first for the allowed values of accent color and personality."
+                }
+            ]
+        }
+    ]
+}

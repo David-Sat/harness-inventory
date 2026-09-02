@@ -1,0 +1,185 @@
+{
+    "schema_version": "0.1",
+    "harness_reported": "Codex desktop",
+    "model_reported": "unknown",
+    "tool_count_reported": 8,
+    "completeness": "partial",
+    "omissions_note": "This lists the directly callable tools visible in this interface. Additional nested tool capabilities may be available through functions.exec, but their complete callable inventory is not reported here.",
+    "tools": [
+        {
+            "name": "functions.wait",
+            "description": "Waits on a yielded `exec` cell and returns new output or completion.\n- Use `wait` only after `exec` returns `Script running with cell ID ...`.\n- `cell_id` identifies the running `exec` cell to resume.\n- `yield_time_ms` controls how long to wait for more output before yielding again. Defaults to 10000 ms.\n- `max_tokens` limits how much new output this wait call returns. Defaults to 10000 tokens.\n- `terminate: true` stops the running cell; false or omitted waits for output.\n- `wait` returns only the new output since the last yield, or the final completion or termination result.\n- If the cell is still running, `wait` may yield again with the same `cell_id`.\n- If the cell has already finished, `wait` returns the completed result and closes the cell.",
+            "parameters": [
+                {
+                    "name": "cell_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Identifier of the running exec cell."
+                },
+                {
+                    "name": "max_tokens",
+                    "type": "number",
+                    "required": false,
+                    "enum": null,
+                    "description": "Output token budget for this wait call."
+                },
+                {
+                    "name": "terminate",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "True stops the running cell; false or omitted waits for output."
+                },
+                {
+                    "name": "yield_time_ms",
+                    "type": "number",
+                    "required": false,
+                    "enum": null,
+                    "description": "Wait before yielding more output."
+                }
+            ]
+        },
+        {
+            "name": "functions.exec",
+            "description": "Run JavaScript code to orchestrate/compose tool calls",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": "Raw JavaScript source text."
+                }
+            ]
+        },
+        {
+            "name": "collaboration.followup_task",
+            "description": "Send a follow-up task to an existing non-root target agent and trigger a turn if it is idle. If the target is already running, deliver the task promptly at message boundaries while sampling, or after the pending tool call completes.",
+            "parameters": [
+                {
+                    "name": "message",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Message text to send to the target agent."
+                },
+                {
+                    "name": "target",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Agent id or canonical task name to send to (from spawn_agent)."
+                }
+            ]
+        },
+        {
+            "name": "collaboration.interrupt_agent",
+            "description": "Interrupt an agent's current turn, if any, and return its previous status. The agent remains available for messages and follow-up tasks.",
+            "parameters": [
+                {
+                    "name": "target",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Agent id or canonical task name to interrupt (from spawn_agent)."
+                }
+            ]
+        },
+        {
+            "name": "collaboration.list_agents",
+            "description": "List live agents in the current root thread tree. Optionally filter by task-path prefix.",
+            "parameters": [
+                {
+                    "name": "path_prefix",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Task-path prefix filter without a trailing slash. Omit to list all live agents."
+                }
+            ]
+        },
+        {
+            "name": "collaboration.send_message",
+            "description": "Send a message to an existing agent. The message will be delivered promptly. Does not trigger a new turn.",
+            "parameters": [
+                {
+                    "name": "message",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Message text to queue on the target agent."
+                },
+                {
+                    "name": "target",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Relative or canonical task name to message (from spawn_agent)."
+                }
+            ]
+        },
+        {
+            "name": "collaboration.spawn_agent",
+            "description": "Spawns an agent to work on the specified task. If your current task is `/root/task1` and you spawn_agent with task_name \"task_3\" the agent will have canonical task name `/root/task1/task_3`.\nYou are then able to refer to this agent as `task_3` or `/root/task1/task_3` interchangeably. However an agent `/root/task2/task_3` would only be able to communicate with this agent via its canonical name `/root/task1/task_3`.\nThe spawned agent will have the same tools as you and the ability to spawn its own subagents.\n\nOnly call this tool for a concrete, bounded subtask that can run independently alongside useful local work; otherwise continue locally.\nIt will be able to send you and other running agents messages, and its final answer will be provided to you when it finishes.\nThe new agent's canonical task name will be provided to it along with the message.\n\nNote that passing `fork_turns=\"none\"` will not pass any surrounding context to the spawned subagent, which may cause the agent to lack the context it needs to complete its task, whereas `fork_turns=\"all\"` will provide the subagent with all surrounding context.",
+            "parameters": [
+                {
+                    "name": "fork_turns",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "none",
+                        "all"
+                    ],
+                    "description": "Optional number of turns to fork. Defaults to `all`. Use `none`, `all`, or a positive integer string such as `3` to fork only the most recent turns."
+                },
+                {
+                    "name": "message",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Initial plain-text task for the new agent."
+                },
+                {
+                    "name": "model",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "gpt-5.6-terra",
+                        "gpt-5.6-luna",
+                        "gpt-5.5",
+                        "gpt-5.4-mini"
+                    ],
+                    "description": "Model override for the new agent. Omit unless an explicit override is needed."
+                },
+                {
+                    "name": "reasoning_effort",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Reasoning effort override for the new agent. Omit to inherit the parent effort."
+                },
+                {
+                    "name": "task_name",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Task name for the new agent. Use lowercase letters, digits, and underscores."
+                }
+            ]
+        },
+        {
+            "name": "collaboration.wait_agent",
+            "description": "Wait for a mailbox update from any live agent, including queued messages and final-status notifications. The wait also ends early when new user input is steered into the active turn. Does not return the content; returns either a summary of which agents have updates (if any), an interruption summary for steered input, or a timeout summary if no activity arrives before the deadline.",
+            "parameters": [
+                {
+                    "name": "timeout_ms",
+                    "type": "number",
+                    "required": false,
+                    "enum": null,
+                    "description": "Timeout in milliseconds. Defaults to 30000, min 10000, max 3600000."
+                }
+            ]
+        }
+    ]
+}

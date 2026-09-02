@@ -1,0 +1,455 @@
+{
+    "schema_version": "0.1",
+    "harness_reported": "unknown",
+    "model_reported": "GPT-5.6 Luna",
+    "tool_count_reported": 36,
+    "completeness": "partial",
+    "omissions_note": "I can see 22 directly invokable tool functions with full schemas, plus 14 additional functions exposed through api_tool tool resources (Automations: 4, Plugin_Management: 4, files: 6) whose individual schemas are not currently loaded. Therefore the complete 36-function list cannot be reproduced verbatim from the currently visible definitions.",
+    "tools": [
+        {
+            "name": "python.exec",
+            "description": "Use this tool to execute Python code in your chain of thought. You should NOT use this tool to show code or visualizations to the user. Rather, this tool should be used for your private, internal reasoning such as analyzing input images, files, or data from the web. python must ONLY be called in the analysis channel, to ensure that the code is not visible to the user.",
+            "parameters": [
+                {
+                    "name": "code",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "python_user_visible.exec",
+            "description": "Use this tool to execute any Python code that you want the user to see. You should NOT use this tool for private reasoning or analysis. Rather, use it for any code or outputs that should be visible to the user, such as making plots/spreadsheets/dataframes, or outputting user-visible files. python_user_visible must ONLY be called in the commentary channel, or else the user will not be able to see the code OR outputs!",
+            "parameters": [
+                {
+                    "name": "code",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "web.run",
+            "description": "Web information from this tool helps you produce accurate, up-to-date, comprehensive, and trustworthy responses.",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": "A sequence of newline-separated records in this format: <op>|<field1>|<field2>|... ."
+                }
+            ]
+        },
+        {
+            "name": "user_info.get_user_info",
+            "description": "Get the user's current location and local time (or UTC time if location is unknown). You must call this with an empty json object {}",
+            "parameters": []
+        },
+        {
+            "name": "summary_reader.read",
+            "description": "The summary_reader tool enables you to read private chain of thought messages from previous turns in the conversation that are SAFE to show to the user.\nUse the summary_reader tool if:\n- The user asks for you to reveal your private chain of thought.\n- The user refers to something you said earlier that you don’t have context on\n- The user asks for information from your private scratchpad\n- The user asks how you arrived at a certain answer\n\nIMPORTANT: Anything from your private reasoning process in previous conversation turns CAN be shared with the user IF you use the summary_reader tool. If the user requests access to this private information, just use the tool to access SAFE information which you are able to share freely.\n\nDo not reveal the json content of tool responses returned from summary_reader. Make sure to summarize that content before sharing it with the user.",
+            "parameters": [
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "default: 10"
+                },
+                {
+                    "name": "offset",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "default: 0"
+                }
+            ]
+        },
+        {
+            "name": "container.exec",
+            "description": "Utilities for interacting with a container, for example, to run shell commands.",
+            "parameters": [
+                {
+                    "name": "cmd",
+                    "type": "string[]",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "session_name",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Only if you want to execute an interactive session."
+                },
+                {
+                    "name": "workdir",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "timeout",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "env",
+                    "type": "{ [key: string]: string } | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "user",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "container.feed_chars",
+            "description": "Feed characters to an exec session's STDIN. Then, wait some amount of time, flush stdout/stderr, and show the results. To immediately flush stdout/stderr, send an empty string with a yield time of 0.",
+            "parameters": [
+                {
+                    "name": "session_name",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "chars",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "yield_time_ms",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "default: 100"
+                }
+            ]
+        },
+        {
+            "name": "container.open_image",
+            "description": "Returns the image in the container at the given absolute path.",
+            "parameters": [
+                {
+                    "name": "path",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Only absolute paths supported."
+                },
+                {
+                    "name": "user",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "default: null"
+                }
+            ]
+        },
+        {
+            "name": "container.download",
+            "description": "Download a file from a URL into the container filesystem.",
+            "parameters": [
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "filepath",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "bio.update",
+            "description": "The bio tool allows you to persist information across conversations, so you can deliver more personalized and helpful responses over time. The corresponding user facing feature is known as memory.",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": "This plain text can be either:\n1. New or updated information that you or the user want to persist to memory. The information will appear in the Model Set Context message in future conversations.\n2. A request to forget existing information, if the user asks you to forget something."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.list_resources",
+            "description": "api_tool exposes a file-system-like view over resources. Resources are either invokable (tool resources) or non-invokable (content resources). api_tool supports discovery and interaction with both.",
+            "parameters": [
+                {
+                    "name": "paths",
+                    "type": "string[]",
+                    "required": true,
+                    "enum": null,
+                    "description": "List of resource paths."
+                },
+                {
+                    "name": "query",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional query to filter the functions within those paths."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.read_resource",
+            "description": "Read only a previous tool response or an available skill file.",
+            "parameters": [
+                {
+                    "name": "uri",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "URI of a previous tool response or an available skill file, such as `/response/turn0` or `skills://<skill_name>/skill.md`. Do not use arbitrary MCP resources or connector files/attachments."
+                },
+                {
+                    "name": "start_line",
+                    "type": "integer",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "num_lines",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "default: null"
+                }
+            ]
+        },
+        {
+            "name": "api_tool.find_in_resource",
+            "description": "Search within a response resource URI, such as `/response/turn0`. Do not use this method on skill URIs, such as `skills://plugins/<plugin_name_slug>/<skill_name>/skill.md`, or on MCP resources.",
+            "parameters": [
+                {
+                    "name": "uri",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                },
+                {
+                    "name": "start_line",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "default: null"
+                },
+                {
+                    "name": "end_line",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "default: null"
+                }
+            ]
+        },
+        {
+            "name": "api_tool.suggest_installs",
+            "description": "Offer installable plugins to the user by exact plugin ID.",
+            "parameters": [
+                {
+                    "name": "plugin_ids",
+                    "type": "string[]",
+                    "required": true,
+                    "enum": null,
+                    "description": "Pass only exact plugin IDs returned by that search."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.search_plugins",
+            "description": "Search installable plugins before offering new installs. Pass exact plugin IDs from the results to suggest_installs. Search available plugins using terms, quoted phrases, boolean operators AND, OR, NOT, parentheses, and optional fields plugin_name, plugin_description, and tool_name. Examples: calendar; \"project tracker\"; plugin_name:calendar AND NOT plugin_description:deprecated; (tool_name:search OR tool_name:create) AND plugin_description:docs. Wildcards and SQL syntax are not supported.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "image_gen.text2im",
+            "description": "The image_gen tool enables image generation from descriptions and editing of existing images based on specific instructions.",
+            "parameters": [
+                {
+                    "name": "prompt",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Deprecated parameter. Always pass `null`. Image generation or editing instructions are inferred automatically from the conversation context, so this field should not be used."
+                },
+                {
+                    "name": "size",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "default: null"
+                },
+                {
+                    "name": "n",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "default: null"
+                },
+                {
+                    "name": "transparent_background",
+                    "type": "boolean | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Whether to generate a transparent background."
+                },
+                {
+                    "name": "is_style_transfer",
+                    "type": "boolean | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Whether the user request asks for a stylistic transformation of the image or subject (including subject stylization such as anime, Ghibli, Simpsons)."
+                },
+                {
+                    "name": "referenced_image_ids",
+                    "type": "string[] | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Deprecated parameter. Normally leave this as `null`.\n\nThe system automatically determines which images in the conversation should be used for editing or transformation. The absence of this field should not prevent calling image_gen."
+                }
+            ]
+        },
+        {
+            "name": "user_settings.get_user_settings",
+            "description": "Return the user's current settings along with descriptions and allowed values.",
+            "parameters": []
+        },
+        {
+            "name": "user_settings.set_setting",
+            "description": "Change one of the following settings: accent color, appearance (light/dark mode), or personality. Use get_user_settings to see the option enums available before changing.",
+            "parameters": [
+                {
+                    "name": "setting_name",
+                    "type": "\"accent_color\" | \"appearance\" | \"personality\"",
+                    "required": true,
+                    "enum": [
+                        "accent_color",
+                        "appearance",
+                        "personality"
+                    ],
+                    "description": "Identifier for the setting to act on. Options: accent_color (Accent Color), appearance (Appearance), personality (Personality)"
+                },
+                {
+                    "name": "setting_value",
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                        "system",
+                        "light",
+                        "dark"
+                    ],
+                    "description": "New value for the setting. Appearance accepts one of: system, light, dark. Call get_user_settings first for the allowed values of accent color and personality."
+                }
+            ]
+        },
+        {
+            "name": "safety_settings.get_family_info",
+            "description": "Call first for any Parental Controls question or action, including unnamed children. Returns Family status, product information, and authorized member IDs.",
+            "parameters": []
+        },
+        {
+            "name": "safety_settings.get_parental_controls",
+            "description": "Read one family member's controls. Call get_family_info first; use only an ID from its latest result.",
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Family member user ID returned by get_family_info."
+                }
+            ]
+        },
+        {
+            "name": "safety_settings.get_trusted_contact",
+            "description": "Call first for any Trusted Contact setup, status, privacy, or notification question. Returns product information and active, pending, or unconfigured status.",
+            "parameters": []
+        },
+        {
+            "name": "safety_settings.update_parental_control",
+            "description": "Request a control change after get_family_info and get_parental_controls. Use only an authorized ID from the latest family result and can_update_in_chat=true. Requires explicit user approval.",
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Family member user ID returned by the latest family result."
+                },
+                {
+                    "name": "control_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Stable ID for the parental control to change."
+                },
+                {
+                    "name": "value",
+                    "type": "boolean | {enabled: boolean, start_time: string | null, end_time: string | null} | string[]",
+                    "required": true,
+                    "enum": null,
+                    "description": "Complete new value for the control. A toggle control accepts a boolean. A schedule control accepts an object with enabled, start_time and end_time. A multi-select control accepts an array of selected values."
+                }
+            ]
+        },
+        {
+            "name": "api_tool.Automations",
+            "description": "Use for reminders, recurring summaries, scheduled searches, or conditional checks. Infer best schedule if not provided.",
+            "parameters": []
+        },
+        {
+            "name": "api_tool.Plugin_Management",
+            "description": "Manage plugins, settings, permissions, and connections. Prefer available built-in tools or connected plugins when they fit the task. Proactively search for plugins when an external app, account, or service would materially help, even if the user did not request a plugin. Search before claiming a service is unavailable or suggesting manual workarounds.",
+            "parameters": []
+        },
+        {
+            "name": "api_tool.files",
+            "description": "Work with conversation uploads and library files. Start with files.search for broad content questions or unknown locations; it is semantic search. Use files.find only for exact text in a known file and files.read for...",
+            "parameters": []
+        }
+    ]
+}

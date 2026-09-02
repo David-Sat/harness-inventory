@@ -65,6 +65,21 @@
     "safety_settings.get_trusted_contact": { "category": "interaction", "canonical": "get_trusted_contacts" },
     "safety_settings.update_parental_control": { "category": "interaction", "canonical": "update_parental_control" },
     "google:search": { "category": "web_browser", "canonical": "web_search" },
-    "image_agent:fetch_images": { "category": "generation", "canonical": "fetch_images" }
+    "image_agent:fetch_images": { "category": "generation", "canonical": "fetch_images" },
+    "functions.wait": { "category": "execution", "canonical": "wait_exec_cell" },
+    "functions.exec": { "category": "execution", "canonical": "exec_js_orchestrator" },
+    "collaboration.followup_task": { "category": "orchestration", "canonical": "subagent_followup" },
+    "collaboration.interrupt_agent": { "category": "orchestration", "canonical": "subagent_interrupt" },
+    "collaboration.list_agents": { "category": "orchestration", "canonical": "subagent_list" },
+    "collaboration.send_message": { "category": "orchestration", "canonical": "subagent_message" },
+    "collaboration.spawn_agent": { "category": "orchestration", "canonical": "subagent_spawn" },
+    "collaboration.wait_agent": { "category": "orchestration", "canonical": "subagent_wait" },
+    "user_info.get_user_info": { "category": "interaction", "canonical": "get_user_info" },
+    "summary_reader.read": { "category": "scheduling_memory", "canonical": "read_memory_summary" },
+    "bio.update": { "category": "scheduling_memory", "canonical": "update_user_bio" },
+    "api_tool.Automations": { "category": "scheduling_memory", "canonical": "manage_automations" },
+    "api_tool.Plugin_Management": { "category": "external_mcp", "canonical": "manage_plugins" },
+    "api_tool.files": { "category": "file_ops", "canonical": "manage_files" },
+    "personal_context.search": { "category": "search", "canonical": "search_personal_context" }
   }
 }
