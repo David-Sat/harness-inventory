@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02T11:43:26.058Z",
+  "generated_at": "2026-09-02T11:50:56.434Z",
   "categories": [
     {
       "id": "file_ops",
@@ -1232,33 +1232,1266 @@
       ]
     },
     {
-      "id": "2026-09-02_hermes_unknown_cold",
+      "id": "2026-09-02_hermes_gpt-5.5_cold",
       "harness": "hermes",
       "family": "nous",
       "surface": "cli",
-      "model": "unknown",
+      "model": "gpt-5.5",
       "state": "cold",
       "date": "2026-09-02",
-      "file_path": "data/hermes/2026-09-02_hermes_unknown_cold.json",
+      "file_path": "data/hermes/2026-09-02_hermes_gpt-5.5_cold.json",
       "harness_reported": "Hermes Agent",
-      "model_reported": "unknown",
-      "tool_count_reported": null,
-      "tool_count_actual": 0,
+      "model_reported": "gpt-5.5",
+      "tool_count_reported": 28,
+      "tool_count_actual": 28,
       "completeness": "partial",
-      "omissions_note": "Not all tools activated in this session.",
+      "omissions_note": "Attached file version. I can see the tools exposed in this session, but I cannot guarantee this is a complete inventory of all internal or backend-only tools outside the exposed tool interface. Some descriptions may be unavailable where the exposed schema did not include them.",
       "category_counts": {
-        "file_ops": 0,
-        "execution": 0,
-        "search": 0,
-        "web_browser": 0,
-        "orchestration": 0,
-        "scheduling_memory": 0,
-        "interaction": 0,
-        "external_mcp": 0,
-        "generation": 0,
+        "file_ops": 3,
+        "execution": 4,
+        "search": 2,
+        "web_browser": 3,
+        "orchestration": 6,
+        "scheduling_memory": 2,
+        "interaction": 1,
+        "external_mcp": 4,
+        "generation": 3,
         "other": 0
       },
-      "tools": []
+      "tools": [
+        {
+          "name": "functions.browser_exec",
+          "canonical": "browser_action",
+          "category": "web_browser",
+          "description": "Drive a real web browser via the Browser Use CLI: `code` runs as full Python (stdlib available) with pre-imported browser helpers; stdout comes back in the result.",
+          "parameters": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Python code to execute using the pre-imported browser helpers. Use print(...) for any data you need back."
+            },
+            {
+              "name": "session",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Named isolated browser session — its own daemon and (on cloud backends) own browser, so concurrent tasks don't share tabs. Reuse the same name on every related call; omit for the shared default session."
+            },
+            {
+              "name": "timeout_s",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Max seconds to wait for the code to finish (default 300, max 1800)."
+            }
+          ]
+        },
+        {
+          "name": "functions.clarify",
+          "canonical": "ask_user_question",
+          "category": "interaction",
+          "description": "Ask the user one or more questions when you need a decision, clarification, or feedback before proceeding.",
+          "parameters": [
+            {
+              "name": "questions",
+              "type": "array",
+              "required": true,
+              "enum": null,
+              "description": "The question(s). Each: question text (options excluded), optional choices (recommended first; omit for free-text), optional multi_select. Responses come back in question order with the question text echoed."
+            }
+          ]
+        },
+        {
+          "name": "functions.computer_use",
+          "canonical": "os_computer_use",
+          "category": "execution",
+          "description": "Drive the desktop via cua-driver — screenshots, mouse, keyboard, scroll, drag — on macOS, Windows, and Linux.",
+          "parameters": [
+            {
+              "name": "action",
+              "type": "string",
+              "required": true,
+              "enum": [
+                "capture",
+                "click",
+                "double_click",
+                "right_click",
+                "middle_click",
+                "drag",
+                "scroll",
+                "type",
+                "key",
+                "set_value",
+                "wait",
+                "list_apps",
+                "list_windows",
+                "focus_app"
+              ],
+              "description": "Which action to perform. `capture` is free (no side effects). All other actions require approval unless auto-approved. Use `set_value` for select/popup elements and sliders — it selects the matching option directly without opening the native menu (no focus steal)."
+            },
+            {
+              "name": "mode",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "som",
+                "vision",
+                "ax"
+              ],
+              "description": "Capture mode. `som` (default) is a screenshot with numbered overlays on every interactable element plus the AX tree — best for vision models, lets you click by element index. `vision` is a plain screenshot. `ax` is the accessibility tree only (no image; useful for text-only models)."
+            },
+            {
+              "name": "app",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional. Limit capture/action to one app (name e.g. 'Safari', or bundle ID). Omitted = frontmost window. app='screen' = composited full-screen grab (image only, no clickable elements); app='desktop' = the OS desktop/shell surface (wallpaper, icons, taskbar) with its elements."
+            },
+            {
+              "name": "pid",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Optional exact process target for action='capture'. Pair with window_id when discovery cannot resolve an X11 app."
+            },
+            {
+              "name": "window_id",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Optional exact native window target for action='capture'. Pair with pid when an external cua-driver list_windows lookup has already identified the window."
+            },
+            {
+              "name": "element",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "The 1-based SOM index returned by the last `capture(mode='som')` call. Strongly preferred over raw coordinates."
+            },
+            {
+              "name": "coordinate",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Pixel coordinates [x, y] relative to the captured window screenshot (top-left origin). Only use this if no element index is available."
+            },
+            {
+              "name": "button",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "left",
+                "right",
+                "middle"
+              ],
+              "description": "Mouse button. Defaults to left."
+            },
+            {
+              "name": "modifiers",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Modifier keys held during the action."
+            },
+            {
+              "name": "from_element",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Source element index (drag)."
+            },
+            {
+              "name": "to_element",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Target element index (drag)."
+            },
+            {
+              "name": "from_coordinate",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Source [x,y] (drag; use when no element available)."
+            },
+            {
+              "name": "to_coordinate",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Target [x,y] (drag; use when no element available)."
+            },
+            {
+              "name": "direction",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "up",
+                "down",
+                "left",
+                "right"
+              ],
+              "description": "Scroll direction."
+            },
+            {
+              "name": "amount",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Scroll wheel ticks. Default 3."
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "For action='set_value': the value to set on the element. For AXPopUpButton / select dropdowns, pass the option's display label (e.g. 'Blue'). For sliders and other AXValue-settable elements, pass the numeric or string value."
+            },
+            {
+              "name": "text",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Text to type (respects the current layout)."
+            },
+            {
+              "name": "keys",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Key combo, e.g. 'cmd+s', 'ctrl+alt+t', 'return', 'escape', 'tab'. Use '+' to combine."
+            },
+            {
+              "name": "seconds",
+              "type": "number",
+              "required": false,
+              "enum": null,
+              "description": "Seconds to wait. Max 30."
+            },
+            {
+              "name": "raise_window",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "Only for action='focus_app'. If true, brings the window to front (DISRUPTS the user). Default false — input is routed to the app without raising, matching the background co-work model."
+            },
+            {
+              "name": "delivery_mode",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "background",
+                "foreground"
+              ],
+              "description": "For input actions (click, type, key, drag, scroll). `background` (DEFAULT) delivers without raising the window or stealing focus. `foreground` briefly fronts the window then restores focus — a visible change needing its own approval; use it only when a result's verdict tells you to escalate there. Each result's `verdict` carries the next step; follow it rather than guessing."
+            },
+            {
+              "name": "bring_to_front",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "Optional and only valid with delivery_mode='foreground'. Explicitly invokes cua-driver's standalone bring_to_front tool before the input; it is never passed as an input property. This persistent focus change has a separate approval scope. Default false."
+            },
+            {
+              "name": "capture_after",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "If true, take a follow-up capture after the action and include it in the response. Saves a round-trip when you need to verify an action's effect."
+            }
+          ]
+        },
+        {
+          "name": "functions.cronjob",
+          "canonical": "manage_cron_task",
+          "category": "scheduling_memory",
+          "description": "Manage scheduled cron jobs: action='create' schedules a job from a prompt and/or skills; 'list' inspects jobs; 'update'/'pause'/'resume'/'remove' manage one by job_id; 'run' fires a job immediately in the BACKGROUND.",
+          "parameters": [
+            {
+              "name": "action",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "One of: create, list, update, pause, resume, remove, run. When action=create, the 'schedule' and 'prompt' fields are REQUIRED."
+            },
+            {
+              "name": "job_id",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Required for update/pause/resume/remove/run"
+            },
+            {
+              "name": "prompt",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "For create: the full self-contained prompt (paired with any skills as the task instruction). For run: optional transient context for that single fire (never persisted)."
+            },
+            {
+              "name": "schedule",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "REQUIRED for create. Schedule forms: recurring interval, explicit one-shot by duration, natural day/time, cron syntax, or absolute one-shot ISO timestamp."
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional human-friendly name"
+            },
+            {
+              "name": "repeat",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Optional repeat count. Omit for defaults (once for one-shot, forever for recurring)."
+            },
+            {
+              "name": "deliver",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Where the job's output is POSTED as a one-way message."
+            },
+            {
+              "name": "skills",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Optional ordered skill names loaded before the cron prompt. On update, [] clears."
+            },
+            {
+              "name": "script",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional script run each tick; stdout is injected into the agent's prompt as context (with no_agent=True the script IS the job)."
+            },
+            {
+              "name": "monitor",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional change-detector that gates the agent: an http(s) URL or a script path."
+            },
+            {
+              "name": "no_agent",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "True = no LLM: the scheduler runs `script` (required) on schedule and delivers its stdout verbatim."
+            },
+            {
+              "name": "context_from",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Optional job ID(s) whose most recent completed output is injected as context each run."
+            },
+            {
+              "name": "continuity",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "True = each run sees the job's own previous output, so it can dedupe and continue where it left off."
+            },
+            {
+              "name": "enabled_toolsets",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Optional toolset names to restrict the job's agent to (e.g. [\"web\", \"terminal\"])."
+            },
+            {
+              "name": "workdir",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional absolute existing path to run the job from."
+            },
+            {
+              "name": "attach_to_session",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "True = the job's delivery is CONTINUABLE — the user can reply and the agent has the brief in context."
+            }
+          ]
+        },
+        {
+          "name": "functions.delegate_task",
+          "canonical": "spawn_subagent",
+          "category": "orchestration",
+          "description": "Spawn subagents in isolated contexts; each gets its own conversation, terminal session, and toolset, and only its final summary returns to you.",
+          "parameters": [
+            {
+              "name": "tasks",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "What this subagent should accomplish. Be specific and self-contained — it knows nothing of this conversation history."
+            },
+            {
+              "name": "action",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "spawn",
+                "list",
+                "steer",
+                "stop"
+              ],
+              "description": "Default 'spawn'. Live control of running children: 'list' = ids/goals/status/transcripts; 'steer' = queue course-correction text into one child; 'stop' = end one child early."
+            },
+            {
+              "name": "subagent_id",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Target for action='steer'/'stop' (ids from the spawn response or action='list')"
+            },
+            {
+              "name": "message",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "For action='steer': the course correction, appended to the child's next tool result mid-run. Be directive and specific."
+            }
+          ]
+        },
+        {
+          "name": "functions.execute_code",
+          "canonical": "run_python_code",
+          "category": "execution",
+          "description": "Run Python that calls Hermes tools programmatically. Use when you need 3+ tool calls with logic between them: filtering/reducing large outputs before they enter context, branching, or loops.",
+          "parameters": [
+            {
+              "name": "code",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Python code to execute. Import tools with `from hermes_tools import web_search, terminal, ...` and print your final result to stdout."
+            },
+            {
+              "name": "reset",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "Discard the kernel's persistent state and start fresh before running this code."
+            }
+          ]
+        },
+        {
+          "name": "functions.memory",
+          "canonical": "manage_memory",
+          "category": "scheduling_memory",
+          "description": "Save durable facts to persistent memory that survive across sessions. Memory is injected into every future turn, so keep entries compact and high-signal.",
+          "parameters": [
+            {
+              "name": "action",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "add",
+                "replace",
+                "remove"
+              ],
+              "description": "The action to perform (single-op shape). Omit when using 'operations'."
+            },
+            {
+              "name": "target",
+              "type": "string",
+              "required": true,
+              "enum": [
+                "memory",
+                "user"
+              ],
+              "description": "Which memory store: 'memory' for personal notes, 'user' for user profile."
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "The entry content. Required for 'add' and 'replace' (single-op shape). Alias: 'new_text' is also accepted (mirrors old_text)."
+            },
+            {
+              "name": "old_text",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "REQUIRED for 'replace' and 'remove' (single-op shape): a short unique substring identifying the existing entry to modify. Omit only for 'add'."
+            },
+            {
+              "name": "new_text",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Alias for 'content' (single-op shape)."
+            },
+            {
+              "name": "operations",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Batch shape: a list of operations applied atomically against the final char budget."
+            }
+          ]
+        },
+        {
+          "name": "functions.patch",
+          "canonical": "edit_file",
+          "category": "file_ops",
+          "description": "Targeted find-and-replace edits in files. Use this instead of sed/awk in terminal.",
+          "parameters": [
+            {
+              "name": "mode",
+              "type": "string",
+              "required": true,
+              "enum": [
+                "replace",
+                "patch"
+              ],
+              "description": "Edit mode. 'replace' (default): requires path + old_string + new_string. 'patch': requires patch content only."
+            },
+            {
+              "name": "path",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "File path to edit."
+            },
+            {
+              "name": "old_string",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Exact text to find and replace. Must be unique in the file unless replace_all=true."
+            },
+            {
+              "name": "new_string",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Changed replacement text; it must differ from old_string. Pass empty string '' to delete the matched text."
+            },
+            {
+              "name": "replace_all",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "Replace all occurrences instead of requiring a unique match (default: false)"
+            },
+            {
+              "name": "patch",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "REQUIRED when mode='patch'. V4A format patch content."
+            }
+          ]
+        },
+        {
+          "name": "functions.process",
+          "canonical": "manage_background_tasks",
+          "category": "execution",
+          "description": "Manage background processes started with terminal(background=true). poll: status + new output. log: full output, paged. wait: block until exit or timeout. write vs submit: submit appends Enter; write sends raw bytes, no newline. close: EOF stdin. kill: terminate.",
+          "parameters": [
+            {
+              "name": "action",
+              "type": "string",
+              "required": true,
+              "enum": [
+                "list",
+                "poll",
+                "log",
+                "wait",
+                "kill",
+                "write",
+                "submit",
+                "close"
+              ],
+              "description": ""
+            },
+            {
+              "name": "session_id",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "From terminal background output; any unique prefix works. Required except for 'list'."
+            },
+            {
+              "name": "data",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Stdin text for write/submit."
+            },
+            {
+              "name": "timeout",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Max seconds for 'wait'."
+            },
+            {
+              "name": "offset",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Log line offset (default: last 200)."
+            },
+            {
+              "name": "limit",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Max log lines."
+            }
+          ]
+        },
+        {
+          "name": "functions.read_file",
+          "canonical": "read_file",
+          "category": "file_ops",
+          "description": "Read a text file with line numbers and pagination. Use this instead of cat/head/tail in terminal.",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Path to the file to read (absolute, relative, or ~/path)"
+            },
+            {
+              "name": "offset",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Line number to start reading from (1-indexed, default: 1)"
+            },
+            {
+              "name": "limit",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Maximum number of lines to read (default: 2000, max: 2000). Reads are additionally capped at a ~100K-character budget with a next_offset continuation."
+            }
+          ]
+        },
+        {
+          "name": "functions.search_files",
+          "canonical": "search_code",
+          "category": "search",
+          "description": "Search file contents or find files by name. Use this instead of grep/rg/find/ls in terminal.",
+          "parameters": [
+            {
+              "name": "pattern",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Regex pattern for content search, or glob pattern (e.g., '*.py') for file search"
+            },
+            {
+              "name": "target",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "content",
+                "files"
+              ],
+              "description": "'content' searches inside file contents, 'files' searches for files by name"
+            },
+            {
+              "name": "path",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Directory or file to search in (default: current working directory)"
+            },
+            {
+              "name": "file_glob",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Filter files by pattern in grep mode (e.g., '*.py' to only search Python files)"
+            },
+            {
+              "name": "limit",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Maximum number of results to return (default: 50)"
+            },
+            {
+              "name": "offset",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Skip first N results for pagination (default: 0)"
+            },
+            {
+              "name": "output_mode",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "content",
+                "files_only",
+                "count"
+              ],
+              "description": "Output format for grep mode: full matches with line numbers, file paths only, or match counts."
+            },
+            {
+              "name": "context",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Number of context lines before and after each match (grep mode only)"
+            }
+          ]
+        },
+        {
+          "name": "functions.session_search",
+          "canonical": "search_sessions",
+          "category": "search",
+          "description": "Search past Hermes sessions (FTS5 over the local session DB), or read/scroll inside one.",
+          "parameters": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Search query (discovery shape). Keywords, phrases, or boolean expressions to find in past sessions."
+            },
+            {
+              "name": "limit",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Discovery shape only. Max sessions to return (default 3, max 10)."
+            },
+            {
+              "name": "sort",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "newest",
+                "oldest"
+              ],
+              "description": "Discovery shape only. Temporal bias on top of FTS5 ranking."
+            },
+            {
+              "name": "detail",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "adaptive",
+                "full"
+              ],
+              "description": "Discovery shape only. 'adaptive' (default) fully hydrates the top-ranked result; 'full' returns complete anchored window for every result."
+            },
+            {
+              "name": "session_id",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Scroll shape. Session to read inside. Use the session_id returned from a prior discovery call."
+            },
+            {
+              "name": "around_message_id",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Scroll shape. Message id to center the window on."
+            },
+            {
+              "name": "window",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Scroll shape only. Messages to return on each side of the anchor."
+            },
+            {
+              "name": "role_filter",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional. Comma-separated roles to include."
+            },
+            {
+              "name": "profile",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional. Read sessions from another Hermes profile's database (read-only)."
+            }
+          ]
+        },
+        {
+          "name": "functions.skill_manage",
+          "canonical": "manage_skills",
+          "category": "orchestration",
+          "description": "Create, update, or delete skills — your procedural memory for recurring task types.",
+          "parameters": [
+            {
+              "name": "operations",
+              "type": "array",
+              "required": true,
+              "enum": null,
+              "description": "Ordered ops; each names its target skill."
+            }
+          ]
+        },
+        {
+          "name": "functions.skill_view",
+          "canonical": "view_skill",
+          "category": "orchestration",
+          "description": "Skills allow for loading information about specific tasks and workflows, as well as scripts and templates. Load a skill's full content or access its linked files.",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "The skill name (use skills_list to see available skills). For plugin-provided skills, use the qualified form 'plugin:skill'."
+            },
+            {
+              "name": "file_path",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "OPTIONAL: Path to a linked file within the skill. Omit to get the main SKILL.md content."
+            }
+          ]
+        },
+        {
+          "name": "functions.skills_list",
+          "canonical": "list_skills",
+          "category": "orchestration",
+          "description": "List available skills (name + description). Use skill_view(name) to load full content.",
+          "parameters": [
+            {
+              "name": "category",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional category filter to narrow results"
+            }
+          ]
+        },
+        {
+          "name": "functions.terminal",
+          "canonical": "run_shell_command",
+          "category": "execution",
+          "description": "Execute shell commands. The host OS, shell, and terminal backend are stated in your environment section — write commands for THAT platform.",
+          "parameters": [
+            {
+              "name": "command",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "The shell command to execute"
+            },
+            {
+              "name": "background",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "Run in the background, returning a session_id."
+            },
+            {
+              "name": "timeout",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Max seconds to wait (default: 180, foreground max: 600)."
+            },
+            {
+              "name": "workdir",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Working directory for this command (absolute path). Defaults to the session working directory."
+            },
+            {
+              "name": "pty",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "With background=true: run in a pseudo-terminal for interactive CLIs."
+            },
+            {
+              "name": "notify",
+              "type": "boolean | string[]",
+              "required": false,
+              "enum": null,
+              "description": "With background=true: notify=true fires exactly one notification when the process exits."
+            }
+          ]
+        },
+        {
+          "name": "functions.text_to_speech",
+          "canonical": "text_to_speech",
+          "category": "generation",
+          "description": "Convert text to speech audio. Returns a MEDIA: path that the platform delivers as native audio.",
+          "parameters": [
+            {
+              "name": "text",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "The text to convert to speech."
+            },
+            {
+              "name": "output_path",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional custom file path to save the audio. Defaults to ~/.hermes/audio_cache/<timestamp>.mp3"
+            },
+            {
+              "name": "speed",
+              "type": "number",
+              "required": false,
+              "enum": null,
+              "description": "Playback speed multiplier. 1.0 = normal, 0.5 = very slow, 2.0 = fast."
+            },
+            {
+              "name": "instructions",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional voice-design guidance."
+            },
+            {
+              "name": "provider",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Optional TTS provider override."
+            }
+          ]
+        },
+        {
+          "name": "functions.todo",
+          "canonical": "manage_todo",
+          "category": "orchestration",
+          "description": "Manage your task list for the current session. Use for complex tasks with 3+ steps or when the user provides multiple tasks.",
+          "parameters": [
+            {
+              "name": "todos",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Task items to write."
+            },
+            {
+              "name": "merge",
+              "type": "boolean",
+              "required": false,
+              "enum": null,
+              "description": "true: update existing items by id, add new ones. false (default): replace the entire list with a fresh plan."
+            }
+          ]
+        },
+        {
+          "name": "functions.vision_analyze",
+          "canonical": "analyze_image",
+          "category": "generation",
+          "description": "Load an image into the conversation so you can see it. Call it any time the user references an image — then answer from what you see.",
+          "parameters": [
+            {
+              "name": "image_url",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Image URL (http/https), local file path, or data: URL to load."
+            },
+            {
+              "name": "question",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Your question or request about the image."
+            },
+            {
+              "name": "region",
+              "type": "array",
+              "required": false,
+              "enum": null,
+              "description": "Optional [x1, y1, x2, y2] crop in ORIGINAL-image pixel coordinates."
+            }
+          ]
+        },
+        {
+          "name": "functions.web_extract",
+          "canonical": "fetch_url",
+          "category": "web_browser",
+          "description": "Extract content from web page URLs. Returns clean page content in markdown/text (no LLM summarization — fast).",
+          "parameters": [
+            {
+              "name": "urls",
+              "type": "array",
+              "required": true,
+              "enum": null,
+              "description": "List of URLs to extract content from (max 5 URLs per call)"
+            },
+            {
+              "name": "char_limit",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Optional per-page character budget sent back (default 15000)."
+            }
+          ]
+        },
+        {
+          "name": "functions.web_search",
+          "canonical": "web_search",
+          "category": "web_browser",
+          "description": "Search the web for information. Returns up to 5 results by default with titles, URLs, and descriptions.",
+          "parameters": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "The query to look up."
+            },
+            {
+              "name": "limit",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Maximum number of results to return. Defaults to 5"
+            }
+          ]
+        },
+        {
+          "name": "functions.write_file",
+          "canonical": "create_file",
+          "category": "file_ops",
+          "description": "Write content to a file, completely replacing existing content. Use this instead of echo/cat heredoc in terminal.",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Path to the file to write (will be created if it doesn't exist, overwritten if it does)"
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Complete content to write"
+            }
+          ]
+        },
+        {
+          "name": "functions.tool_search",
+          "canonical": "search_deferred_tools",
+          "category": "external_mcp",
+          "description": "Search 2 additional tools that are loaded on demand.",
+          "parameters": [
+            {
+              "name": "queries",
+              "type": "array",
+              "required": true,
+              "enum": null,
+              "description": "Search queries, each a few keywords describing one capability."
+            },
+            {
+              "name": "limit",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Maximum number of matches per query. Defaults to 5."
+            }
+          ]
+        },
+        {
+          "name": "functions.tool_describe",
+          "canonical": "describe_deferred_tools",
+          "category": "external_mcp",
+          "description": "Load the full JSON schemas for tools returned by `tool_search`.",
+          "parameters": [
+            {
+              "name": "names",
+              "type": "array",
+              "required": true,
+              "enum": null,
+              "description": "Exact tool names (as returned by tool_search). A single string is accepted and treated as one name."
+            }
+          ]
+        },
+        {
+          "name": "functions.tool_call",
+          "canonical": "call_deferred_tool",
+          "category": "external_mcp",
+          "description": "Invoke a deferred tool by name with the given arguments.",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Exact tool name to invoke"
+            },
+            {
+              "name": "arguments",
+              "type": "object",
+              "required": true,
+              "enum": null,
+              "description": "Arguments matching the tool schema"
+            }
+          ]
+        },
+        {
+          "name": "multi_tool_use.parallel",
+          "canonical": "parallel_tool_execution",
+          "category": "orchestration",
+          "description": "Use this function to run multiple developer tools simultaneously, but only if they can operate in parallel. Again, only tools defined in developer messages (any developer message in the conversation) are allowed to be called in this tool.",
+          "parameters": [
+            {
+              "name": "tool_uses",
+              "type": "array",
+              "required": true,
+              "enum": null,
+              "description": "The tools to be executed in parallel, as objects with recipient_name and parameters."
+            }
+          ]
+        },
+        {
+          "name": "discord",
+          "canonical": "discord_integration",
+          "category": "external_mcp",
+          "description": "Read and participate in a Discord server.\n\nAvailable actions:\n  search_members(guild_id, query)  — find members by name prefix\n  fetch_messages(channel_id)  — recent messages; optional before/after snowflakes\n  create_thread(channel_id, name)  — create a public thread; optional message_id anchor\n\nUse the channel_id from the current conversation context. Use search_members to look up user IDs by name prefix.",
+          "parameters": [
+            {
+              "name": "action",
+              "type": "string",
+              "required": true,
+              "enum": [
+                "search_members",
+                "fetch_messages",
+                "create_thread"
+              ],
+              "description": ""
+            },
+            {
+              "name": "guild_id",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Discord server (guild) ID."
+            },
+            {
+              "name": "channel_id",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Discord channel ID."
+            },
+            {
+              "name": "user_id",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Discord user ID."
+            },
+            {
+              "name": "role_id",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Discord role ID."
+            },
+            {
+              "name": "message_id",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Discord message ID."
+            },
+            {
+              "name": "query",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Member name prefix to search for (search_members)."
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "New thread name (create_thread)."
+            },
+            {
+              "name": "limit",
+              "type": "integer",
+              "required": false,
+              "enum": null,
+              "description": "Max results (default 50). Applies to fetch_messages, search_members."
+            },
+            {
+              "name": "before",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Snowflake ID for reverse pagination (fetch_messages)."
+            },
+            {
+              "name": "after",
+              "type": "string",
+              "required": false,
+              "enum": null,
+              "description": "Snowflake ID for forward pagination (fetch_messages)."
+            },
+            {
+              "name": "auto_archive_duration",
+              "type": "integer",
+              "required": false,
+              "enum": [
+                60,
+                1440,
+                4320,
+                10080
+              ],
+              "description": "Thread archive duration in minutes (create_thread, default 1440)."
+            }
+          ]
+        },
+        {
+          "name": "video_analyze",
+          "canonical": "analyze_video",
+          "category": "generation",
+          "description": "Analyze a video from a URL or local file path using a multimodal AI model. Sends the video to a video-capable model (e.g. Gemini) for understanding. Use this for video files — for images, use vision_analyze instead. Supports mp4, webm, mov, avi, mkv, mpeg formats. Note: large videos (>20 MB) may be slow; max ~50 MB.",
+          "parameters": [
+            {
+              "name": "video_url",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Video URL (http/https) or local file path to analyze."
+            },
+            {
+              "name": "question",
+              "type": "string",
+              "required": true,
+              "enum": null,
+              "description": "Your specific question about the video. The AI will describe what happens in the video and answer your question."
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "2026-08-31_antigravity_gemini-3.7-flash_cold",

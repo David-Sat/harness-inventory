@@ -1,9 +1,0 @@
-{
-  "schema_version": "0.1",
-  "harness_reported": "Hermes Agent",
-  "model_reported": "unknown",
-  "tool_count_reported": null,
-  "completeness": "partial",
-  "omissions_note": "Not all tools activated in this session.",
-  "tools": []
-}
