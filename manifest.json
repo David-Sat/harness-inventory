@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02T09:48:52.547Z",
+  "generated_at": "2026-09-02T11:43:26.058Z",
   "categories": [
     {
       "id": "file_ops",
@@ -1230,6 +1230,35 @@
           ]
         }
       ]
+    },
+    {
+      "id": "2026-09-02_hermes_unknown_cold",
+      "harness": "hermes",
+      "family": "nous",
+      "surface": "cli",
+      "model": "unknown",
+      "state": "cold",
+      "date": "2026-09-02",
+      "file_path": "data/hermes/2026-09-02_hermes_unknown_cold.json",
+      "harness_reported": "Hermes Agent",
+      "model_reported": "unknown",
+      "tool_count_reported": null,
+      "tool_count_actual": 0,
+      "completeness": "partial",
+      "omissions_note": "Not all tools activated in this session.",
+      "category_counts": {
+        "file_ops": 0,
+        "execution": 0,
+        "search": 0,
+        "web_browser": 0,
+        "orchestration": 0,
+        "scheduling_memory": 0,
+        "interaction": 0,
+        "external_mcp": 0,
+        "generation": 0,
+        "other": 0
+      },
+      "tools": []
     },
     {
       "id": "2026-08-31_antigravity_gemini-3.7-flash_cold",

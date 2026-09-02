@@ -82,17 +82,19 @@ function inferSurfaceAndFamily(harnessOrDir, fileName) {
   const s = (harnessOrDir + ' ' + fileName).toLowerCase();
   let surface = 'web';
   if (s.includes('desktop') || s.includes('cowork')) surface = 'desktop';
-  else if (s.includes('claude-code-code') || s.includes('cli')) surface = 'cli';
+  else if (s.includes('claude-code-code') || s.includes('cli') || s.includes('hermes')) surface = 'cli';
   else if (s.includes('antigravity')) surface = 'ide';
   else if (s.includes('mobile') || s.includes('ios') || s.includes('android')) surface = 'mobile';
   else if (s.includes('codex')) surface = 'desktop';
-  else if (s.includes('browser') || s.includes('web') || s.includes('gemini')) surface = 'web';
+  else if (s.includes('browser') || s.includes('web') || s.includes('gemini') || s.includes('pi')) surface = 'web';
 
   let family = 'other';
   if (s.includes('chatgpt') || s.includes('codex') || s.includes('openai')) family = 'openai';
   else if (s.includes('claude') || s.includes('anthropic')) family = 'anthropic';
   else if (s.includes('gemini') || s.includes('antigravity') || s.includes('google')) family = 'google';
   else if (s.includes('deepseek')) family = 'deepseek';
+  else if (s.includes('hermes') || s.includes('nous')) family = 'nous';
+  else if (s.includes('pi') || s.includes('inflection')) family = 'inflection';
 
   return { surface, family };
 }
