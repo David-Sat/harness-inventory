@@ -95,6 +95,7 @@ function inferSurfaceAndFamily(harnessOrDir, fileName) {
   else if (s.includes('deepseek')) family = 'deepseek';
   else if (s.includes('hermes') || s.includes('nous')) family = 'nous';
   else if (s.includes('pi') || s.includes('inflection')) family = 'inflection';
+  else if (s.includes('grok') || s.includes('xai')) family = 'xai';
 
   return { surface, family };
 }

@@ -1,0 +1,530 @@
+{
+    "schema_version": "0.1",
+    "harness_reported": "",
+    "model_reported": "Grok 4.5",
+    "tool_count_reported": 19,
+    "completeness": "complete",
+    "omissions_note": "",
+    "tools": [
+        {
+            "name": "open_page",
+            "description": "Use this tool to fetch text content from any website URL. Returns the complete page if no line range is specified up to truncation.",
+            "parameters": [
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The URL of the webpage to open."
+                },
+                {
+                    "name": "start_line",
+                    "type": [
+                        "integer",
+                        "null"
+                    ],
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional starting line number (1-indexed). If provided, returns content from this line to the end of the page."
+                }
+            ]
+        },
+        {
+            "name": "open_page_with_find",
+            "description": "Fetch text content from a website URL. If a regex pattern is provided, returns matching lines with line numbers and surrounding context. If no pattern is provided, returns the full page content.",
+            "parameters": [
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The URL of the webpage to open."
+                },
+                {
+                    "name": "pattern",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional regular expression pattern to search for in the page content. Use standard regex syntax. Search is case-insensitive. If not provided, returns the full page content."
+                },
+                {
+                    "name": "max_matches",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Maximum number of matches to return. Defaults to 50."
+                },
+                {
+                    "name": "context_lines",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of context lines to show before and after each match. Defaults to 10."
+                }
+            ]
+        },
+        {
+            "name": "view_image",
+            "description": "Look at an image at a given url. Returns the image and an image id.",
+            "parameters": [
+                {
+                    "name": "image_url",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The URL of the image to view."
+                }
+            ]
+        },
+        {
+            "name": "web_search",
+            "description": "This action allows you to search the web. You can use search operators like site:reddit.com when needed.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The search query to look up on the web."
+                },
+                {
+                    "name": "num_results",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The number of results to return. It is optional, default 10, max is 30."
+                }
+            ]
+        },
+        {
+            "name": "x_keyword_search",
+            "description": "Advanced search tool for X Posts.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The search query string for X advanced search. Supports all advanced operators, including:\nPost content: keywords (implicit AND), OR, \"exact phrase\", \"phrase with * wildcard\", +exact term, -exclude, url:domain.\nFrom/to/mentions: from:user, to:user, @user, list:id or list:slug.\nLocation: geocode:lat,long,radius (use rarely as most posts are not geo-tagged).\nTime/ID: since:YYYY-MM-DD, until:YYYY-MM-DD, since:YYYY-MM-DD_HH:MM:SS_TZ, until:YYYY-MM-DD_HH:MM:SS_TZ, since_time:unix, until_time:unix, since_id:id, max_id:id, within_time:Xd/Xh/Xm/Xs.\nPost type: filter:replies, filter:self_threads, conversation_id:id, filter:quote, quoted_tweet_id:ID, quoted_user_id:ID, in_reply_to_tweet_id:ID, in_reply_to_user_id:ID, retweets_of_tweet_id:ID, retweets_of_user_id:ID.\nEngagement: filter:has_engagement, min_retweets:N, min_faves:N, min_replies:N, -min_retweets:N, retweeted_by_user_id:ID, replied_to_by_user_id:ID.\nMedia/filters: filter:media, filter:twimg, filter:images, filter:videos, filter:spaces, filter:links, filter:mentions, filter:news.\nMost filters can be negated with -. Use parentheses for grouping. Spaces mean AND; OR must be uppercase.\n\nExample query:\n(puppy OR kitten) (sweet OR cute) filter:images min_faves:10"
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The number of posts to return. Default to 3, max is 10."
+                },
+                {
+                    "name": "mode",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Sort by Top or Latest. The default is Top. You must output the mode with a capital first letter."
+                }
+            ]
+        },
+        {
+            "name": "x_semantic_search",
+            "description": "Fetch X posts that are relevant to a semantic search query.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "A semantic search query to find relevant related posts"
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of posts to return. Default to 3, max is 10."
+                },
+                {
+                    "name": "from_date",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional: Filter to receive posts from this date onwards. Format: YYYY-MM-DD"
+                },
+                {
+                    "name": "to_date",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional: Filter to receive posts up to this date. Format: YYYY-MM-DD"
+                },
+                {
+                    "name": "exclude_usernames",
+                    "type": [
+                        "array",
+                        "null"
+                    ],
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional: Filter to exclude these usernames."
+                },
+                {
+                    "name": "usernames",
+                    "type": [
+                        "array",
+                        "null"
+                    ],
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional: Filter to only include these usernames."
+                },
+                {
+                    "name": "min_score_threshold",
+                    "type": "number",
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional: Minimum relevancy score threshold for posts."
+                }
+            ]
+        },
+        {
+            "name": "x_user_search",
+            "description": "Search for an X user given a search query.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The name or account you are searching for"
+                },
+                {
+                    "name": "count",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of users to return. default to 3."
+                }
+            ]
+        },
+        {
+            "name": "x_thread_fetch",
+            "description": "Fetch the content of an X post and the context around it, including parent posts and replies.",
+            "parameters": [
+                {
+                    "name": "post_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The ID of the post to fetch along with its context."
+                }
+            ]
+        },
+        {
+            "name": "view_x_video",
+            "description": "View the interleaved frames and subtitles of a video on X. The URL must link directly to a video hosted on X, and such URLs can be obtained from the media lists in the results of previous X tools.",
+            "parameters": [
+                {
+                    "name": "video_url",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The url of the video you wish to view."
+                }
+            ]
+        },
+        {
+            "name": "search_connected_tools",
+            "description": "Search the user's connected services for available tools. The user has these services connected: Voice (generate spoken audio from text), Automations (schedule a prompt for Grok to run later, once or on a repeating cadence). Only use this for the user's connected services — not for your built-in tools which you can call directly. Call this when the user needs to interact with any of these services. Describe the ACTION you need (e.g., 'search pages', 'send message', 'create issue', 'list files'). Returns ranked results with full argument schemas so you can call_connected_tool immediately. If the user needs a service that is not connected, call list_available_connectors. If it returns names, pass one of them to request_connector_auth; do not invent names. If the list is empty, use the name the user said or the name from an auth error.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Describe the action to perform using keywords that match tool names and descriptions. Good examples: 'search pages', 'create issue', 'send message', 'list files', 'read email', 'calendar events', 'query database'. Bad examples: 'what tools are available', 'my connected apps', 'list integrations'."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Maximum number of tools to return (default: 10, max: 20). Use a higher limit when exploring available capabilities."
+                }
+            ]
+        },
+        {
+            "name": "call_connected_tool",
+            "description": "Execute a connected tool by name with JSON arguments. Only for tools discovered via search_connected_tools — not for your built-in tools. Always use search_connected_tools first to find the right tool and get its argument schema. Pass the tool name exactly as returned by search_connected_tools.",
+            "parameters": [
+                {
+                    "name": "tool_name",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The exact tool name as returned by search_connected_tools results."
+                },
+                {
+                    "name": "arguments",
+                    "type": "object",
+                    "required": true,
+                    "enum": null,
+                    "description": "JSON object containing the arguments to pass to the tool. Check the input_schema from search results."
+                }
+            ]
+        },
+        {
+            "name": "list_available_connectors",
+            "description": "List services the user can connect but has not connected yet. Call this when search_connected_tools finds nothing for a service the user asked about, before request_connector_auth. Returns display names to pass to request_connector_auth. Do not invent names that are not in the result.",
+            "parameters": []
+        },
+        {
+            "name": "read_file",
+            "description": "Read the contents of file_path. Supports images.",
+            "parameters": [
+                {
+                    "name": "file_path",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The file path to read"
+                },
+                {
+                    "name": "offset",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The line number to start reading from"
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The number of lines to read"
+                }
+            ]
+        },
+        {
+            "name": "edit_file",
+            "description": "Replaces old_string with new_string in file_path. Read the file first.",
+            "parameters": [
+                {
+                    "name": "file_path",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The path to the file to modify"
+                },
+                {
+                    "name": "old_string",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The text to replace"
+                },
+                {
+                    "name": "new_string",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The text to replace it with"
+                },
+                {
+                    "name": "replace_all",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "If true, replace every occurrence of old_string in the file."
+                },
+                {
+                    "name": "show_diff",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "If true, returns the full diff of changes. If false (default), returns a simple success message to save tokens."
+                }
+            ]
+        },
+        {
+            "name": "write_file",
+            "description": "Writes content to file_path, overwriting if it exists. Read existing files first.",
+            "parameters": [
+                {
+                    "name": "file_path",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The path to the file to write"
+                },
+                {
+                    "name": "content",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The content to write to the file"
+                }
+            ]
+        },
+        {
+            "name": "bash",
+            "description": "Executes a given bash command in a fresh shell at the session working directory.",
+            "parameters": [
+                {
+                    "name": "command",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The command to execute"
+                },
+                {
+                    "name": "description",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "One sentence explanation as to why this command needs to be run and how it contributes to the goal."
+                },
+                {
+                    "name": "timeout",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Timeout in seconds"
+                },
+                {
+                    "name": "background",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "Run in background. Returns PID and log file path immediately without waiting for completion."
+                },
+                {
+                    "name": "maxOutputLength",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Maximum amount of characters to return in the output."
+                }
+            ]
+        },
+        {
+            "name": "browser_tab",
+            "description": "Loads a URL or interacts with an existing tab. Optionally runs JS and captures network, console logs, and screenshots.",
+            "parameters": [
+                {
+                    "name": "jsCode",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "JavaScript to execute. Runs as an async function body — top-level `await` and `return` work, last expression is auto-returned. `const`/`let`/`var` are call-scoped; assign to `window.x` to share state across calls."
+                },
+                {
+                    "name": "tabId",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Existing tab ID. If omitted, creates a new one"
+                },
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "URL to navigate to if needed"
+                },
+                {
+                    "name": "refresh",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "Refresh the tab before executing the code"
+                },
+                {
+                    "name": "waitTime",
+                    "type": "number",
+                    "required": false,
+                    "enum": null,
+                    "description": "Wait time after load before executing the code in seconds"
+                },
+                {
+                    "name": "timeout",
+                    "type": "number",
+                    "required": false,
+                    "enum": null,
+                    "description": "Timeout for JS execution in seconds"
+                },
+                {
+                    "name": "includeNetwork",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "Include network summaries"
+                },
+                {
+                    "name": "includeLogs",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "Include console logs"
+                },
+                {
+                    "name": "screenshot",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "mobile",
+                        "desktop",
+                        "both"
+                    ],
+                    "description": "Include a screenshot of the page with device emulation: 'mobile', 'desktop', or 'both'"
+                }
+            ]
+        },
+        {
+            "name": "browser_network_details",
+            "description": "Returns headers and body for a network request captured by browser_tab (requires includeNetwork=true). Writes files and returns paths.",
+            "parameters": [
+                {
+                    "name": "tabId",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Existing tab ID"
+                },
+                {
+                    "name": "requestId",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Specific request ID for details (defaults to latest if omitted)"
+                }
+            ]
+        },
+        {
+            "name": "request_connector_auth",
+            "description": "Show the user an in-chat card to connect or reauthenticate a connector. Call this only when the current user request cannot be completed without that connector, and either: (1) the user has never connected it, or (2) a connected-tool or search_connected_tools result says auth expired or needs re-authentication.\nDo not call speculatively, \"just in case\", or for a connector that already worked this turn. Do not call more than once per connector per turn. If several connectors could work, pick the single one this ask needs.\nIf search finds nothing, call list_available_connectors and pass one of its names. If that list is empty, use the user's or auth-error name.\nAfter {\"status\":\"connected\"}, call search_connected_tools for the original task and then call_connected_tool. If search finds nothing, tell the user the connector is not ready yet — do not invent a workaround unless they ask.\nOn skipped / timeout / unavailable, continue without the connector. Do not work around it unless they ask.\nSuccess is {\"status\":\"connected\"|\"skipped\",\"connector\":\"<id>\"}. On denial or failure: {\"error\":\"permission_denied\"|\"unavailable\"|\"user_cancelled\"|\"unknown_connector\"}. The server waits up to timeout_secs then synthesizes {\"error\":\"client_tool_timeout\"}.\n",
+            "parameters": [
+                {
+                    "name": "connector",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Display name from list_available_connectors, the user, or an auth-error (e.g. \"Linear\"). Not a UUID.\n"
+                },
+                {
+                    "name": "reason",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Short reason shown on the connect card, in the user's terms, explaining why this connector is needed.\n"
+                }
+            ]
+        }
+    ]
+}

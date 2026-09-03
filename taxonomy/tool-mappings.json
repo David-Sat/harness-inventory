@@ -108,6 +108,25 @@
     "functions.tool_call": { "category": "external_mcp", "canonical": "call_deferred_tool" },
     "multi_tool_use.parallel": { "category": "orchestration", "canonical": "parallel_tool_execution" },
     "discord": { "category": "external_mcp", "canonical": "discord_integration" },
-    "video_analyze": { "category": "generation", "canonical": "analyze_video" }
+    "video_analyze": { "category": "generation", "canonical": "analyze_video" },
+    "open_page": { "category": "web_browser", "canonical": "fetch_url" },
+    "open_page_with_find": { "category": "web_browser", "canonical": "search_page" },
+    "view_image": { "category": "generation", "canonical": "analyze_image" },
+    "web_search": { "category": "web_browser", "canonical": "web_search" },
+    "x_keyword_search": { "category": "web_browser", "canonical": "search_x_keyword" },
+    "x_semantic_search": { "category": "web_browser", "canonical": "search_x_semantic" },
+    "x_user_search": { "category": "web_browser", "canonical": "search_x_user" },
+    "x_thread_fetch": { "category": "web_browser", "canonical": "fetch_x_thread" },
+    "view_x_video": { "category": "generation", "canonical": "analyze_video" },
+    "search_connected_tools": { "category": "external_mcp", "canonical": "search_plugins" },
+    "call_connected_tool": { "category": "external_mcp", "canonical": "invoke_mcp" },
+    "list_available_connectors": { "category": "external_mcp", "canonical": "list_plugins" },
+    "read_file": { "category": "file_ops", "canonical": "read_file" },
+    "edit_file": { "category": "file_ops", "canonical": "edit_file" },
+    "write_file": { "category": "file_ops", "canonical": "create_file" },
+    "bash": { "category": "execution", "canonical": "run_shell_command" },
+    "browser_tab": { "category": "web_browser", "canonical": "browser_action" },
+    "browser_network_details": { "category": "web_browser", "canonical": "browser_network_details" },
+    "request_connector_auth": { "category": "interaction", "canonical": "request_auth" }
   }
 }

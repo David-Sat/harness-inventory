@@ -1,6 +1,6 @@
 # Harness Inventory
 
-Structured, self-reported inventory of tools, interfaces, and capabilities exposed by AI agent harnesses (Claude Code, Antigravity, ChatGPT, Gemini, Codex, DeepSeek).
+Structured, self-reported inventory of tools, interfaces, and capabilities exposed by AI agent harnesses (Claude Code, Antigravity, ChatGPT, Gemini, Codex, Grok, Hermes, DeepSeek).
 
 ## Purpose
 
