@@ -1,0 +1,489 @@
+{
+  "schema_version": "0.1",
+  "harness_reported": "Google Antigravity",
+  "model_reported": "Gemini 4 Argon (Medium)",
+  "tool_count_reported": 17,
+  "completeness": "complete",
+  "omissions_note": null,
+  "tools": [
+    {
+      "name": "read_file",
+      "description": "Read the contents of a text, image, pdf, video, or audio file. Each read returns at most 800 lines or 46080 bytes.",
+      "parameters": [
+        {
+          "name": "ByteOffset",
+          "type": "INTEGER",
+          "required": false,
+          "enum": null,
+          "description": "Byte offset into the line range. Use to continue reading when content is truncated by the byte limit."
+        },
+        {
+          "name": "EndLine",
+          "type": "INTEGER",
+          "required": false,
+          "enum": null,
+          "description": "End line to read (inclusive). Omit to read until the end of the file, within the per-read limits."
+        },
+        {
+          "name": "Path",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "The absolute path of the file to read."
+        },
+        {
+          "name": "StartLine",
+          "type": "INTEGER",
+          "required": false,
+          "enum": null,
+          "description": "Start line to read (inclusive). Omit to read from the beginning of the file."
+        }
+      ]
+    },
+    {
+      "name": "write_file",
+      "description": "Create a new file with the given contents, or append to an existing file when Append is true. Parent directories are created automatically. Fails if the file already exists unless Overwrite or Append is true. When creating an artifact, always provide ArtifactMetadata. When creating non-artifact files, do not provide it.",
+      "parameters": [
+        {
+          "name": "Append",
+          "type": "BOOLEAN",
+          "required": false,
+          "enum": null,
+          "description": "Whether to append Content to the end of the file (creating the file if it does not exist). Cannot be combined with Overwrite=true."
+        },
+        {
+          "name": "ArtifactMetadata",
+          "type": "OBJECT",
+          "required": false,
+          "enum": null,
+          "description": "Metadata that defines artifact properties. ONLY provide when creating an artifact file in the artifact directory. Omit this field when creating non-artifact files."
+        },
+        {
+          "name": "Content",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "The full contents to write to the file."
+        },
+        {
+          "name": "Overwrite",
+          "type": "BOOLEAN",
+          "required": false,
+          "enum": null,
+          "description": "Whether to overwrite an existing file, replacing its entire contents."
+        },
+        {
+          "name": "Path",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "The absolute path of the file to create."
+        }
+      ]
+    },
+    {
+      "name": "edit_file",
+      "description": "Use this tool to edit an existing file. Follow these rules:\n1. Use this tool for a single contiguous block of edits. To edit multiple non-adjacent regions, make separate calls.\n2. Target must exactly match existing file text, including whitespace. Replacement must be a complete drop-in replacement for the Target.\n3. If Target appears multiple times in the file, every occurrence is replaced.",
+      "parameters": [
+        {
+          "name": "ArtifactMetadata",
+          "type": "OBJECT",
+          "required": false,
+          "enum": null,
+          "description": "Metadata updates if updating an artifact file in the artifact directory. Omit this field when editing non-artifact files. Should be updated if the content is changing meaningfully."
+        },
+        {
+          "name": "Path",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "The absolute path of the file to modify."
+        },
+        {
+          "name": "Replacement",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "The content to replace the target with. Leave empty to delete the target."
+        },
+        {
+          "name": "Target",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "The exact string to be replaced. This must be the exact character-sequence to be replaced, including whitespace. Be very careful to include any leading whitespace otherwise this will not work at all. If the string appears multiple times in the file, every occurrence is replaced."
+        }
+      ]
+    },
+    {
+      "name": "run_command",
+      "description": "Execute a command in the workspace. Operating System: mac. Shell: zsh. Each command runs in a new session (working directory changes and environment variables do not persist across calls). Commands that do not finish within the specified wait time continue running in the background as tasks; the system will notify you when they finish, so do not poll their status or set timers to check on them.",
+      "parameters": [
+        {
+          "name": "CommandLine",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "The exact command line string to execute."
+        },
+        {
+          "name": "IsDaemon",
+          "type": "BOOLEAN",
+          "required": false,
+          "enum": null,
+          "description": "Set to true for long-running support processes that are meant to keep running in the background indefinitely and are not expected to finish on their own (e.g., dev servers, file watchers, tunnels). Leave false (the default) for normal commands that are expected to terminate."
+        },
+        {
+          "name": "WaitMsBeforeAsync",
+          "type": "INTEGER",
+          "required": true,
+          "enum": null,
+          "description": "Milliseconds to wait for the command to finish before backgrounding it (500 to 10000). Set to a larger value (e.g. 5000-10000) for commands expected to finish synchronously; set to 500 for commands intended to run in the background."
+        },
+        {
+          "name": "toolSummary",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "Brief 2-5 word noun phrase describing the command task. Capitalize like a sentence. Some examples: 'Git status check', 'Unit test execution', 'Package build', 'Dev server startup'."
+        }
+      ]
+    },
+    {
+      "name": "manage_task",
+      "description": "Manage the background tasks of this conversation: 'list' the running tasks, check a task's 'status' and recent log output, 'send_input' to a running task, or 'kill' one. Refer to tasks by the TaskId that 'list' reports; keep task references human-readable when talking to the user.",
+      "parameters": [
+        {
+          "name": "Action",
+          "type": "STRING",
+          "required": true,
+          "enum": ["list", "kill", "status", "send_input"],
+          "description": "'list' reports the running tasks; the other actions operate on the task named in TaskId."
+        },
+        {
+          "name": "Input",
+          "type": "STRING",
+          "required": false,
+          "enum": null,
+          "description": "Input to deliver to the task. Required for 'send_input'."
+        },
+        {
+          "name": "TaskId",
+          "type": "STRING",
+          "required": false,
+          "enum": null,
+          "description": "Task to manage, as reported by 'list'. Required for 'kill', 'status' and 'send_input'."
+        }
+      ]
+    },
+    {
+      "name": "send_message",
+      "description": "Send a message to another agent, such as a subagent or a peer. Not a channel to the user.",
+      "parameters": [
+        {
+          "name": "Message",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "Content of the message."
+        },
+        {
+          "name": "Recipient",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "Conversation ID of the agent to message."
+        }
+      ]
+    },
+    {
+      "name": "schedule",
+      "description": "Schedule a one-shot timer (DurationSeconds) or a recurring cron job (CronExpression) that notifies you via Prompt. This tool call runs as a background task and returns immediately; end your turn (call no more tools) to wait for notifications. A timer with a TimerCondition is cancelled early by a matching message, which is itself your wakeup. Set IsDaemon only for a cron that should keep firing after the current task is done. Set ExactTiming only when a cron must fire at the exact wall-clock time without jitter. Use the manage_task tool to cancel active schedules, and never use a shell sleep command as a timer.",
+      "parameters": [
+        {
+          "name": "CronExpression",
+          "type": "STRING",
+          "required": false,
+          "enum": null,
+          "description": "Standard 5-field cron expression for a recurring schedule (e.g. '*/5 * * * *' for every 5 minutes). Mutually exclusive with DurationSeconds."
+        },
+        {
+          "name": "DurationSeconds",
+          "type": "INTEGER",
+          "required": false,
+          "enum": null,
+          "description": "Seconds to wait for a one-shot timer. Mutually exclusive with CronExpression."
+        },
+        {
+          "name": "ExactTiming",
+          "type": "BOOLEAN",
+          "required": false,
+          "enum": null,
+          "description": "Cron only. Set true only when the user explicitly requires the schedule to fire at the exact wall-clock time without jitter. Leave false (the default) for polling, monitoring, or periodic tasks so triggers are jittered to avoid load spikes."
+        },
+        {
+          "name": "IsDaemon",
+          "type": "BOOLEAN",
+          "required": false,
+          "enum": null,
+          "description": "Cron only. Set true only for an independent standing job that should keep firing after the current task is done."
+        },
+        {
+          "name": "MaxIterations",
+          "type": "INTEGER",
+          "required": false,
+          "enum": null,
+          "description": "Cron only. Maximum number of triggers before the schedule stops; defaults to unlimited."
+        },
+        {
+          "name": "Prompt",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "Message sent to you as a high-priority notification when the timer fires or the cron triggers."
+        },
+        {
+          "name": "TimerCondition",
+          "type": "STRING",
+          "required": false,
+          "enum": null,
+          "description": "Timer only. Cancels the timer early when a matching message arrives: 'never' (default), 'any' (any message), or a sender ID (a message from that subagent or background task)."
+        }
+      ]
+    },
+    {
+      "name": "invoke_subagent",
+      "description": "Launch a subagent. It runs in the background with its own prompt and sends you a message when it completes or needs guidance; there is no need to poll.\n\nGuidelines:\n* The subagent is identified by the conversationId returned; message it with the send_message tool.\n* Multiple subagents may share a type name; each still gets a unique conversationId.\n* If a task continues an existing subagent's work, message that subagent instead of launching a new one.\n* Default the Model argument to 'inherit' unless the user explicitly requests a different model.",
+      "parameters": [
+        {
+          "name": "Model",
+          "type": "STRING",
+          "required": false,
+          "enum": ["inherit", "flash_lite", "flash", "pro"],
+          "description": "Model for the subagent. 'inherit' (default) uses your model. 'flash_lite' and 'flash' are lighter, faster models for simple tasks. 'pro' is a larger model for complex work."
+        },
+        {
+          "name": "Prompt",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "A clear, actionable task description for the subagent. Be specific about what the subagent should do and what information it should return."
+        },
+        {
+          "name": "Role",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "A 2-5 word description of the subagent's role. Should read similar to a job title, e.g. 'Codebase Researcher', 'Database Debugger', etc. Should also be detailed enough to distinguish between different subagents who might share similar purposes."
+        },
+        {
+          "name": "TypeName",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "Type name of the subagent to invoke."
+        },
+        {
+          "name": "Workspace",
+          "type": "STRING",
+          "required": false,
+          "enum": null,
+          "description": "Workspace mode for the subagent. 'inherit' (default) uses the same workspace as the parent. 'branch' creates a new isolated workspace branched or cloned from the parent. 'share' creates a new workspace sharing the parent's underlying repository directory (similar to a git worktree or Mercurial 'hg share'), allowing independent branching without duplicating storage. If omitted, defaults to 'inherit'."
+        }
+      ]
+    },
+    {
+      "name": "define_subagent",
+      "description": "Define a new subagent type that can then be invoked repeatedly. Subagents always have tools to research the codebase and to communicate with other agents.",
+      "parameters": [
+        {
+          "name": "Description",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "What this subagent does and when it should be used."
+        },
+        {
+          "name": "EnableMCPTools",
+          "type": "BOOLEAN",
+          "required": false,
+          "enum": null,
+          "description": "Grant access to MCP tools."
+        },
+        {
+          "name": "EnableSubagentTools",
+          "type": "BOOLEAN",
+          "required": false,
+          "enum": null,
+          "description": "Grant tools to define and invoke its own subagents."
+        },
+        {
+          "name": "EnableWriteTools",
+          "type": "BOOLEAN",
+          "required": false,
+          "enum": null,
+          "description": "Grant tools to create and edit files, and run commands."
+        },
+        {
+          "name": "Name",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "Unique name used to invoke the subagent."
+        },
+        {
+          "name": "SystemPrompt",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "System prompt for the subagent."
+        }
+      ]
+    },
+    {
+      "name": "manage_subagents",
+      "description": "Manage the direct subagents of this conversation. 'list' reports each one's conversationId (the id used to kill or message it) and live state. Killing a subagent also kills its descendants and deletes their branched workspaces; logs and artifacts are preserved.",
+      "parameters": [
+        {
+          "name": "Action",
+          "type": "STRING",
+          "required": true,
+          "enum": ["list", "kill", "kill_all"],
+          "description": "'kill' terminates the subagents named in ConversationIds; 'kill_all' terminates all."
+        },
+        {
+          "name": "ConversationIds",
+          "type": "ARRAY",
+          "required": false,
+          "enum": null,
+          "description": "Subagents to kill. Required for 'kill'."
+        }
+      ]
+    },
+    {
+      "name": "search_web",
+      "description": "Performs a web search for a given query. Returns a summary of relevant information along with URL citations.",
+      "parameters": [
+        {
+          "name": "domain",
+          "type": "STRING",
+          "required": false,
+          "enum": null,
+          "description": "Optional domain to recommend the search prioritize"
+        },
+        {
+          "name": "query",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "search_marketplace",
+      "description": "Searches the Agent Marketplace catalog for plugins and skills by keyword, returning matches in relevance order with their id, name, kind, description, and install status. Use when the user asks to browse, find, or install plugins or skills, or proactively whenever the task involves a product, service, or workflow that no installed tool, MCP server, or skill covers — check here before improvising a workaround or saying you cannot do it.\n\nGuidelines:\n- Suggest 1 strong match (at most 2 if substantially different, or up to 3 when browsing) with a one-sentence reason and <plugin-card catalog-id=\"<id>\"></plugin-card> on its own line. Tell the user they can add it from the card; never install it yourself.\n- If the entry is needed for the core task or would replace a fragile workaround, suggest it upfront and stop so the user can add it from the card and let you continue with it or ask you to use a workaround instead. If you can already complete the task cleanly with existing tools, do that first and put the suggestion at the end of your reply.\n- Never emit a <plugin-card> for installed entries — tell the user it is already installed (and to enable it if disabled). The one exception: when a tool error asks you to show a <plugin-card> so the user can sign in to a plugin.",
+      "parameters": [
+        {
+          "name": "kind",
+          "type": "STRING",
+          "required": false,
+          "enum": ["plugin", "skill", "all"],
+          "description": "Which kind of entry to return. Defaults to plugin."
+        },
+        {
+          "name": "limit",
+          "type": "INTEGER",
+          "required": false,
+          "enum": null,
+          "description": "Maximum number of results to return. Defaults to 5, at most 15."
+        },
+        {
+          "name": "queries",
+          "type": "ARRAY",
+          "required": true,
+          "enum": null,
+          "description": "One to three short keyword variants in a single call: the product name, its common abbreviation, and the capability (e.g. [\"google calendar\", \"gcal\", \"calendar\"]); queries beyond the third are ignored. Each is matched case-insensitively as a substring of entry names and descriptions, so prefer single words or short phrases over sentences."
+        }
+      ]
+    },
+    {
+      "name": "list_plugin_accounts",
+      "description": "List the accounts the user has connected for installed plugins: each plugin's auth providers, their sign-in status, the identity signed in as, and the CLIs they power. Use this to check whether the user is signed in before running a plugin CLI, and to tell the user exactly which provider to reconnect in the Plugins Manager when authentication fails. When a provider has multiple accounts connected, select one for a sandboxed CLI command by prefixing the command with AGY_ACCOUNT=<account> (an account name from this tool's output); without the prefix, the default account is used. Accounts may carry a user-chosen label such as \"personal\" or \"work\"; when the user refers to an account by its label, pass that account's name (not the label) as AGY_ACCOUNT.",
+      "parameters": []
+    },
+    {
+      "name": "ask_question",
+      "description": "Ask the user one or more multiple-choice questions, e.g. to clarify requirements, and wait for the answers. Don't use it for trivial yes/no questions; ask those in plain text.",
+      "parameters": [
+        {
+          "name": "questions",
+          "type": "ARRAY",
+          "required": true,
+          "enum": null,
+          "description": "The question, without 'select all that apply' or similar; the UI adds that."
+        }
+      ]
+    },
+    {
+      "name": "call_mcp_tool",
+      "description": "Call a lazy-loaded MCP tool. Read the tool's schema file to understand the tool's arguments and usage.",
+      "parameters": [
+        {
+          "name": "Arguments",
+          "type": "OBJECT",
+          "required": true,
+          "enum": null,
+          "description": "Arguments to pass to the tool."
+        },
+        {
+          "name": "ServerName",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "Name of the MCP server."
+        },
+        {
+          "name": "ToolName",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "Name of the tool to call."
+        }
+      ]
+    },
+    {
+      "name": "list_resources",
+      "description": "Lists the available resources from an MCP server.",
+      "parameters": [
+        {
+          "name": "ServerName",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "Name of the server to list available resources from."
+        }
+      ]
+    },
+    {
+      "name": "read_resource",
+      "description": "Retrieves a specified resource's contents.",
+      "parameters": [
+        {
+          "name": "ServerName",
+          "type": "STRING",
+          "required": false,
+          "enum": null,
+          "description": "Name of the server to read the resource from."
+        },
+        {
+          "name": "Uri",
+          "type": "STRING",
+          "required": false,
+          "enum": null,
+          "description": "Unique identifier for the resource."
+        }
+      ]
+    }
+  ]
+}

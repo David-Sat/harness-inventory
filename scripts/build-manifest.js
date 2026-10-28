@@ -61,7 +61,7 @@ function inferCategoryFromToolName(name) {
     return { category: 'web_browser', canonical: name.replace(/^mcp__/, '') };
   }
   if (name.startsWith('mcp__scheduled-tasks__')) {
-    return { category: 'scheduling_memory', canonical: name.replace(/^mcp__scheduled-tasks__/, '') };
+    return { category: 'scheduling', canonical: name.replace(/^mcp__scheduled-tasks__/, '') };
   }
   if (name.startsWith('mcp__workspace__bash') || name.startsWith('mcp__terminal__')) {
     return { category: 'execution', canonical: name.replace(/^mcp__/, '') };
@@ -73,12 +73,12 @@ function inferCategoryFromToolName(name) {
     return { category: 'orchestration', canonical: name.replace(/^mcp__/, '') };
   }
   if (name.startsWith('mcp__')) {
-    return { category: 'external_mcp', canonical: name.replace(/^mcp__/, '') };
+    return { category: 'integrations', canonical: name.replace(/^mcp__/, '') };
   }
   return { category: 'other', canonical: name };
 }
 
-function inferSurfaceAndFamily(harnessOrDir, fileName) {
+function inferMetadata(harnessOrDir, fileName) {
   const s = (harnessOrDir + ' ' + fileName).toLowerCase();
   let surface = 'web';
   if (s.includes('desktop') || s.includes('cowork')) surface = 'desktop';
@@ -86,7 +86,7 @@ function inferSurfaceAndFamily(harnessOrDir, fileName) {
   else if (s.includes('antigravity')) surface = 'ide';
   else if (s.includes('mobile') || s.includes('ios') || s.includes('android')) surface = 'mobile';
   else if (s.includes('codex')) surface = 'desktop';
-  else if (s.includes('browser') || s.includes('web') || s.includes('gemini') || s.includes('pi')) surface = 'web';
+  else if (s.includes('browser') || s.includes('web') || s.includes('gemini') || s.includes('pi') || s.includes('grok')) surface = 'web';
 
   let family = 'other';
   if (s.includes('chatgpt') || s.includes('codex') || s.includes('openai')) family = 'openai';
@@ -97,7 +97,18 @@ function inferSurfaceAndFamily(harnessOrDir, fileName) {
   else if (s.includes('pi') || s.includes('inflection')) family = 'inflection';
   else if (s.includes('grok') || s.includes('xai')) family = 'xai';
 
-  return { surface, family };
+  let harness_type = 'conversational';
+  if (s.includes('antigravity') || s.includes('claude-code-code') || s.includes('claude-code-cli') || s.includes('codex')) {
+    harness_type = 'coding';
+  } else if (s.includes('cowork') || s.includes('chatgpt-desktop')) {
+    harness_type = 'knowledge_work';
+  } else if (s.includes('hermes')) {
+    harness_type = 'autonomous';
+  } else if (s.includes('browser') || s.includes('web') || s.includes('gemini') || s.includes('chatgpt') || s.includes('grok') || s.includes('pi')) {
+    harness_type = 'conversational';
+  }
+
+  return { surface, family, harness_type };
 }
 
 function build() {
@@ -135,7 +146,7 @@ function build() {
       model = '5.6-terra';
     }
 
-    const { surface, family } = inferSurfaceAndFamily(parentDir + ' ' + harness, fileName);
+    const { surface, family, harness_type } = inferMetadata(parentDir + ' ' + harness, fileName);
 
     const categoryCounts = {};
     for (const cat of categories) {
@@ -161,6 +172,7 @@ function build() {
       harness,
       family,
       surface,
+      harness_type,
       model,
       state,
       date,

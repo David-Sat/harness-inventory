@@ -1,167 +1,748 @@
 {
   "mappings": {
-    "view_file": { "category": "file_ops", "canonical": "read_file" },
-    "write_to_file": { "category": "file_ops", "canonical": "create_file" },
-    "replace_file_content": { "category": "file_ops", "canonical": "edit_file" },
-    "list_dir": { "category": "file_ops", "canonical": "list_directory" },
-    "find_by_name": { "category": "file_ops", "canonical": "find_files" },
-    "grep_search": { "category": "search", "canonical": "search_code" },
-    "run_command": { "category": "execution", "canonical": "run_shell_command" },
-    "manage_task": { "category": "scheduling_memory", "canonical": "manage_background_tasks" },
-    "invoke_subagent": { "category": "orchestration", "canonical": "spawn_subagent" },
-    "define_subagent": { "category": "orchestration", "canonical": "define_subagent" },
-    "manage_subagents": { "category": "orchestration", "canonical": "manage_subagents" },
-    "send_message": { "category": "orchestration", "canonical": "agent_message" },
-    "schedule": { "category": "scheduling_memory", "canonical": "schedule_task" },
-    "search_web": { "category": "web_browser", "canonical": "web_search" },
-    "read_url_content": { "category": "web_browser", "canonical": "fetch_url" },
-    "generate_image": { "category": "generation", "canonical": "generate_image" },
-    "ask_question": { "category": "interaction", "canonical": "ask_user_question" },
-    "call_mcp_tool": { "category": "external_mcp", "canonical": "invoke_mcp" },
-    "list_resources": { "category": "external_mcp", "canonical": "list_mcp_resources" },
-    "read_resource": { "category": "external_mcp", "canonical": "read_mcp_resource" },
-    "View": { "category": "file_ops", "canonical": "read_file" },
-    "Edit": { "category": "file_ops", "canonical": "edit_file" },
-    "Write": { "category": "file_ops", "canonical": "create_file" },
-    "Read": { "category": "file_ops", "canonical": "read_file" },
-    "Glob": { "category": "file_ops", "canonical": "find_files" },
-    "Grep": { "category": "search", "canonical": "search_code" },
-    "Bash": { "category": "execution", "canonical": "run_shell_command" },
-    "Agent": { "category": "orchestration", "canonical": "spawn_subagent" },
-    "SendMessage": { "category": "orchestration", "canonical": "agent_message" },
-    "NotebookEdit": { "category": "file_ops", "canonical": "edit_notebook" },
-    "AskUserQuestion": { "category": "interaction", "canonical": "ask_user_question" },
-    "EnterPlanMode": { "category": "orchestration", "canonical": "enter_plan_mode" },
-    "ExitPlanMode": { "category": "orchestration", "canonical": "exit_plan_mode" },
-    "EnterWorktree": { "category": "execution", "canonical": "enter_git_worktree" },
-    "ExitWorktree": { "category": "execution", "canonical": "exit_git_worktree" },
-    "CronCreate": { "category": "scheduling_memory", "canonical": "create_cron_task" },
-    "CronDelete": { "category": "scheduling_memory", "canonical": "delete_cron_task" },
-    "CronList": { "category": "scheduling_memory", "canonical": "list_cron_tasks" },
-    "ScheduleWakeup": { "category": "scheduling_memory", "canonical": "schedule_wakeup" },
-    "ReportFindings": { "category": "interaction", "canonical": "report_findings" },
-    "Skill": { "category": "orchestration", "canonical": "invoke_skill" },
-    "TaskOutput": { "category": "orchestration", "canonical": "task_output" },
-    "TaskStop": { "category": "orchestration", "canonical": "task_stop" },
-    "WebFetch": { "category": "web_browser", "canonical": "fetch_url" },
-    "Workflow": { "category": "orchestration", "canonical": "workflow_execution" },
-    "web.run": { "category": "web_browser", "canonical": "web_search" },
-    "python.exec": { "category": "execution", "canonical": "run_python_internal" },
-    "python_user_visible.exec": { "category": "execution", "canonical": "run_python_visible" },
-    "container.exec": { "category": "execution", "canonical": "run_container_shell" },
-    "container.feed_chars": { "category": "execution", "canonical": "feed_stdin" },
-    "container.open_image": { "category": "generation", "canonical": "view_container_image" },
-    "container.download": { "category": "file_ops", "canonical": "download_file" },
-    "api_tool.list_resources": { "category": "external_mcp", "canonical": "list_resources" },
-    "api_tool.read_resource": { "category": "external_mcp", "canonical": "read_resource" },
-    "api_tool.find_in_resource": { "category": "search", "canonical": "search_resource" },
-    "api_tool.suggest_installs": { "category": "external_mcp", "canonical": "suggest_plugins" },
-    "api_tool.search_plugins": { "category": "external_mcp", "canonical": "search_plugins" },
-    "image_gen.text2im": { "category": "generation", "canonical": "generate_image" },
-    "user_settings.get_user_settings": { "category": "interaction", "canonical": "get_settings" },
-    "user_settings.set_setting": { "category": "interaction", "canonical": "set_setting" },
-    "safety_settings.get_family_info": { "category": "interaction", "canonical": "get_family_safety" },
-    "safety_settings.get_parental_controls": { "category": "interaction", "canonical": "get_parental_controls" },
-    "safety_settings.get_trusted_contact": { "category": "interaction", "canonical": "get_trusted_contacts" },
-    "safety_settings.update_parental_control": { "category": "interaction", "canonical": "update_parental_control" },
-    "google:search": { "category": "web_browser", "canonical": "web_search" },
-    "image_agent:fetch_images": { "category": "generation", "canonical": "fetch_images" },
-    "functions.wait": { "category": "execution", "canonical": "wait_exec_cell" },
-    "functions.exec": { "category": "execution", "canonical": "exec_js_orchestrator" },
-    "collaboration.followup_task": { "category": "orchestration", "canonical": "subagent_followup" },
-    "collaboration.interrupt_agent": { "category": "orchestration", "canonical": "subagent_interrupt" },
-    "collaboration.list_agents": { "category": "orchestration", "canonical": "subagent_list" },
-    "collaboration.send_message": { "category": "orchestration", "canonical": "subagent_message" },
-    "collaboration.spawn_agent": { "category": "orchestration", "canonical": "subagent_spawn" },
-    "collaboration.wait_agent": { "category": "orchestration", "canonical": "subagent_wait" },
-    "user_info.get_user_info": { "category": "interaction", "canonical": "get_user_info" },
-    "summary_reader.read": { "category": "scheduling_memory", "canonical": "read_memory_summary" },
-    "bio.update": { "category": "scheduling_memory", "canonical": "update_user_bio" },
-    "api_tool.Automations": { "category": "scheduling_memory", "canonical": "manage_automations" },
-    "api_tool.Plugin_Management": { "category": "external_mcp", "canonical": "manage_plugins" },
-    "api_tool.files": { "category": "file_ops", "canonical": "manage_files" },
-    "personal_context.search": { "category": "search", "canonical": "search_personal_context" },
-    "functions.browser_exec": { "category": "web_browser", "canonical": "browser_action" },
-    "functions.clarify": { "category": "interaction", "canonical": "ask_user_question" },
-    "functions.computer_use": { "category": "execution", "canonical": "os_computer_use" },
-    "functions.cronjob": { "category": "scheduling_memory", "canonical": "manage_cron_task" },
-    "functions.delegate_task": { "category": "orchestration", "canonical": "spawn_subagent" },
-    "functions.execute_code": { "category": "execution", "canonical": "run_python_code" },
-    "functions.memory": { "category": "scheduling_memory", "canonical": "manage_memory" },
-    "functions.patch": { "category": "file_ops", "canonical": "edit_file" },
-    "functions.process": { "category": "execution", "canonical": "manage_background_tasks" },
-    "functions.read_file": { "category": "file_ops", "canonical": "read_file" },
-    "functions.search_files": { "category": "search", "canonical": "search_code" },
-    "functions.session_search": { "category": "search", "canonical": "search_sessions" },
-    "functions.skill_manage": { "category": "orchestration", "canonical": "manage_skills" },
-    "functions.skill_view": { "category": "orchestration", "canonical": "view_skill" },
-    "functions.skills_list": { "category": "orchestration", "canonical": "list_skills" },
-    "functions.terminal": { "category": "execution", "canonical": "run_shell_command" },
-    "functions.text_to_speech": { "category": "generation", "canonical": "text_to_speech" },
-    "functions.todo": { "category": "orchestration", "canonical": "manage_todo" },
-    "functions.vision_analyze": { "category": "generation", "canonical": "analyze_image" },
-    "functions.web_extract": { "category": "web_browser", "canonical": "fetch_url" },
-    "functions.web_search": { "category": "web_browser", "canonical": "web_search" },
-    "functions.write_file": { "category": "file_ops", "canonical": "create_file" },
-    "functions.tool_search": { "category": "external_mcp", "canonical": "search_deferred_tools" },
-    "functions.tool_describe": { "category": "external_mcp", "canonical": "describe_deferred_tools" },
-    "functions.tool_call": { "category": "external_mcp", "canonical": "call_deferred_tool" },
-    "multi_tool_use.parallel": { "category": "orchestration", "canonical": "parallel_tool_execution" },
-    "discord": { "category": "external_mcp", "canonical": "discord_integration" },
-    "video_analyze": { "category": "generation", "canonical": "analyze_video" },
-    "open_page": { "category": "web_browser", "canonical": "fetch_url" },
-    "open_page_with_find": { "category": "web_browser", "canonical": "search_page" },
-    "view_image": { "category": "generation", "canonical": "analyze_image" },
-    "web_search": { "category": "web_browser", "canonical": "web_search" },
-    "x_keyword_search": { "category": "web_browser", "canonical": "search_x_keyword" },
-    "x_semantic_search": { "category": "web_browser", "canonical": "search_x_semantic" },
-    "x_user_search": { "category": "web_browser", "canonical": "search_x_user" },
-    "x_thread_fetch": { "category": "web_browser", "canonical": "fetch_x_thread" },
-    "view_x_video": { "category": "generation", "canonical": "analyze_video" },
-    "search_connected_tools": { "category": "external_mcp", "canonical": "search_plugins" },
-    "call_connected_tool": { "category": "external_mcp", "canonical": "invoke_mcp" },
-    "list_available_connectors": { "category": "external_mcp", "canonical": "list_plugins" },
-    "read_file": { "category": "file_ops", "canonical": "read_file" },
-    "edit_file": { "category": "file_ops", "canonical": "edit_file" },
-    "write_file": { "category": "file_ops", "canonical": "create_file" },
-    "bash": { "category": "execution", "canonical": "run_shell_command" },
-    "browser_tab": { "category": "web_browser", "canonical": "browser_action" },
-    "browser_network_details": { "category": "web_browser", "canonical": "browser_network_details" },
-    "request_connector_auth": { "category": "interaction", "canonical": "request_auth" },
-    "ask_user_input_v0": { "category": "interaction", "canonical": "ask_user_question" },
-    "bash_tool": { "category": "execution", "canonical": "run_shell_command" },
-    "chart_display_v0": { "category": "generation", "canonical": "render_chart" },
-    "comparison_card_display_v0": { "category": "generation", "canonical": "render_comparison_card" },
-    "create_file": { "category": "file_ops", "canonical": "create_file" },
-    "end_conversation": { "category": "interaction", "canonical": "end_conversation" },
-    "featured_card_display_v0": { "category": "generation", "canonical": "render_featured_card" },
-    "fetch_sports_data": { "category": "web_browser", "canonical": "fetch_sports_data" },
-    "image_search": { "category": "web_browser", "canonical": "image_search" },
-    "itinerary_display_v0": { "category": "generation", "canonical": "render_itinerary" },
-    "link_preview_display_v0": { "category": "generation", "canonical": "render_link_preview" },
-    "message_compose_v1": { "category": "interaction", "canonical": "compose_message" },
-    "options_card_display_v0": { "category": "generation", "canonical": "render_options_card" },
-    "places_list_display_v0": { "category": "generation", "canonical": "render_places_list" },
-    "places_map_display_v0": { "category": "generation", "canonical": "render_places_map" },
-    "places_search": { "category": "web_browser", "canonical": "search_places" },
-    "present_files": { "category": "file_ops", "canonical": "present_files" },
-    "product_carousel_display_v0": { "category": "generation", "canonical": "render_product_carousel" },
-    "quiz_display_v0": { "category": "generation", "canonical": "render_quiz" },
-    "recipe_display_v0": { "category": "generation", "canonical": "render_recipe" },
-    "recommend_claude_apps": { "category": "external_mcp", "canonical": "recommend_apps" },
-    "search_mcp_registry": { "category": "external_mcp", "canonical": "search_mcp_registry" },
-    "search_plugins": { "category": "external_mcp", "canonical": "search_plugins" },
-    "search_skills": { "category": "orchestration", "canonical": "search_skills" },
-    "step_card_display_v0": { "category": "generation", "canonical": "render_step_card" },
-    "str_replace": { "category": "file_ops", "canonical": "edit_file" },
-    "suggest_connectors": { "category": "external_mcp", "canonical": "suggest_connectors" },
-    "suggest_plugin_install": { "category": "external_mcp", "canonical": "suggest_plugins" },
-    "suggest_skills": { "category": "orchestration", "canonical": "suggest_skills" },
-    "translation_display_v0": { "category": "generation", "canonical": "render_translation_card" },
-    "view": { "category": "file_ops", "canonical": "read_file" },
-    "weather_fetch": { "category": "web_browser", "canonical": "fetch_weather" },
-    "web_fetch": { "category": "web_browser", "canonical": "fetch_url" },
-    "visualize:read_me": { "category": "generation", "canonical": "read_visualizer_spec" },
-    "visualize:show_widget": { "category": "generation", "canonical": "render_visual_widget" }
+    "view_file": {
+      "category": "file_ops",
+      "canonical": "read_file"
+    },
+    "write_to_file": {
+      "category": "file_ops",
+      "canonical": "create_file"
+    },
+    "replace_file_content": {
+      "category": "file_ops",
+      "canonical": "edit_file"
+    },
+    "list_dir": {
+      "category": "file_ops",
+      "canonical": "list_directory"
+    },
+    "find_by_name": {
+      "category": "search",
+      "canonical": "find_files"
+    },
+    "grep_search": {
+      "category": "search",
+      "canonical": "search_code"
+    },
+    "run_command": {
+      "category": "execution",
+      "canonical": "run_shell_command"
+    },
+    "manage_task": {
+      "category": "scheduling",
+      "canonical": "manage_background_tasks"
+    },
+    "invoke_subagent": {
+      "category": "orchestration",
+      "canonical": "spawn_subagent"
+    },
+    "define_subagent": {
+      "category": "orchestration",
+      "canonical": "define_subagent"
+    },
+    "manage_subagents": {
+      "category": "orchestration",
+      "canonical": "manage_subagents"
+    },
+    "send_message": {
+      "category": "orchestration",
+      "canonical": "agent_message"
+    },
+    "schedule": {
+      "category": "scheduling",
+      "canonical": "schedule_task"
+    },
+    "search_web": {
+      "category": "web_browser",
+      "canonical": "web_search"
+    },
+    "read_url_content": {
+      "category": "web_browser",
+      "canonical": "fetch_url"
+    },
+    "generate_image": {
+      "category": "generation",
+      "canonical": "generate_image"
+    },
+    "ask_question": {
+      "category": "interaction",
+      "canonical": "ask_user_question"
+    },
+    "call_mcp_tool": {
+      "category": "integrations",
+      "canonical": "invoke_mcp"
+    },
+    "list_resources": {
+      "category": "integrations",
+      "canonical": "list_mcp_resources"
+    },
+    "read_resource": {
+      "category": "integrations",
+      "canonical": "read_mcp_resource"
+    },
+    "View": {
+      "category": "file_ops",
+      "canonical": "read_file"
+    },
+    "Edit": {
+      "category": "file_ops",
+      "canonical": "edit_file"
+    },
+    "Write": {
+      "category": "file_ops",
+      "canonical": "create_file"
+    },
+    "Read": {
+      "category": "file_ops",
+      "canonical": "read_file"
+    },
+    "Glob": {
+      "category": "file_ops",
+      "canonical": "find_files"
+    },
+    "Grep": {
+      "category": "search",
+      "canonical": "search_code"
+    },
+    "Bash": {
+      "category": "execution",
+      "canonical": "run_shell_command"
+    },
+    "Agent": {
+      "category": "orchestration",
+      "canonical": "spawn_subagent"
+    },
+    "SendMessage": {
+      "category": "orchestration",
+      "canonical": "agent_message"
+    },
+    "NotebookEdit": {
+      "category": "file_ops",
+      "canonical": "edit_notebook"
+    },
+    "AskUserQuestion": {
+      "category": "interaction",
+      "canonical": "ask_user_question"
+    },
+    "EnterPlanMode": {
+      "category": "orchestration",
+      "canonical": "enter_plan_mode"
+    },
+    "ExitPlanMode": {
+      "category": "orchestration",
+      "canonical": "exit_plan_mode"
+    },
+    "EnterWorktree": {
+      "category": "execution",
+      "canonical": "enter_git_worktree"
+    },
+    "ExitWorktree": {
+      "category": "execution",
+      "canonical": "exit_git_worktree"
+    },
+    "CronCreate": {
+      "category": "scheduling",
+      "canonical": "create_cron_task"
+    },
+    "CronDelete": {
+      "category": "scheduling",
+      "canonical": "delete_cron_task"
+    },
+    "CronList": {
+      "category": "scheduling",
+      "canonical": "list_cron_tasks"
+    },
+    "ScheduleWakeup": {
+      "category": "scheduling",
+      "canonical": "schedule_wakeup"
+    },
+    "ReportFindings": {
+      "category": "interaction",
+      "canonical": "report_findings"
+    },
+    "Skill": {
+      "category": "orchestration",
+      "canonical": "invoke_skill"
+    },
+    "TaskOutput": {
+      "category": "orchestration",
+      "canonical": "task_output"
+    },
+    "TaskStop": {
+      "category": "orchestration",
+      "canonical": "task_stop"
+    },
+    "WebFetch": {
+      "category": "web_browser",
+      "canonical": "fetch_url"
+    },
+    "Workflow": {
+      "category": "orchestration",
+      "canonical": "workflow_execution"
+    },
+    "web.run": {
+      "category": "web_browser",
+      "canonical": "web_search"
+    },
+    "python.exec": {
+      "category": "execution",
+      "canonical": "run_python_internal"
+    },
+    "python_user_visible.exec": {
+      "category": "execution",
+      "canonical": "run_python_visible"
+    },
+    "container.exec": {
+      "category": "execution",
+      "canonical": "run_container_shell"
+    },
+    "container.feed_chars": {
+      "category": "execution",
+      "canonical": "feed_stdin"
+    },
+    "container.open_image": {
+      "category": "perception",
+      "canonical": "view_container_image"
+    },
+    "container.download": {
+      "category": "file_ops",
+      "canonical": "download_file"
+    },
+    "api_tool.list_resources": {
+      "category": "integrations",
+      "canonical": "list_resources"
+    },
+    "api_tool.read_resource": {
+      "category": "integrations",
+      "canonical": "read_resource"
+    },
+    "api_tool.find_in_resource": {
+      "category": "search",
+      "canonical": "search_resource"
+    },
+    "api_tool.suggest_installs": {
+      "category": "integrations",
+      "canonical": "suggest_plugins"
+    },
+    "api_tool.search_plugins": {
+      "category": "integrations",
+      "canonical": "search_plugins"
+    },
+    "image_gen.text2im": {
+      "category": "generation",
+      "canonical": "generate_image"
+    },
+    "user_settings.get_user_settings": {
+      "category": "interaction",
+      "canonical": "get_settings"
+    },
+    "user_settings.set_setting": {
+      "category": "interaction",
+      "canonical": "set_setting"
+    },
+    "safety_settings.get_family_info": {
+      "category": "interaction",
+      "canonical": "get_family_safety"
+    },
+    "safety_settings.get_parental_controls": {
+      "category": "interaction",
+      "canonical": "get_parental_controls"
+    },
+    "safety_settings.get_trusted_contact": {
+      "category": "interaction",
+      "canonical": "get_trusted_contacts"
+    },
+    "safety_settings.update_parental_control": {
+      "category": "interaction",
+      "canonical": "update_parental_control"
+    },
+    "google:search": {
+      "category": "web_browser",
+      "canonical": "web_search"
+    },
+    "image_agent:fetch_images": {
+      "category": "perception",
+      "canonical": "fetch_images"
+    },
+    "functions.wait": {
+      "category": "execution",
+      "canonical": "wait_exec_cell"
+    },
+    "functions.exec": {
+      "category": "execution",
+      "canonical": "exec_js_orchestrator"
+    },
+    "collaboration.followup_task": {
+      "category": "orchestration",
+      "canonical": "subagent_followup"
+    },
+    "collaboration.interrupt_agent": {
+      "category": "orchestration",
+      "canonical": "subagent_interrupt"
+    },
+    "collaboration.list_agents": {
+      "category": "orchestration",
+      "canonical": "subagent_list"
+    },
+    "collaboration.send_message": {
+      "category": "orchestration",
+      "canonical": "subagent_message"
+    },
+    "collaboration.spawn_agent": {
+      "category": "orchestration",
+      "canonical": "subagent_spawn"
+    },
+    "collaboration.wait_agent": {
+      "category": "orchestration",
+      "canonical": "subagent_wait"
+    },
+    "user_info.get_user_info": {
+      "category": "interaction",
+      "canonical": "get_user_info"
+    },
+    "summary_reader.read": {
+      "category": "memory",
+      "canonical": "read_memory_summary"
+    },
+    "bio.update": {
+      "category": "memory",
+      "canonical": "update_user_bio"
+    },
+    "api_tool.Automations": {
+      "category": "scheduling",
+      "canonical": "manage_automations"
+    },
+    "api_tool.Plugin_Management": {
+      "category": "integrations",
+      "canonical": "manage_plugins"
+    },
+    "api_tool.files": {
+      "category": "file_ops",
+      "canonical": "manage_files"
+    },
+    "personal_context.search": {
+      "category": "memory",
+      "canonical": "search_personal_context"
+    },
+    "functions.browser_exec": {
+      "category": "web_browser",
+      "canonical": "browser_action"
+    },
+    "functions.clarify": {
+      "category": "interaction",
+      "canonical": "ask_user_question"
+    },
+    "functions.computer_use": {
+      "category": "execution",
+      "canonical": "os_computer_use"
+    },
+    "functions.cronjob": {
+      "category": "scheduling",
+      "canonical": "manage_cron_task"
+    },
+    "functions.delegate_task": {
+      "category": "orchestration",
+      "canonical": "spawn_subagent"
+    },
+    "functions.execute_code": {
+      "category": "execution",
+      "canonical": "run_python_code"
+    },
+    "functions.memory": {
+      "category": "memory",
+      "canonical": "manage_memory"
+    },
+    "functions.patch": {
+      "category": "file_ops",
+      "canonical": "edit_file"
+    },
+    "functions.process": {
+      "category": "scheduling",
+      "canonical": "manage_background_tasks"
+    },
+    "functions.read_file": {
+      "category": "file_ops",
+      "canonical": "read_file"
+    },
+    "functions.search_files": {
+      "category": "search",
+      "canonical": "search_code"
+    },
+    "functions.session_search": {
+      "category": "memory",
+      "canonical": "search_sessions"
+    },
+    "functions.skill_manage": {
+      "category": "orchestration",
+      "canonical": "manage_skills"
+    },
+    "functions.skill_view": {
+      "category": "orchestration",
+      "canonical": "view_skill"
+    },
+    "functions.skills_list": {
+      "category": "orchestration",
+      "canonical": "list_skills"
+    },
+    "functions.terminal": {
+      "category": "execution",
+      "canonical": "run_shell_command"
+    },
+    "functions.text_to_speech": {
+      "category": "generation",
+      "canonical": "text_to_speech"
+    },
+    "functions.todo": {
+      "category": "orchestration",
+      "canonical": "manage_todo"
+    },
+    "functions.vision_analyze": {
+      "category": "perception",
+      "canonical": "analyze_image"
+    },
+    "functions.web_extract": {
+      "category": "web_browser",
+      "canonical": "fetch_url"
+    },
+    "functions.web_search": {
+      "category": "web_browser",
+      "canonical": "web_search"
+    },
+    "functions.write_file": {
+      "category": "file_ops",
+      "canonical": "create_file"
+    },
+    "functions.tool_search": {
+      "category": "integrations",
+      "canonical": "search_deferred_tools"
+    },
+    "functions.tool_describe": {
+      "category": "integrations",
+      "canonical": "describe_deferred_tools"
+    },
+    "functions.tool_call": {
+      "category": "integrations",
+      "canonical": "call_deferred_tool"
+    },
+    "multi_tool_use.parallel": {
+      "category": "orchestration",
+      "canonical": "parallel_tool_execution"
+    },
+    "discord": {
+      "category": "integrations",
+      "canonical": "discord_integration"
+    },
+    "video_analyze": {
+      "category": "perception",
+      "canonical": "analyze_video"
+    },
+    "open_page": {
+      "category": "web_browser",
+      "canonical": "fetch_url"
+    },
+    "open_page_with_find": {
+      "category": "web_browser",
+      "canonical": "search_page"
+    },
+    "view_image": {
+      "category": "perception",
+      "canonical": "analyze_image"
+    },
+    "web_search": {
+      "category": "web_browser",
+      "canonical": "web_search"
+    },
+    "x_keyword_search": {
+      "category": "web_browser",
+      "canonical": "search_x_keyword"
+    },
+    "x_semantic_search": {
+      "category": "web_browser",
+      "canonical": "search_x_semantic"
+    },
+    "x_user_search": {
+      "category": "web_browser",
+      "canonical": "search_x_user"
+    },
+    "x_thread_fetch": {
+      "category": "web_browser",
+      "canonical": "fetch_x_thread"
+    },
+    "view_x_video": {
+      "category": "perception",
+      "canonical": "analyze_video"
+    },
+    "search_connected_tools": {
+      "category": "integrations",
+      "canonical": "search_plugins"
+    },
+    "call_connected_tool": {
+      "category": "integrations",
+      "canonical": "invoke_mcp"
+    },
+    "list_available_connectors": {
+      "category": "integrations",
+      "canonical": "list_plugins"
+    },
+    "read_file": {
+      "category": "file_ops",
+      "canonical": "read_file"
+    },
+    "edit_file": {
+      "category": "file_ops",
+      "canonical": "edit_file"
+    },
+    "write_file": {
+      "category": "file_ops",
+      "canonical": "create_file"
+    },
+    "bash": {
+      "category": "execution",
+      "canonical": "run_shell_command"
+    },
+    "browser_tab": {
+      "category": "web_browser",
+      "canonical": "browser_action"
+    },
+    "browser_network_details": {
+      "category": "web_browser",
+      "canonical": "browser_network_details"
+    },
+    "request_connector_auth": {
+      "category": "interaction",
+      "canonical": "request_auth"
+    },
+    "ask_user_input_v0": {
+      "category": "interaction",
+      "canonical": "ask_user_question"
+    },
+    "bash_tool": {
+      "category": "execution",
+      "canonical": "run_shell_command"
+    },
+    "chart_display_v0": {
+      "category": "generation",
+      "canonical": "render_chart"
+    },
+    "comparison_card_display_v0": {
+      "category": "generation",
+      "canonical": "render_comparison_card"
+    },
+    "create_file": {
+      "category": "file_ops",
+      "canonical": "create_file"
+    },
+    "end_conversation": {
+      "category": "interaction",
+      "canonical": "end_conversation"
+    },
+    "featured_card_display_v0": {
+      "category": "generation",
+      "canonical": "render_featured_card"
+    },
+    "fetch_sports_data": {
+      "category": "web_browser",
+      "canonical": "fetch_sports_data"
+    },
+    "image_search": {
+      "category": "web_browser",
+      "canonical": "image_search"
+    },
+    "itinerary_display_v0": {
+      "category": "generation",
+      "canonical": "render_itinerary"
+    },
+    "link_preview_display_v0": {
+      "category": "generation",
+      "canonical": "render_link_preview"
+    },
+    "message_compose_v1": {
+      "category": "interaction",
+      "canonical": "compose_message"
+    },
+    "options_card_display_v0": {
+      "category": "generation",
+      "canonical": "render_options_card"
+    },
+    "places_list_display_v0": {
+      "category": "generation",
+      "canonical": "render_places_list"
+    },
+    "places_map_display_v0": {
+      "category": "generation",
+      "canonical": "render_places_map"
+    },
+    "places_search": {
+      "category": "web_browser",
+      "canonical": "search_places"
+    },
+    "present_files": {
+      "category": "file_ops",
+      "canonical": "present_files"
+    },
+    "product_carousel_display_v0": {
+      "category": "generation",
+      "canonical": "render_product_carousel"
+    },
+    "quiz_display_v0": {
+      "category": "generation",
+      "canonical": "render_quiz"
+    },
+    "recipe_display_v0": {
+      "category": "generation",
+      "canonical": "render_recipe"
+    },
+    "recommend_claude_apps": {
+      "category": "integrations",
+      "canonical": "recommend_apps"
+    },
+    "search_mcp_registry": {
+      "category": "integrations",
+      "canonical": "search_mcp_registry"
+    },
+    "search_plugins": {
+      "category": "integrations",
+      "canonical": "search_plugins"
+    },
+    "search_skills": {
+      "category": "orchestration",
+      "canonical": "search_skills"
+    },
+    "step_card_display_v0": {
+      "category": "generation",
+      "canonical": "render_step_card"
+    },
+    "str_replace": {
+      "category": "file_ops",
+      "canonical": "edit_file"
+    },
+    "suggest_connectors": {
+      "category": "integrations",
+      "canonical": "suggest_connectors"
+    },
+    "suggest_plugin_install": {
+      "category": "integrations",
+      "canonical": "suggest_plugins"
+    },
+    "suggest_skills": {
+      "category": "orchestration",
+      "canonical": "suggest_skills"
+    },
+    "translation_display_v0": {
+      "category": "generation",
+      "canonical": "render_translation_card"
+    },
+    "view": {
+      "category": "file_ops",
+      "canonical": "read_file"
+    },
+    "weather_fetch": {
+      "category": "web_browser",
+      "canonical": "fetch_weather"
+    },
+    "web_fetch": {
+      "category": "web_browser",
+      "canonical": "fetch_url"
+    },
+    "visualize:read_me": {
+      "category": "generation",
+      "canonical": "read_visualizer_spec"
+    },
+    "visualize:show_widget": {
+      "category": "generation",
+      "canonical": "render_visual_widget"
+    },
+    "search_marketplace": {
+      "category": "integrations",
+      "canonical": "search_plugins"
+    },
+    "list_plugin_accounts": {
+      "category": "integrations",
+      "canonical": "list_plugin_accounts"
+    },
+    "DesignSync": {
+      "category": "integrations",
+      "canonical": "sync_design_system"
+    },
+    "Monitor": {
+      "category": "scheduling",
+      "canonical": "monitor_background_stream"
+    },
+    "PushNotification": {
+      "category": "interaction",
+      "canonical": "send_push_notification"
+    },
+    "WebSearch": {
+      "category": "web_browser",
+      "canonical": "web_search"
+    },
+    "functions.request_user_input": {
+      "category": "interaction",
+      "canonical": "ask_user_question"
+    },
+    "functions.request_user_input_async": {
+      "category": "interaction",
+      "canonical": "ask_user_question_async"
+    },
+    "functions.apply_patch": {
+      "category": "file_ops",
+      "canonical": "edit_file"
+    },
+    "functions.create_goal": {
+      "category": "orchestration",
+      "canonical": "create_goal"
+    },
+    "functions.get_goal": {
+      "category": "orchestration",
+      "canonical": "get_goal"
+    },
+    "functions.update_goal": {
+      "category": "orchestration",
+      "canonical": "update_goal"
+    },
+    "functions.exec_command": {
+      "category": "execution",
+      "canonical": "run_shell_command"
+    },
+    "functions.write_stdin": {
+      "category": "execution",
+      "canonical": "feed_stdin"
+    },
+    "functions.view_image": {
+      "category": "perception",
+      "canonical": "analyze_image"
+    },
+    "functions.list_mcp_resource_templates": {
+      "category": "integrations",
+      "canonical": "list_mcp_resource_templates"
+    },
+    "functions.list_mcp_resources": {
+      "category": "integrations",
+      "canonical": "list_mcp_resources"
+    },
+    "functions.read_mcp_resource": {
+      "category": "integrations",
+      "canonical": "read_mcp_resource"
+    },
+    "functions.request_plugin_install": {
+      "category": "integrations",
+      "canonical": "suggest_plugins"
+    },
+    "clock.sleep": {
+      "category": "scheduling",
+      "canonical": "schedule_wakeup"
+    },
+    "clock.clock__curr_time": {
+      "category": "scheduling",
+      "canonical": "get_current_time"
+    },
+    "mcp__cua_repl.js": {
+      "category": "execution",
+      "canonical": "os_computer_use"
+    },
+    "mcp__cua_repl.js_reset": {
+      "category": "execution",
+      "canonical": "reset_computer_use_repl"
+    }
   }
 }
