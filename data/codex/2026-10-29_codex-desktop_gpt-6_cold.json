@@ -1,0 +1,306 @@
+{
+  "schema_version": "0.1",
+  "harness_reported": "Codex desktop app",
+  "model_reported": "GPT-6",
+  "tool_count_reported": null,
+  "completeness": "partial",
+  "omissions_note": "I cannot see the parameter schemas for deferred tool namespaces, and the full nested tool definitions are not available in a single inspectable list. Therefore I cannot reliably report every tool or set an accurate total count. The tools below are those whose definitions are visible directly in this conversation; this list omits nested tools exposed through functions.exec and tools in deferred namespaces.",
+  "tools": [
+    {
+      "name": "functions.exec",
+      "description": "Run JavaScript code to orchestrate/compose tool calls",
+      "parameters": [
+        {
+          "name": "FREEFORM",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "JavaScript source; may start with an exec pragma. Nested tools are available through the tools namespace."
+        }
+      ]
+    },
+    {
+      "name": "functions.wait",
+      "description": "Waits on a yielded `exec` cell and returns new output or completion.",
+      "parameters": [
+        {
+          "name": "cell_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the running `exec` cell."
+        },
+        {
+          "name": "max_tokens",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "Output token budget. Defaults to 10000 tokens."
+        },
+        {
+          "name": "terminate",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "True stops the running cell; false or omitted waits for output."
+        },
+        {
+          "name": "yield_time_ms",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "Wait before yielding more output. Defaults to 10000 ms."
+        }
+      ]
+    },
+    {
+      "name": "functions.request_user_input",
+      "description": "Request user input for one to three short questions and wait for the response. This tool is only available in Plan mode.",
+      "parameters": [
+        {
+          "name": "questions",
+          "type": "array",
+          "required": true,
+          "enum": null,
+          "description": "Questions to show the user. Prefer 1 and do not exceed 3."
+        }
+      ]
+    },
+    {
+      "name": "functions.request_user_input_async",
+      "description": "Ask the user one or more questions during ongoing work. Use this tool only to request missing information, preferences, constraints, clarification, or approval.",
+      "parameters": [
+        {
+          "name": "questions",
+          "type": "array",
+          "required": true,
+          "enum": null,
+          "description": "One or more self-contained questions to present together, in display order."
+        }
+      ]
+    },
+    {
+      "name": "clock.sleep",
+      "description": "Pause execution for a specified duration. The sleep ends early when new input arrives for the active turn. Returns the elapsed wall-clock time.",
+      "parameters": [
+        {
+          "name": "duration_ms",
+          "type": "integer",
+          "required": true,
+          "enum": null,
+          "description": "How long to sleep in milliseconds. Must be between 1 and 43200000."
+        }
+      ]
+    },
+    {
+      "name": "collaboration.spawn_agent",
+      "description": "Spawn a sub-agent to handle a subtask. The new agent will have the same tools as you and the ability to spawn its own subagents.",
+      "parameters": [
+        {
+          "name": "fork_turns",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "all",
+            "none"
+          ],
+          "description": "Parent history to inherit. Defaults to `all`."
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Initial plain-text task for the new agent."
+        },
+        {
+          "name": "model",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Model override."
+        },
+        {
+          "name": "reasoning_effort",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Reasoning effort override."
+        },
+        {
+          "name": "task_name",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Task name for the new agent."
+        }
+      ]
+    },
+    {
+      "name": "collaboration.followup_task",
+      "description": "Send a follow-up task to an existing non-root target agent and trigger a turn if it is idle.",
+      "parameters": [
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Message text to send to the target agent."
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Agent id or canonical task name to send the task to."
+        }
+      ]
+    },
+    {
+      "name": "collaboration.interrupt_agent",
+      "description": "Interrupt an agent's current turn, if any, and return its previous status. The agent remains available for follow-up tasks.",
+      "parameters": [
+        {
+          "name": "target",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Agent id or canonical task name to interrupt."
+        }
+      ]
+    },
+    {
+      "name": "collaboration.list_agents",
+      "description": "List live agents in the current root thread tree. Optionally filter by task-path prefix.",
+      "parameters": [
+        {
+          "name": "path_prefix",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Task-path prefix filter without a trailing slash. Omit to list all live agents."
+        }
+      ]
+    },
+    {
+      "name": "collaboration.send_message",
+      "description": "Send a message to an existing agent. Does not trigger a turn.",
+      "parameters": [
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Message text to queue on the target agent."
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Relative or canonical task name."
+        }
+      ]
+    },
+    {
+      "name": "collaboration.wait_agent",
+      "description": "Wait for a mailbox update from any live agent, including queued messages and final-status notifications.",
+      "parameters": [
+        {
+          "name": "timeout_ms",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "Timeout in milliseconds. Defaults to 30000, min 10000, max 3600000."
+        }
+      ]
+    },
+    {
+      "name": "web.run",
+      "description": "Tool for accessing the internet.",
+      "parameters": [
+        {
+          "name": "search_query",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Internet search queries."
+        },
+        {
+          "name": "open",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Open links or URLs."
+        },
+        {
+          "name": "click",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Open links from previously opened pages."
+        },
+        {
+          "name": "find",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Find text patterns in pages."
+        },
+        {
+          "name": "image_query",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Search for images."
+        },
+        {
+          "name": "finance",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Look up prices for stock symbols."
+        },
+        {
+          "name": "weather",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Look up weather forecasts."
+        },
+        {
+          "name": "sports",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Look up sports schedules and standings."
+        },
+        {
+          "name": "time",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Get time for the given UTC offsets."
+        },
+        {
+          "name": "screenshot",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Take screenshots of PDF pages."
+        },
+        {
+          "name": "response_length",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "short",
+            "medium",
+            "long"
+          ],
+          "description": "Set the length of the response to be returned."
+        }
+      ]
+    }
+  ]
+}

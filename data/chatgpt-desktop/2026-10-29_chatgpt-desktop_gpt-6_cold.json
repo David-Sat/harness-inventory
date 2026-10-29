@@ -1,0 +1,271 @@
+{
+  "schema_version": "0.1",
+  "harness_reported": "ChatGPT product harness with OpenAI tool namespaces and dynamically discoverable connector tools",
+  "model_reported": "GPT-6",
+  "tool_count_reported": 15,
+  "completeness": "partial",
+  "omissions_note": "The visible definitions expose 15 top-level tool entries or namespaces: web.run, python.exec, python_user_visible.exec, container.exec, container.feed_chars, container.open_image, container.download, local.handoff, personal_context.search, bio.update, image_gen.text2im, functions.exec, and the namespaces web, python, python_user_visible, container, local, personal_context, bio, image_gen, and functions. These overlap because namespaces and their functions are represented separately in the available interface. The functions namespace also exposes dynamically discoverable tools through ALL_TOOLS, including Automations, Gmail, Google Calendar, Plugin Management, files, skills, and user settings. Their complete function definitions and parameter schemas are not included in the visible context. Consequently, an exact total count of all callable tools and a verbatim enumeration of every parameter schema cannot be established from the currently visible definitions. The count of 15 is a reporting placeholder, not a verified count of every callable tool. Tool schemas below are limited to the explicitly visible top-level callable definitions; undisclosed schemas are omitted.",
+  "tools": [
+    {
+      "name": "web.run",
+      "description": "Use this tool to access information on the web. Web information from this tool helps produce accurate, up-to-date, comprehensive, and trustworthy responses to the user's query.",
+      "parameters": [
+        {
+          "name": "input",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "A sequence of newline-separated records specifying web operations. Supported operations include open, slow, fast, click, find, screen, length, image, product, business, availability, genui_search, and genui_run."
+        }
+      ]
+    },
+    {
+      "name": "python.exec",
+      "description": "Execute Python code in a stateful Jupyter notebook environment for private internal reasoning, analyzing input images, files, or content from the web.",
+      "parameters": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Python code to execute in the stateful Jupyter notebook environment."
+        }
+      ]
+    },
+    {
+      "name": "python_user_visible.exec",
+      "description": "Execute Python code that should be visible to the user, such as code that creates plots, displays tables or dataframes, or outputs user-visible files.",
+      "parameters": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Python code to execute in the user-visible Python environment."
+        }
+      ]
+    },
+    {
+      "name": "container.exec",
+      "description": "Interact with a container, for example, using Docker, or execute commands.",
+      "parameters": [
+        {
+          "name": "cmd",
+          "type": "array",
+          "required": true,
+          "enum": null,
+          "description": "Command and arguments to execute."
+        },
+        {
+          "name": "session_name",
+          "type": "string|null",
+          "required": false,
+          "enum": null,
+          "description": "Name of the interactive pseudo-TTY session."
+        },
+        {
+          "name": "workdir",
+          "type": "string|null",
+          "required": false,
+          "enum": null,
+          "description": "Working directory."
+        },
+        {
+          "name": "timeout",
+          "type": "integer|null",
+          "required": false,
+          "enum": null,
+          "description": "Timeout in seconds."
+        },
+        {
+          "name": "env",
+          "type": "object|null",
+          "required": false,
+          "enum": null,
+          "description": "Environment variables."
+        },
+        {
+          "name": "user",
+          "type": "string|null",
+          "required": false,
+          "enum": null,
+          "description": "User to execute as."
+        }
+      ]
+    },
+    {
+      "name": "container.feed_chars",
+      "description": "Feed characters to an exec session's STDIN, then wait for output.",
+      "parameters": [
+        {
+          "name": "session_name",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Name of the interactive session."
+        },
+        {
+          "name": "chars",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Characters to send to the session's STDIN."
+        },
+        {
+          "name": "yield_time_ms",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "Time to wait in milliseconds."
+        }
+      ]
+    },
+    {
+      "name": "container.open_image",
+      "description": "Returns the image at the given absolute path in the container filesystem.",
+      "parameters": [
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Absolute path to an image file."
+        },
+        {
+          "name": "user",
+          "type": "string|null",
+          "required": false,
+          "enum": null,
+          "description": "User associated with the request."
+        }
+      ]
+    },
+    {
+      "name": "container.download",
+      "description": "Download a file from a URL into the container filesystem.",
+      "parameters": [
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "URL of the file to download."
+        },
+        {
+          "name": "filepath",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Destination file path."
+        }
+      ]
+    },
+    {
+      "name": "local.handoff",
+      "description": "Redirect the user's request from ChatGPT to Work mode when Work mode is the better execution environment.",
+      "parameters": [
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "A brief instruction describing what Work mode should do for the user."
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "A short user-facing reason why continuing in Work mode would help."
+        }
+      ]
+    },
+    {
+      "name": "personal_context.search",
+      "description": "Retrieve user-specific personal context gathered from multiple underlying sources, such as details from earlier messages, past choices, previously defined routines, or other information the user expects the assistant to remember.",
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The personal context to search for for the given user."
+        }
+      ]
+    },
+    {
+      "name": "bio.update",
+      "description": "Persist information across conversations so that future responses can be more personalized and helpful.",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Plain text containing new or updated information to persist in memory, or a request to forget existing information."
+        }
+      ]
+    },
+    {
+      "name": "image_gen.text2im",
+      "description": "Create new images and edit existing images. Returns a rendered image, not source code, editable structure, machine-readable data, or working interactions.",
+      "parameters": [
+        {
+          "name": "prompt",
+          "type": "string|null",
+          "required": false,
+          "enum": null,
+          "description": "Deprecated parameter. Always pass null. Image generation or editing instructions are inferred automatically from the conversation context; this field should not be used."
+        },
+        {
+          "name": "size",
+          "type": "string|null",
+          "required": false,
+          "enum": null,
+          "description": "Image size."
+        },
+        {
+          "name": "n",
+          "type": "integer|null",
+          "required": false,
+          "enum": null,
+          "description": "Number of images to generate."
+        },
+        {
+          "name": "transparent_background",
+          "type": "boolean|null",
+          "required": false,
+          "enum": null,
+          "description": "Whether to generate a transparent background."
+        },
+        {
+          "name": "is_style_transfer",
+          "type": "boolean|null",
+          "required": false,
+          "enum": null,
+          "description": "Whether the request asks for a stylistic transformation of the image or subject."
+        },
+        {
+          "name": "referenced_image_ids",
+          "type": "array|null",
+          "required": false,
+          "enum": null,
+          "description": "Image identifiers to use for editing or transformation."
+        }
+      ]
+    },
+    {
+      "name": "functions.exec",
+      "description": "Run JavaScript code to orchestrate or compose tool calls. Evaluates JavaScript in a fresh V8 isolate with top-level await. All Code Mode tools are available on the global tools object. Tool names are exposed as normalized identifiers through ALL_TOOLS.",
+      "parameters": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "JavaScript source code to execute."
+        }
+      ]
+    }
+  ]
+}

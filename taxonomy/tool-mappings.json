@@ -260,6 +260,22 @@
       "category": "web_browser",
       "canonical": "web_search"
     },
+    "google": {
+      "category": "web_browser",
+      "canonical": "web_search"
+    },
+    "retriever:expand_tools": {
+      "category": "orchestration",
+      "canonical": "dynamic_tool_retrieval"
+    },
+    "retriever:expand_skills": {
+      "category": "orchestration",
+      "canonical": "dynamic_skill_retrieval"
+    },
+    "skills:get_skill_resources": {
+      "category": "integrations",
+      "canonical": "get_skill_resources"
+    },
     "image_agent:fetch_images": {
       "category": "perception",
       "canonical": "fetch_images"
@@ -743,6 +759,14 @@
     "mcp__cua_repl.js_reset": {
       "category": "execution",
       "canonical": "reset_computer_use_repl"
+    },
+    "local.handoff": {
+      "category": "orchestration",
+      "canonical": "handoff_context"
+    },
+    "ListAgents": {
+      "category": "orchestration",
+      "canonical": "list_agents"
     }
   }
 }

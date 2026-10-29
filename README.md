@@ -58,6 +58,9 @@ export interface Category {
 export interface Snapshot {
   id: string;                  // e.g. "2026-08-31_antigravity_gemini-3.7-flash_cold"
   harness: string;             // e.g. "antigravity", "claude-code", "chatgpt"
+  family: string;              // e.g. "google", "anthropic", "openai", "xai", "nous"
+  surface: "web" | "desktop" | "cli" | "ide"; // Physical host client form-factor
+  harness_type: "coding" | "knowledge_work" | "conversational" | "autonomous"; // Operational role/domain
   model: string;               // e.g. "gemini-3.7-flash", "claude-opus-5", "gpt-5.6-luna"
   state: "cold" | "active" | "refusal"; // Execution context state
   date: string;                // YYYY-MM-DD
@@ -103,16 +106,18 @@ export interface ToolParameter {
 
 Tools are grouped using canonical categories defined in `taxonomy/categories.json`:
 
-- `file_ops`: Reading, writing, editing, and finding files.
-- `execution`: Shell execution, scripts, container sessions.
-- `search`: Codebase indexing, grep, regex search.
-- `web_browser`: Web search, fetching URL content, browser automation.
+- `file_ops`: Reading, writing, editing, and managing local files and directories.
+- `execution`: Shell execution, scripts, container sessions, and REPL environments.
+- `search`: Codebase indexing, grep, regex search, and file finding.
+- `web_browser`: Web search, fetching URL content, and browser automation.
 - `orchestration`: Subagent creation, delegation, agent messaging, task workflows.
-- `scheduling_memory`: Timers, cron tasks, session wakeups, lifecycle hooks.
-- `interaction`: User prompts, question modals, choice dialogues, setting controls.
-- `external_mcp`: MCP tool calling, plugin search/installation, connected resource APIs.
-- `generation`: Image generation, visual assets, artifact rendering.
-- `other`: Specialized or unmapped tools.
+- `scheduling`: Timers, cron tasks, session wakeups, lifecycle hooks, and task management.
+- `memory`: Cross-session user memory, personal context, and durable facts.
+- `interaction`: User prompts, question modals, choice dialogues, and settings.
+- `integrations`: MCP tools, external services, plugins, and third-party connectors.
+- `generation`: Image generation, text-to-speech, charts, and inline UI display cards.
+- `perception`: Multimodal inspection and analysis (images, video frames, visual inputs).
+- `other`: Specialized or unmapped tools fallback.
 
 ### Tool Mapping Logic
 

@@ -1,0 +1,69 @@
+{
+  "schema_version": "0.1",
+  "harness_reported": "Gemini Web (gemini.google.com)",
+  "model_reported": "Gemini Web",
+  "tool_count_reported": 4,
+  "completeness": "complete",
+  "omissions_note": "",
+  "tools": [
+    {
+      "name": "google",
+      "description": "Search the web for relevant information when up-to-date knowledge or factual verification is needed.",
+      "parameters": [
+        {
+          "name": "queries",
+          "type": "ARRAY",
+          "required": true,
+          "enum": null,
+          "description": "The list of queries to issue searches with"
+        }
+      ]
+    },
+    {
+      "name": "retriever:expand_tools",
+      "description": "Loads the full function declarations for APIs that are currently only available as capability summaries.\nUse this when the user's intent cannot be satisfied with the currently available functions and requires additional APIs that have not been loaded yet.\n\nGuidelines for expanding tools:\n- Evaluate the summaries to determine if an API is strictly necessary for your task. DO NOT load an API just to check what it does.\n- You MUST call this function (`retriever:expand_tools`) with the exact `api_names` from the instructions below to load their full function declarations before you can use them.\n- NEVER call this function for APIs whose function declarations are already available in your context.\n- STOP CALLING this function if your desired functions are still not available after 2 consecutive attempts. Complete the task using only the currently available functions instead.\n\n**Available APIs (with their capability summaries) that can be loaded:**\n* **api_name:\"calendar\"**: Create, search, modify, and delete personal calendar events. Check availability and free time.\n* **api_name:\"docs_agent\"**: Create and edit Google Docs, working drafts, and templates including resume/proposal templates (NOT for MS Word / \"word document\" .docx, static PDF reports, forms, copy-paste text, or how-to questions).\n* **api_name:\"drive\"**: Search, upload, and retrieve files and documents stored in Google Drive.\n* **api_name:\"file_gen\"**: Create, generate, or export downloadable files such as docx, xlsx, csv, pdf, md, tex, zip, and txt.\n* **api_name:\"gmail\"**: Search, send, draft, reply, forward, trash and archive emails in Gmail.\n* **api_name:\"image_generation_tool\"**: Create, edit, and generate images, diagrams, illustrations, and graphics from text descriptions or uploaded images.\n* **api_name:\"maps_local\"**: Find specific places, dereference Maps URLs, and get place details (hours, reviews, locations).\n* **api_name:\"maps_navigation\"**: Get directions, plan routes, estimate travel time, search along routes, and check traffic\n* **api_name:\"sheets_agent\"**: Create, populate, and edit Google Sheets spreadsheets, trackers, budgets, and schedules (NEVER for MS Excel/\"excel sheet\"/.xlsx/.csv, study/consultation sheets, or how-to).\n* **api_name:\"web_code_canvas\"**: Build and preview complete, interactive web applications, pages, and demos using HTML, CSS, JavaScript, or React.\n* **api_name:\"where_to_watch\"**: Find where to stream, rent, buy, or watch movies, TV shows, and live sports across digital platforms and broadcast channels.\n* **api_name:\"youtube\"**: Find and play YouTube videos, channels, and playlists, and answer questions about video content.",
+      "parameters": [
+        {
+          "name": "api_names",
+          "type": "ARRAY",
+          "required": true,
+          "enum": null,
+          "description": "The names of the APIs to expand."
+        }
+      ]
+    },
+    {
+      "name": "retriever:expand_skills",
+      "description": "Use this function to expand and load additional skills when they are needed during execution. When a skill is found relevant, you must call this method using the exact skill name (including any `system:` or `user:` prefix) as it appears inside the backticks in the <available_expandable_skills> list in your prompt, OR as explicitly instructed by a loaded active skill or the user. For example: retriever:expand_skills(api_names=['system:skill-creator']) **DO NOT** call `retriever:expand_skills` with the same skill name multiple times.\n\n",
+      "parameters": [
+        {
+          "name": "api_names",
+          "type": "ARRAY",
+          "required": true,
+          "enum": null,
+          "description": "The names of the skills to expand exactly as presented in the available skill lists."
+        }
+      ]
+    },
+    {
+      "name": "skills:get_skill_resources",
+      "description": "Get resources for a skill",
+      "parameters": [
+        {
+          "name": "filenames",
+          "type": "ARRAY",
+          "required": true,
+          "enum": null,
+          "description": "List of filenames to retrieve."
+        },
+        {
+          "name": "name",
+          "type": "STRING",
+          "required": true,
+          "enum": null,
+          "description": "The name of the skill."
+        }
+      ]
+    }
+  ]
+}

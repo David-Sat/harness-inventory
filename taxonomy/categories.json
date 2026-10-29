@@ -3,7 +3,7 @@
     {
       "id": "file_ops",
       "name": "File Operations",
-      "description": "Reading, writing, editing, and inspecting local files and directories."
+      "description": "Reading, writing, editing, and managing local files and directories."
     },
     {
       "id": "execution",
@@ -12,38 +12,48 @@
     },
     {
       "id": "search",
-      "name": "Search & Navigation",
-      "description": "Grep, regular expressions, symbol search, and codebase indexing."
+      "name": "Search & Codebase",
+      "description": "Codebase regex grep, symbol search, file finding, and resource searching."
     },
     {
       "id": "web_browser",
       "name": "Web & Browser",
-      "description": "Web search, web page extraction, and browser automation."
+      "description": "Web search, web page extraction, browser automation, and platform search."
     },
     {
       "id": "orchestration",
       "name": "Subagents & Orchestration",
-      "description": "Spawning child agents, task delegation, inter-agent messaging, and task management."
+      "description": "Spawning child agents, task delegation, inter-agent messaging, and workflow execution."
     },
     {
-      "id": "scheduling_memory",
+      "id": "scheduling",
       "name": "Scheduling & Lifecycle",
       "description": "Timers, cron jobs, reactive triggers, and background task monitoring."
     },
     {
-      "id": "interaction",
-      "name": "User Interaction",
-      "description": "User question modals, decision prompts, and interactive feedback."
+      "id": "memory",
+      "name": "Memory & Context",
+      "description": "Cross-session user memory, personal context, and persistent durable facts."
     },
     {
-      "id": "external_mcp",
-      "name": "MCP & Integrations",
-      "description": "Model Context Protocol tools, external servers, and connected APIs."
+      "id": "interaction",
+      "name": "User Interaction & Settings",
+      "description": "User question modals, decision prompts, interactive cards, and user/parental settings."
+    },
+    {
+      "id": "integrations",
+      "name": "Integrations & Connectors",
+      "description": "Model Context Protocol (MCP) tools, external services, plugins, and third-party connectors."
     },
     {
       "id": "generation",
-      "name": "Asset & Media Generation",
-      "description": "Image generation, UI mockups, and multimodal asset creation."
+      "name": "Asset & UI Generation",
+      "description": "Image generation, text-to-speech, charts, visual widgets, and UI display cards."
+    },
+    {
+      "id": "perception",
+      "name": "Multimodal Perception",
+      "description": "Viewing, inspecting, and analyzing images, video frames, and visual inputs."
     },
     {
       "id": "other",
