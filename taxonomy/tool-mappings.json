@@ -767,6 +767,70 @@
     "ListAgents": {
       "category": "orchestration",
       "canonical": "list_agents"
+    },
+    "swarm": {
+      "category": "orchestration",
+      "canonical": "manage_swarm"
+    },
+    "TaskCreate": {
+      "category": "orchestration",
+      "canonical": "create_task"
+    },
+    "TaskGet": {
+      "category": "orchestration",
+      "canonical": "get_task"
+    },
+    "TaskList": {
+      "category": "orchestration",
+      "canonical": "list_tasks"
+    },
+    "TaskUpdate": {
+      "category": "orchestration",
+      "canonical": "update_task"
+    },
+    "web.web__run": {
+      "category": "web_browser",
+      "canonical": "web_search"
+    },
+    "tools.apply_patch": {
+      "category": "file_ops",
+      "canonical": "edit_file"
+    },
+    "tools.create_goal": {
+      "category": "orchestration",
+      "canonical": "create_goal"
+    },
+    "tools.exec_command": {
+      "category": "execution",
+      "canonical": "run_shell_command"
+    },
+    "tools.get_goal": {
+      "category": "orchestration",
+      "canonical": "get_goal"
+    },
+    "tools.list_mcp_resource_templates": {
+      "category": "integrations",
+      "canonical": "list_mcp_resource_templates"
+    },
+    "tools.list_mcp_resources": {
+      "category": "integrations",
+      "canonical": "list_mcp_resources"
+    },
+    "tools.read_mcp_resource": {
+      "category": "integrations",
+      "canonical": "read_mcp_resource"
+    },
+    "tools.update_goal": {
+      "category": "orchestration",
+      "canonical": "update_goal"
+    },
+    "tools.view_image": {
+      "category": "perception",
+      "canonical": "analyze_image"
+    },
+    "tools.write_stdin": {
+      "category": "execution",
+      "canonical": "feed_stdin"
     }
   }
 }
