@@ -1,64 +1,68 @@
 {
   "categories": [
     {
-      "id": "file_ops",
-      "name": "File Operations",
-      "description": "Reading, writing, editing, and managing local files and directories."
-    },
-    {
-      "id": "execution",
-      "name": "Execution & Shell",
-      "description": "Running terminal commands, bash processes, and environment scripts."
-    },
-    {
-      "id": "search",
-      "name": "Search & Codebase",
-      "description": "Codebase regex grep, symbol search, file finding, and resource searching."
+      "id": "workspace_code",
+      "name": "Workspace & Code",
+      "description": "Local files, shell execution, and codebase search.",
+      "subcategories": [
+        { "id": "file_ops", "name": "File Operations" },
+        { "id": "execution", "name": "Execution & Shell" },
+        { "id": "search", "name": "Codebase Search" }
+      ]
     },
     {
       "id": "web_browser",
       "name": "Web & Browser",
-      "description": "Web search, web page extraction, browser automation, and platform search."
+      "description": "Web search, URL fetching, and browser automation.",
+      "subcategories": [
+        { "id": "web_search", "name": "Web Search" },
+        { "id": "web_fetch", "name": "Web Fetch" },
+        { "id": "browser_automation", "name": "Browser Automation" }
+      ]
     },
     {
-      "id": "orchestration",
-      "name": "Subagents & Orchestration",
-      "description": "Spawning child agents, task delegation, inter-agent messaging, and workflow execution."
-    },
-    {
-      "id": "scheduling",
-      "name": "Scheduling & Lifecycle",
-      "description": "Timers, cron jobs, reactive triggers, and background task monitoring."
-    },
-    {
-      "id": "memory",
-      "name": "Memory & Context",
-      "description": "Cross-session user memory, personal context, and persistent durable facts."
-    },
-    {
-      "id": "interaction",
-      "name": "User Interaction & Settings",
-      "description": "User question modals, decision prompts, interactive cards, and user/parental settings."
+      "id": "agents_scheduling",
+      "name": "Agents & Scheduling",
+      "description": "Subagents, orchestration, timers, cron, and background tasks.",
+      "subcategories": [
+        { "id": "orchestration", "name": "Orchestration & Subagents" },
+        { "id": "scheduling", "name": "Scheduling & Tasks" }
+      ]
     },
     {
       "id": "integrations",
-      "name": "Integrations & Connectors",
-      "description": "Model Context Protocol (MCP) tools, external services, plugins, and third-party connectors."
+      "name": "Integrations",
+      "description": "Third-party MCPs, external services, and plugin management.",
+      "subcategories": [
+        { "id": "connectors", "name": "External Connectors" },
+        { "id": "plugins", "name": "Plugins & Skills" }
+      ]
     },
     {
-      "id": "generation",
-      "name": "Asset & UI Generation",
-      "description": "Image generation, text-to-speech, charts, visual widgets, and UI display cards."
+      "id": "memory_interaction",
+      "name": "Memory & Interaction",
+      "description": "Cross-session memory, user prompts, and settings.",
+      "subcategories": [
+        { "id": "memory", "name": "Memory & Context" },
+        { "id": "interaction", "name": "User Interaction & Settings" }
+      ]
     },
     {
-      "id": "perception",
-      "name": "Multimodal Perception",
-      "description": "Viewing, inspecting, and analyzing images, video frames, and visual inputs."
+      "id": "media_perception",
+      "name": "Media & Perception",
+      "description": "Image/audio/UI generation and multimodal inspection.",
+      "subcategories": [
+        { "id": "generation", "name": "Asset & UI Generation" },
+        { "id": "perception", "name": "Multimodal Perception" }
+      ]
     },
     {
       "id": "other",
-      "name": "Other / Specialized",
-      "description": "Domain-specific or uncategorized tools."
+      "name": "Other / Unmapped",
+      "description": "Unmapped or domain-specific tools pending classification.",
+      "subcategories": [
+        { "id": "other", "name": "Other" }
+      ]
     }
   ]
 }

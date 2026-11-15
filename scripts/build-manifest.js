@@ -56,28 +56,6 @@ function findJsonFiles(dir) {
   return results;
 }
 
-function inferCategoryFromToolName(name) {
-  if (name.startsWith('mcp__Claude_Browser__') || name.startsWith('mcp__Web_search__') || name.startsWith('mcp__workspace__web_fetch')) {
-    return { category: 'web_browser', canonical: name.replace(/^mcp__/, '') };
-  }
-  if (name.startsWith('mcp__scheduled-tasks__')) {
-    return { category: 'scheduling', canonical: name.replace(/^mcp__scheduled-tasks__/, '') };
-  }
-  if (name.startsWith('mcp__workspace__bash') || name.startsWith('mcp__terminal__')) {
-    return { category: 'execution', canonical: name.replace(/^mcp__/, '') };
-  }
-  if (name.startsWith('mcp__cowork__create_artifact') || name.startsWith('mcp__cowork__update_artifact') || name.startsWith('mcp__cowork__list_artifacts')) {
-    return { category: 'file_ops', canonical: name.replace(/^mcp__cowork__/, '') };
-  }
-  if (name.startsWith('mcp__skills__') || name.startsWith('mcp__session_info__') || name.startsWith('mcp__ccd_session')) {
-    return { category: 'orchestration', canonical: name.replace(/^mcp__/, '') };
-  }
-  if (name.startsWith('mcp__')) {
-    return { category: 'integrations', canonical: name.replace(/^mcp__/, '') };
-  }
-  return { category: 'other', canonical: name };
-}
-
 function inferMetadata(harnessOrDir, fileName) {
   const s = (harnessOrDir + ' ' + fileName).toLowerCase();
   let surface = 'web';
@@ -119,6 +97,7 @@ function build() {
 
   const jsonFiles = findJsonFiles(DATA_DIR);
   const snapshots = [];
+  const unmappedTools = new Set();
 
   for (const filePath of jsonFiles) {
     const relativePath = path.relative(ROOT_DIR, filePath);
@@ -154,14 +133,19 @@ function build() {
     }
 
     const normalizedTools = (rawData.tools || []).map(tool => {
-      const mapping = mappings[tool.name] || inferCategoryFromToolName(tool.name);
-      const category = mapping.category || 'other';
+      const mapping = mappings[tool.name];
+      if (!mapping) {
+        unmappedTools.add(tool.name);
+      }
+      const category = mapping ? mapping.category : 'other';
+      const subcategory = mapping ? (mapping.subcategory || 'other') : 'other';
       categoryCounts[category] = (categoryCounts[category] || 0) + 1;
 
       return {
         name: tool.name,
-        canonical: mapping.canonical || tool.name,
+        canonical: (mapping && mapping.canonical) || tool.name,
         category,
+        subcategory,
         description: tool.description || '',
         parameters: normalizeParameters(tool.parameters)
       };
@@ -198,6 +182,12 @@ function build() {
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
   console.log(`Generated manifest.json with ${snapshots.length} snapshot(s).`);
+  if (unmappedTools.size > 0) {
+    console.warn(`Warning: ${unmappedTools.size} unmapped tool(s) defaulted to "other":`);
+    for (const name of [...unmappedTools].sort()) {
+      console.warn(`  - ${name}`);
+    }
+  }
 }
 
 build();
