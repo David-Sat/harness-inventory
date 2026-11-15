@@ -123,7 +123,7 @@
     "Glob": {
       "category": "workspace_code",
       "canonical": "find_files",
-      "subcategory": "file_ops"
+      "subcategory": "search"
     },
     "Grep": {
       "category": "workspace_code",
@@ -208,12 +208,12 @@
     "TaskOutput": {
       "category": "agents_scheduling",
       "canonical": "task_output",
-      "subcategory": "orchestration"
+      "subcategory": "scheduling"
     },
     "TaskStop": {
       "category": "agents_scheduling",
       "canonical": "task_stop",
-      "subcategory": "orchestration"
+      "subcategory": "scheduling"
     },
     "WebFetch": {
       "category": "web_browser",
@@ -278,7 +278,7 @@
     "api_tool.suggest_installs": {
       "category": "integrations",
       "canonical": "suggest_plugins",
-      "subcategory": "connectors"
+      "subcategory": "plugins"
     },
     "api_tool.search_plugins": {
       "category": "integrations",
@@ -328,17 +328,17 @@
     "google": {
       "category": "web_browser",
       "canonical": "web_search",
-      "subcategory": "browser_automation"
+      "subcategory": "web_search"
     },
     "retriever:expand_tools": {
-      "category": "agents_scheduling",
+      "category": "integrations",
       "canonical": "dynamic_tool_retrieval",
-      "subcategory": "orchestration"
+      "subcategory": "plugins"
     },
     "retriever:expand_skills": {
-      "category": "agents_scheduling",
+      "category": "integrations",
       "canonical": "dynamic_skill_retrieval",
-      "subcategory": "orchestration"
+      "subcategory": "plugins"
     },
     "skills:get_skill_resources": {
       "category": "integrations",
@@ -393,7 +393,7 @@
     "user_info.get_user_info": {
       "category": "memory_interaction",
       "canonical": "get_user_info",
-      "subcategory": "interaction"
+      "subcategory": "memory"
     },
     "summary_reader.read": {
       "category": "memory_interaction",
@@ -486,19 +486,19 @@
       "subcategory": "memory"
     },
     "functions.skill_manage": {
-      "category": "agents_scheduling",
+      "category": "integrations",
       "canonical": "manage_skills",
-      "subcategory": "orchestration"
+      "subcategory": "plugins"
     },
     "functions.skill_view": {
-      "category": "agents_scheduling",
+      "category": "integrations",
       "canonical": "view_skill",
-      "subcategory": "orchestration"
+      "subcategory": "plugins"
     },
     "functions.skills_list": {
-      "category": "agents_scheduling",
+      "category": "integrations",
       "canonical": "list_skills",
-      "subcategory": "orchestration"
+      "subcategory": "plugins"
     },
     "functions.terminal": {
       "category": "workspace_code",
@@ -523,7 +523,7 @@
     "functions.web_extract": {
       "category": "web_browser",
       "canonical": "fetch_url",
-      "subcategory": "browser_automation"
+      "subcategory": "web_fetch"
     },
     "functions.web_search": {
       "category": "web_browser",
@@ -568,12 +568,12 @@
     "open_page": {
       "category": "web_browser",
       "canonical": "fetch_url",
-      "subcategory": "browser_automation"
+      "subcategory": "web_fetch"
     },
     "open_page_with_find": {
       "category": "web_browser",
       "canonical": "search_page",
-      "subcategory": "browser_automation"
+      "subcategory": "web_fetch"
     },
     "view_image": {
       "category": "media_perception",
@@ -763,7 +763,7 @@
     "recommend_claude_apps": {
       "category": "integrations",
       "canonical": "recommend_apps",
-      "subcategory": "connectors"
+      "subcategory": "plugins"
     },
     "search_mcp_registry": {
       "category": "integrations",
@@ -776,9 +776,9 @@
       "subcategory": "plugins"
     },
     "search_skills": {
-      "category": "agents_scheduling",
+      "category": "integrations",
       "canonical": "search_skills",
-      "subcategory": "orchestration"
+      "subcategory": "plugins"
     },
     "step_card_display_v0": {
       "category": "media_perception",
@@ -801,9 +801,9 @@
       "subcategory": "plugins"
     },
     "suggest_skills": {
-      "category": "agents_scheduling",
+      "category": "integrations",
       "canonical": "suggest_skills",
-      "subcategory": "orchestration"
+      "subcategory": "plugins"
     },
     "translation_display_v0": {
       "category": "media_perception",
@@ -838,7 +838,7 @@
     "search_marketplace": {
       "category": "integrations",
       "canonical": "search_plugins",
-      "subcategory": "connectors"
+      "subcategory": "plugins"
     },
     "list_plugin_accounts": {
       "category": "integrations",
@@ -1127,7 +1127,7 @@
     },
     "mcp__ccd_host__clean_up_worktrees": {
       "category": "workspace_code",
-      "subcategory": "file_ops",
+      "subcategory": "execution",
       "canonical": "clean_up_worktrees"
     },
     "mcp__ccd_host__discard_kept_worktree": {
@@ -1146,8 +1146,8 @@
       "canonical": "open_in_editor"
     },
     "mcp__ccd_host__request_keep_awake": {
-      "category": "workspace_code",
-      "subcategory": "execution",
+      "category": "agents_scheduling",
+      "subcategory": "scheduling",
       "canonical": "request_keep_awake"
     },
     "mcp__ccd_host__reveal_path": {
@@ -1157,7 +1157,7 @@
     },
     "mcp__ccd_host__sync_with_base_branch": {
       "category": "workspace_code",
-      "subcategory": "file_ops",
+      "subcategory": "execution",
       "canonical": "sync_with_base_branch"
     },
     "mcp__cowork__allow_cowork_file_delete": {
@@ -1176,8 +1176,8 @@
       "canonical": "list_artifacts"
     },
     "mcp__cowork__present_files": {
-      "category": "workspace_code",
-      "subcategory": "file_ops",
+      "category": "memory_interaction",
+      "subcategory": "interaction",
       "canonical": "present_files"
     },
     "mcp__cowork__request_cowork_directory": {
@@ -1312,102 +1312,102 @@
     },
     "mcp__ccd_session_mgmt__archive_session": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "archive_session"
     },
     "mcp__ccd_session_mgmt__clear_session": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "clear_session"
     },
     "mcp__ccd_session_mgmt__delete_session": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "delete_session"
     },
     "mcp__ccd_session_mgmt__detach_session": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "detach_session"
     },
     "mcp__ccd_session_mgmt__export_transcript": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "export_transcript"
     },
     "mcp__ccd_session_mgmt__get_session": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "get_session"
     },
     "mcp__ccd_session_mgmt__get_usage": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "get_usage"
     },
     "mcp__ccd_session_mgmt__list_events": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "list_events"
     },
     "mcp__ccd_session_mgmt__list_sessions": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "list_sessions"
     },
     "mcp__ccd_session_mgmt__search_session_transcripts": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "search_session_transcripts"
     },
     "mcp__ccd_session_mgmt__send_message": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "send_message"
     },
     "mcp__ccd_session_mgmt__set_remote_control": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "set_remote_control"
     },
     "mcp__ccd_session_mgmt__set_session_effort": {
-      "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "category": "memory_interaction",
+      "subcategory": "interaction",
       "canonical": "set_session_effort"
     },
     "mcp__ccd_session_mgmt__set_session_fast_mode": {
-      "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "category": "memory_interaction",
+      "subcategory": "interaction",
       "canonical": "set_session_fast_mode"
     },
     "mcp__ccd_session_mgmt__set_session_model": {
-      "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "category": "memory_interaction",
+      "subcategory": "interaction",
       "canonical": "set_session_model"
     },
     "mcp__ccd_session_mgmt__set_session_output_style": {
-      "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "category": "memory_interaction",
+      "subcategory": "interaction",
       "canonical": "set_session_output_style"
     },
     "mcp__ccd_session_mgmt__set_session_permission_mode": {
-      "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "category": "memory_interaction",
+      "subcategory": "interaction",
       "canonical": "set_session_permission_mode"
     },
     "mcp__ccd_session_mgmt__set_session_title": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "set_session_title"
     },
     "mcp__ccd_session_mgmt__stop_session": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "stop_session"
     },
     "mcp__ccd_session_mgmt__unarchive_session": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "unarchive_session"
     },
     "mcp__ccd_turn__update_plan": {
@@ -1416,8 +1416,8 @@
       "canonical": "update_plan"
     },
     "mcp__ccd_turn__wrap_up": {
-      "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "category": "memory_interaction",
+      "subcategory": "interaction",
       "canonical": "wrap_up"
     },
     "mcp__scheduled-tasks__create_scheduled_task": {
@@ -1452,12 +1452,12 @@
     },
     "mcp__session_info__list_sessions": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "list_sessions"
     },
     "mcp__session_info__read_transcript": {
       "category": "agents_scheduling",
-      "subcategory": "orchestration",
+      "subcategory": "session_mgmt",
       "canonical": "read_transcript"
     },
     "mcp__ccd_session__read_widget_context": {
@@ -1477,107 +1477,107 @@
     },
     "mcp__ccd_sidebar__create_group": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_create_group"
     },
     "mcp__ccd_sidebar__create_section": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_create_section"
     },
     "mcp__ccd_sidebar__delete_group": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_delete_group"
     },
     "mcp__ccd_sidebar__delete_section": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_delete_section"
     },
     "mcp__ccd_sidebar__list_groups": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_list_groups"
     },
     "mcp__ccd_sidebar__list_sections": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_list_sections"
     },
     "mcp__ccd_sidebar__mark_completed": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_mark_completed"
     },
     "mcp__ccd_sidebar__move_sessions": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_move_sessions"
     },
     "mcp__ccd_sidebar__rename_group": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_rename_group"
     },
     "mcp__ccd_sidebar__rename_section": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_rename_section"
     },
     "mcp__ccd_sidebar__set_pinned": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_set_pinned"
     },
     "mcp__ccd_sidebar__set_unread": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_set_unread"
     },
     "mcp__ccd_sidebar__set_view": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "sidebar_set_view"
     },
     "mcp__ccd_view__close_pane": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "close_pane"
     },
     "mcp__ccd_view__get_layout": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "get_layout"
     },
     "mcp__ccd_view__set_transcript_view": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "set_transcript_view"
     },
     "mcp__ccd_view__show_pane": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "show_pane"
     },
     "mcp__ccd_window__close_split": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "close_split"
     },
     "mcp__ccd_window__get_window_layout": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "get_window_layout"
     },
     "mcp__ccd_window__open_session_in": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "open_session_in"
     },
     "mcp__ccd_window__set_sidebar_collapsed": {
       "category": "memory_interaction",
-      "subcategory": "interaction",
+      "subcategory": "ui_control",
       "canonical": "set_sidebar_collapsed"
     },
     "mcp__cowork__read_widget_context": {

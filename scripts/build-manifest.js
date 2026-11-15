@@ -183,9 +183,12 @@ function build() {
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
   console.log(`Generated manifest.json with ${snapshots.length} snapshot(s).`);
   if (unmappedTools.size > 0) {
-    console.warn(`Warning: ${unmappedTools.size} unmapped tool(s) defaulted to "other":`);
+    console.error(`\nError: ${unmappedTools.size} unmapped tool(s) found. Classify them using taxonomy/CATEGORIZATION.md into taxonomy/tool-mappings.json:`);
     for (const name of [...unmappedTools].sort()) {
-      console.warn(`  - ${name}`);
+      console.error(`  - ${name}`);
+    }
+    if (!process.argv.includes('--allow-unmapped')) {
+      process.exit(1);
     }
   }
 }

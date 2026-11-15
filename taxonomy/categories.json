@@ -26,7 +26,8 @@
       "description": "Subagents, orchestration, timers, cron, and background tasks.",
       "subcategories": [
         { "id": "orchestration", "name": "Orchestration & Subagents" },
-        { "id": "scheduling", "name": "Scheduling & Tasks" }
+        { "id": "scheduling", "name": "Scheduling & Tasks" },
+        { "id": "session_mgmt", "name": "Session Management" }
       ]
     },
     {
@@ -44,7 +45,8 @@
       "description": "Cross-session memory, user prompts, and settings.",
       "subcategories": [
         { "id": "memory", "name": "Memory & Context" },
-        { "id": "interaction", "name": "User Interaction & Settings" }
+        { "id": "interaction", "name": "User Interaction & Settings" },
+        { "id": "ui_control", "name": "App & UI Control" }
       ]
     },
     {

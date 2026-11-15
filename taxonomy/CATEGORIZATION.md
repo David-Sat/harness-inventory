@@ -26,12 +26,14 @@ Each entry in `mappings` maps an exact tool name to:
 3. **`agents_scheduling`**
    - `orchestration`: subagents, swarms, workflows, delegation, inter-agent messaging
    - `scheduling`: timers, cron jobs, background task status/kill
+   - `session_mgmt`: session CRUD, transcripts, history, archive/delete/export
 4. **`integrations`**
    - `connectors`: third-party MCPs and external services (Slack, GitHub, Linear, etc.)
    - `plugins`: plugin/skill/marketplace discovery and management
 5. **`memory_interaction`**
    - `memory`: cross-session memory, user context, persistent notes
    - `interaction`: user question modals, decision prompts, settings
+   - `ui_control`: desktop/IDE sidebar, pane, and window layout control
 6. **`media_perception`**
    - `generation`: image, audio/TTS, chart, or UI widget generation
    - `perception`: viewing/inspecting images, video, or visual inputs
