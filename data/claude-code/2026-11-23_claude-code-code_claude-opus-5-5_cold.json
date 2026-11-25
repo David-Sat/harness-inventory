@@ -1,0 +1,2694 @@
+{
+  "schema_version": "0.1",
+  "harness_reported": "Claude Code (Claude desktop app, Code tab)",
+  "model_reported": "claude-opus-5-5",
+  "tool_count_reported": 108,
+  "completeness": "partial",
+  "omissions_note": "All tool names and parameter names/required flags are listed. Long descriptions are truncated (marked [truncated]); MCP tool descriptions and parameter types/descriptions omitted (null/unknown) for length.",
+  "tools": [
+    {
+      "name": "Agent",
+      "description": "Launch a new agent to handle complex, multi-step tasks. Each agent type has specific capabilities and tools available to it. [truncated]",
+      "parameters": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "A short (3-5 word) description of the task"
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The task for the agent to perform"
+        },
+        {
+          "name": "subagent_type",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "The type of specialized agent to use for this task"
+        },
+        {
+          "name": "model",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "sonnet",
+            "opus",
+            "haiku",
+            "fable"
+          ],
+          "description": "Optional model override for this agent. [truncated]"
+        },
+        {
+          "name": "effort",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "description": "Reasoning effort for this agent. [truncated]"
+        },
+        {
+          "name": "isolation",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "worktree",
+            "remote"
+          ],
+          "description": "Isolation mode. \"worktree\" creates a temporary git worktree so the agent works on an isolated copy of the repo. \"remote\" launches the agent in a remote cloud environment (always runs in background; availability is gated)."
+        }
+      ]
+    },
+    {
+      "name": "AskUserQuestion",
+      "description": "Use this tool only when you are blocked on a decision that is genuinely the user's to make: one you cannot resolve from the request, the code, or sensible defaults. [truncated]",
+      "parameters": [
+        {
+          "name": "questions",
+          "type": "array",
+          "required": true,
+          "enum": null,
+          "description": "Questions to ask the user (1-4 questions)"
+        },
+        {
+          "name": "answers",
+          "type": "object",
+          "required": false,
+          "enum": null,
+          "description": "User answers collected by the permission component"
+        },
+        {
+          "name": "annotations",
+          "type": "object",
+          "required": false,
+          "enum": null,
+          "description": "Optional per-question annotations from the user (e.g., notes on preview selections). Keyed by question text."
+        },
+        {
+          "name": "metadata",
+          "type": "object",
+          "required": false,
+          "enum": null,
+          "description": "Optional metadata for tracking and analytics purposes. Not displayed to user."
+        }
+      ]
+    },
+    {
+      "name": "Bash",
+      "description": "Executes a bash command and returns its output. [truncated]",
+      "parameters": [
+        {
+          "name": "command",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The command to execute"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Clear, concise description of what this command does in active voice. [truncated]"
+        },
+        {
+          "name": "timeout",
+          "type": "number",
+          "required": false,
+          "enum": null,
+          "description": "Optional timeout in milliseconds (max 600000 for a foreground command)"
+        },
+        {
+          "name": "run_in_background",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "Set to true to run this command in the background."
+        },
+        {
+          "name": "dangerouslyDisableSandbox",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "Set this to true to dangerously override sandbox mode and run commands without sandboxing."
+        },
+        {
+          "name": "allowed_domains",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Hosts this sandboxed command needs to reach that the sandbox's network allowlist does not already cover [truncated]"
+        }
+      ]
+    },
+    {
+      "name": "CronCreate",
+      "description": "Schedule a prompt to be enqueued at a future time. Use for both recurring schedules and one-shot reminders. [truncated]",
+      "parameters": [
+        {
+          "name": "cron",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Standard 5-field cron expression in local time: \"M H DoM Mon DoW\" (e.g. \"*/5 * * * *\" = every 5 minutes, \"30 14 28 2 *\" = Feb 28 at 2:30pm local once)."
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The prompt to enqueue at each fire time."
+        },
+        {
+          "name": "recurring",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "true (default) = fire on every cron match until deleted or auto-expired after 30 days. false = fire once at the next match, then auto-delete. Use false for \"remind me at X\" one-shot requests with pinned minute/hour/dom/month."
+        },
+        {
+          "name": "durable",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "true = persist to .claude/scheduled_tasks.json and survive restarts [truncated]"
+        }
+      ]
+    },
+    {
+      "name": "CronDelete",
+      "description": "Cancel a cron job previously scheduled with CronCreate. Removes it from .claude/scheduled_tasks.json (durable jobs) or the in-memory session store (session-only jobs).",
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Job ID returned by CronCreate."
+        }
+      ]
+    },
+    {
+      "name": "CronList",
+      "description": "List all cron jobs scheduled via CronCreate, both durable (.claude/scheduled_tasks.json) and session-only.",
+      "parameters": []
+    },
+    {
+      "name": "Edit",
+      "description": "Performs exact string replacement in a file. [truncated]",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The absolute path to the file to modify"
+        },
+        {
+          "name": "old_string",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The text to replace"
+        },
+        {
+          "name": "new_string",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The text to replace it with (must be different from old_string)"
+        },
+        {
+          "name": "replace_all",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "Replace all occurrences of old_string (default false)"
+        }
+      ]
+    },
+    {
+      "name": "EnterPlanMode",
+      "description": "Use this tool proactively when you're about to start a non-trivial implementation task. [truncated]",
+      "parameters": []
+    },
+    {
+      "name": "EnterWorktree",
+      "description": "Use this tool ONLY when explicitly instructed to work in a worktree [truncated]",
+      "parameters": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Optional name for a new worktree. [truncated]"
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Path to an existing worktree to switch into instead of creating a new one. [truncated]"
+        }
+      ]
+    },
+    {
+      "name": "ExitPlanMode",
+      "description": "Use this tool when you are in plan mode and have finished writing your plan to the plan file and are ready for user approval. [truncated]",
+      "parameters": [
+        {
+          "name": "allowedPrompts",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Deprecated: no longer used."
+        }
+      ]
+    },
+    {
+      "name": "ExitWorktree",
+      "description": "Exit a worktree session created by EnterWorktree and return the session to the original working directory. [truncated]",
+      "parameters": [
+        {
+          "name": "action",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "keep",
+            "remove"
+          ],
+          "description": "\"keep\" leaves the worktree and branch on disk; \"remove\" deletes the worktree and, unless a hook made it or git refuses, its branch."
+        },
+        {
+          "name": "discard_changes",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "Required true when action is \"remove\" and the worktree has uncommitted files or unmerged commits. [truncated]"
+        }
+      ]
+    },
+    {
+      "name": "ListAgents",
+      "description": "Lists agents you can SendMessage to [truncated]",
+      "parameters": [
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Not available in this build; leave unset."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "The cursor the last line of a long listing gave, for its next page. Omit to list from the start."
+        },
+        {
+          "name": "q",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Not available in this build; leave unset."
+        }
+      ]
+    },
+    {
+      "name": "Monitor",
+      "description": "Start a background monitor that streams events from a long-running script. [truncated]",
+      "parameters": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Short human-readable description of what you are monitoring (shown in notifications)."
+        },
+        {
+          "name": "timeout_ms",
+          "type": "number",
+          "required": true,
+          "enum": null,
+          "description": "Kill the monitor after this deadline. Default 300000ms. Deadlines above 1800000ms are capped to 1800000ms. You are notified at expiry and can re-arm."
+        },
+        {
+          "name": "command",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Shell command or script. Each stdout line is an event; exit ends the watch."
+        },
+        {
+          "name": "ws",
+          "type": "object",
+          "required": false,
+          "enum": null,
+          "description": "WebSocket to open. Each text frame is an event; binary frames are reported as a placeholder line. Socket close ends the watch. Cannot be combined with command."
+        },
+        {
+          "name": "allowed_domains",
+          "type": "array",
+          "required": false,
+          "enum": null,
+          "description": "Hosts this sandboxed command needs to reach [truncated]"
+        }
+      ]
+    },
+    {
+      "name": "NotebookEdit",
+      "description": "Replaces, inserts, or deletes a single cell in a Jupyter notebook (.ipynb file). [truncated]",
+      "parameters": [
+        {
+          "name": "notebook_path",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The absolute path to the Jupyter notebook file to edit (must be absolute, not relative)"
+        },
+        {
+          "name": "new_source",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The new source for the cell"
+        },
+        {
+          "name": "cell_id",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "The ID of the cell to edit. [truncated]"
+        },
+        {
+          "name": "cell_type",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "code",
+            "markdown"
+          ],
+          "description": "The type of the cell (code or markdown). If not specified, it defaults to the current cell type. If using edit_mode=insert, this is required."
+        },
+        {
+          "name": "edit_mode",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "replace",
+            "insert",
+            "delete"
+          ],
+          "description": "The type of edit to make (replace, insert, delete). Defaults to replace."
+        }
+      ]
+    },
+    {
+      "name": "Read",
+      "description": "Reads a file from the local filesystem. [truncated]",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The absolute path to the file to read"
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "The line number to start reading from. Only provide if the file is too large to read at once"
+        },
+        {
+          "name": "limit",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "The number of lines to read. Only provide if the file is too large to read at once."
+        },
+        {
+          "name": "pages",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Page range for PDF files (e.g., \"1-5\", \"3\", \"10-20\"). Only applicable to PDF files. Maximum 20 pages per request."
+        },
+        {
+          "name": "allow_large",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "Set to true to read a text file, or a line range of one, that is over the usual size limits [truncated]"
+        }
+      ]
+    },
+    {
+      "name": "ReportFindings",
+      "description": "Report code-review findings as a typed list so the host UI can render them. [truncated]",
+      "parameters": [
+        {
+          "name": "findings",
+          "type": "array",
+          "required": true,
+          "enum": null,
+          "description": "Verified findings, most-severe first; empty if none survived"
+        },
+        {
+          "name": "level",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "description": "Effort level the review ran at"
+        }
+      ]
+    },
+    {
+      "name": "ScheduleWakeup",
+      "description": "Schedule when to resume work in /loop dynamic mode [truncated]",
+      "parameters": [
+        {
+          "name": "delaySeconds",
+          "type": "number",
+          "required": false,
+          "enum": null,
+          "description": "Seconds from now to wake up. Clamped to [60, 3600] by the runtime. Required unless `stop` is true."
+        },
+        {
+          "name": "noop",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "[truncated]"
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "[truncated]"
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "One short sentence explaining the chosen delay. [truncated]"
+        },
+        {
+          "name": "stop",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "Set to true to end the dynamic loop immediately instead of scheduling another wakeup. When true, all other fields are ignored and no further wakeups fire."
+        }
+      ]
+    },
+    {
+      "name": "SendMessage",
+      "description": "# SendMessage\n\nSend a message to another agent. [truncated]",
+      "parameters": [
+        {
+          "name": "to",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Recipient: a name from ListAgents [truncated]"
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Plain text message content. [truncated]"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "A 5-10 word label for your own transcript row (not transmitted [truncated]"
+        },
+        {
+          "name": "notify_when_idle",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "Ask a session ON THIS MACHINE to send you ONE notice when it next goes idle [truncated]"
+        }
+      ]
+    },
+    {
+      "name": "Skill",
+      "description": "Invoke a skill. [truncated]",
+      "parameters": [
+        {
+          "name": "skill",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The name of a skill from the available-skills list. Do not guess names."
+        },
+        {
+          "name": "args",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Optional arguments for the skill"
+        }
+      ]
+    },
+    {
+      "name": "TaskStop",
+      "description": "\n- Stops a running background task by its ID\n- Takes a task_id parameter identifying the task to stop\n- To stop an agent-team teammate, pass its agent ID or bare teammate name as task_id\n- To stop a background agent spawned with a name, pass that name as task_id\n- Returns a success or failure status\n- Use this tool when you need to terminate a long-running task\n",
+      "parameters": [
+        {
+          "name": "task_id",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "The ID of the background task to stop. Agent-team teammates and named background agents are also accepted by agent ID or name."
+        },
+        {
+          "name": "shell_id",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Deprecated: use task_id instead"
+        }
+      ]
+    },
+    {
+      "name": "WebFetch",
+      "description": "Fetches a URL, converts the page to markdown, and answers `prompt` against it using a small fast model. [truncated]",
+      "parameters": [
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The URL to fetch content from"
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The prompt to run on the fetched content"
+        },
+        {
+          "name": "offset",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "Character position in the page text to start reading from. Use it to read on through a page too long for one call, with the value the previous result gave."
+        }
+      ]
+    },
+    {
+      "name": "Workflow",
+      "description": "Execute a workflow script that orchestrates multiple subagents deterministically. [truncated]",
+      "parameters": [
+        {
+          "name": "script",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Self-contained workflow script. [truncated]"
+        },
+        {
+          "name": "scriptPath",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Path to a workflow script file on disk. [truncated]"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Name of a predefined workflow (built-in or from .claude/workflows/). Resolves to a self-contained script."
+        },
+        {
+          "name": "args",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "Optional input value exposed to the script as the global `args`, verbatim. [truncated]"
+        },
+        {
+          "name": "resumeFromRunId",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Run ID of a prior Workflow invocation to resume from. [truncated]"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Ignored — set the workflow description in the script's `meta` block."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Ignored — set the workflow title in the script's `meta` block."
+        }
+      ]
+    },
+    {
+      "name": "Write",
+      "description": "Writes a file to the local filesystem, overwriting if one exists. [truncated]",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The absolute path to the file to write (must be absolute, not relative)"
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The content to write to the file"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_directory__change_directory",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "path",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_directory__request_directory",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "path",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_host__clean_up_worktrees",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "older_than_days",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "include_uncommitted",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "delete_sessions",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "_consent",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "removes",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "sessions_deleted",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "uncommitted_changes_lost",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "worktrees",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_host__discard_kept_worktree",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "folder",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "_consent",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_host__get_storage_usage",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "refresh",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_host__open_in_editor",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "path",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "line",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "column",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "editor",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_host__request_keep_awake",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "until",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "reason",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "_coveredByApp",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_host__reveal_path",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "path",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_pr__bind_pr",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "url",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "_consent",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_pr__get_status",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_pr__set_auto_merge",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "enabled",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "url",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "merge_method",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_pr__set_monitor",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "auto_fix",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "address_comments",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "auto_archive_on_close",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "url",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_pr__unbind_pr",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "url",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session__dismiss_task",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "task_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "reason",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session__hand_off_to_session",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "title",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "remaining_plan",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session__list_start_targets",
+      "description": "unknown (omitted for length)",
+      "parameters": []
+    },
+    {
+      "name": "mcp__ccd_session__mark_chapter",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "title",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "summary",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session__read_widget_context",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "tool_name",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session__start_session",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "initiation",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "title",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "prompt",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "background",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "context",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "use_worktree",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "cwd",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "target",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "host",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "environment",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "preset",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "repository",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "source_branch",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "branch_name",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "model",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "effort",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "permission_mode",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "name",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "proposal_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "wake_when_done",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__archive_session",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "reason",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "_consent",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__clear_session",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__delete_session",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_ids",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "force_worktree_cleanup",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "reason",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "_consent",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__detach_session",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__export_transcript",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__get_session",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__get_usage",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__list_events",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "limit",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "before_uuid",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__list_sessions",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "include_archived",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "limit",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "linked",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "group",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__search_session_transcripts",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "query",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "include_archived",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "limit",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__send_message",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "message",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__set_remote_control",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "enabled",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__set_session_effort",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "effort",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__set_session_fast_mode",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "enabled",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__set_session_model",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "model",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__set_session_output_style",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "style",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "current_style",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__set_session_permission_mode",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "mode",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "current_mode",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "_consent",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__set_session_title",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "title",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "_consent",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__stop_session",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_session_mgmt__unarchive_session",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_settings__get_settings",
+      "description": "unknown (omitted for length)",
+      "parameters": []
+    },
+    {
+      "name": "mcp__ccd_settings__set_setting",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "key",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "_consent",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__create_group",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "name",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__create_section",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "name",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__delete_group",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "group_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__delete_section",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "section_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__list_groups",
+      "description": "unknown (omitted for length)",
+      "parameters": []
+    },
+    {
+      "name": "mcp__ccd_sidebar__list_sections",
+      "description": "unknown (omitted for length)",
+      "parameters": []
+    },
+    {
+      "name": "mcp__ccd_sidebar__mark_completed",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__move_sessions",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_ids",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "group_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "section_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__rename_group",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "group_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "name",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__rename_section",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "section_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "name",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__set_pinned",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "pinned",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__set_unread",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "unread",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_sidebar__set_view",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "group_by",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "last_activity",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "section_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "sort_by",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "status",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_turn__update_plan",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "items",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "scope",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "advance",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "done",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "start",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_turn__wrap_up",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "recap",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "ask",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "actions",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "blocked",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_view__close_pane",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "pane",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_view__get_layout",
+      "description": "unknown (omitted for length)",
+      "parameters": []
+    },
+    {
+      "name": "mcp__ccd_view__set_transcript_view",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "view",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_view__show_pane",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "pane",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "path",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "line",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "diff_scope",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "tab_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_window__close_split",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_window__get_window_layout",
+      "description": "unknown (omitted for length)",
+      "parameters": []
+    },
+    {
+      "name": "mcp__ccd_window__open_session_in",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "session_id",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "target",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__ccd_window__set_sidebar_collapsed",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "collapsed",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_click",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "selector",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "doubleClick",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_console_logs",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "level",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "lines",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_eval",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "expression",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_fill",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "selector",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_inspect",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "selector",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "styles",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_list",
+      "description": "unknown (omitted for length)",
+      "parameters": []
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_logs",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "level",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "lines",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "search",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_network",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "filter",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "requestId",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_resize",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "preset",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "width",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "height",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "colorScheme",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_screenshot",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "scale",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_snapshot",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_start",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "name",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Claude_Browser__preview_stop",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "serverId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__scheduled-tasks__create_scheduled_task",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "taskId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "prompt",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "description",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "cronExpression",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "fireAt",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "notifyOnCompletion",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "title",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__scheduled-tasks__delete_scheduled_task",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "taskId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__scheduled-tasks__list_scheduled_tasks",
+      "description": "unknown (omitted for length)",
+      "parameters": []
+    },
+    {
+      "name": "mcp__scheduled-tasks__list_task_runs",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "taskId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "limit",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__scheduled-tasks__run_scheduled_task",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "taskId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__scheduled-tasks__update_scheduled_task",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "taskId",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "cronExpression",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "description",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "enabled",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "fireAt",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "notifyOnCompletion",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "prompt",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "title",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__terminal__read_terminal",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "lines",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "tab_id",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        },
+        {
+          "name": "wait_for_output_ms",
+          "type": "unknown",
+          "required": false,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "mcp__Web_search__Tavily___web_search",
+      "description": "unknown (omitted for length)",
+      "parameters": [
+        {
+          "name": "query",
+          "type": "unknown",
+          "required": true,
+          "enum": null,
+          "description": "unknown"
+        }
+      ]
+    }
+  ]
+}

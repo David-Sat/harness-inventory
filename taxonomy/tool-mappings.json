@@ -1594,6 +1594,136 @@
       "category": "media_perception",
       "subcategory": "perception",
       "canonical": "screenshot_file_preview"
+    },
+    "apply_patch": {
+      "category": "workspace_code",
+      "subcategory": "file_ops",
+      "canonical": "apply_patch"
+    },
+    "create_goal": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "create_goal"
+    },
+    "cua_repl.js": {
+      "category": "web_browser",
+      "subcategory": "browser_automation",
+      "canonical": "cua_repl"
+    },
+    "cua_repl.js_reset": {
+      "category": "web_browser",
+      "subcategory": "browser_automation",
+      "canonical": "cua_repl_reset"
+    },
+    "exec": {
+      "category": "workspace_code",
+      "subcategory": "execution",
+      "canonical": "exec_js"
+    },
+    "exec_command": {
+      "category": "workspace_code",
+      "subcategory": "execution",
+      "canonical": "exec_command"
+    },
+    "followup_task": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "followup_task"
+    },
+    "get_goal": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "get_goal"
+    },
+    "interrupt_agent": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "interrupt_agent"
+    },
+    "js": {
+      "category": "web_browser",
+      "subcategory": "browser_automation",
+      "canonical": "cua_js"
+    },
+    "js_reset": {
+      "category": "web_browser",
+      "subcategory": "browser_automation",
+      "canonical": "cua_js_reset"
+    },
+    "list_agents": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "list_agents"
+    },
+    "list_mcp_resource_templates": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "list_mcp_resource_templates"
+    },
+    "list_mcp_resources": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "list_mcp_resources"
+    },
+    "read_mcp_resource": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "read_mcp_resource"
+    },
+    "request_permissions": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "request_permissions"
+    },
+    "request_user_input": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "request_user_input"
+    },
+    "run_workflow": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "run_workflow"
+    },
+    "spawn_agent": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "spawn_agent"
+    },
+    "update_focus": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "update_focus"
+    },
+    "update_goal": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "update_goal"
+    },
+    "update_steps": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "update_steps"
+    },
+    "wait": {
+      "category": "agents_scheduling",
+      "subcategory": "scheduling",
+      "canonical": "wait_exec"
+    },
+    "wait_agent": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "wait_agent"
+    },
+    "web__run": {
+      "category": "web_browser",
+      "subcategory": "web_search",
+      "canonical": "web_run"
+    },
+    "write_stdin": {
+      "category": "workspace_code",
+      "subcategory": "execution",
+      "canonical": "write_stdin"
     }
   }
 }
