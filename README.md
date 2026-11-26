@@ -106,17 +106,14 @@ export interface ToolParameter {
 
 Tools are grouped using canonical categories defined in `taxonomy/categories.json`:
 
-- `file_ops`: Reading, writing, editing, and managing local files and directories.
-- `execution`: Shell execution, scripts, container sessions, and REPL environments.
-- `search`: Codebase indexing, grep, regex search, and file finding.
-- `web_browser`: Web search, fetching URL content, and browser automation.
-- `orchestration`: Subagent creation, delegation, agent messaging, task workflows.
-- `scheduling`: Timers, cron tasks, session wakeups, lifecycle hooks, and task management.
-- `memory`: Cross-session user memory, personal context, and durable facts.
-- `interaction`: User prompts, question modals, choice dialogues, and settings.
-- `integrations`: MCP tools, external services, plugins, and third-party connectors.
-- `generation`: Image generation, text-to-speech, charts, and inline UI display cards.
-- `perception`: Multimodal inspection and analysis (images, video frames, visual inputs).
+- `workspace_code`: Local files, shell execution, and codebase search (`file_ops`, `execution`, `search`).
+- `web_browser`: General web search, URL fetching, and browser automation (`web_search`, `web_fetch`, `browser_automation`).
+- `domain_data`: Structured vertical data APIs for finance, weather, sports, places, and live lookups (`finance`, `live_data`).
+- `ui_artifacts`: Inline interactive UI cards, generative widgets, hosted artifacts, and first-party docs (`ui_widgets`, `artifacts_docs`).
+- `agents_scheduling`: Subagents, orchestration, timers, cron, and session management (`orchestration`, `scheduling`, `session_mgmt`).
+- `integrations`: Third-party MCPs, external connectors, and plugin/skill management (`connectors`, `plugins`).
+- `memory_interaction`: Cross-session memory, user prompts, settings, and app/UI chrome control (`memory`, `interaction`, `ui_control`).
+- `media_perception`: Image, video, and audio generation alongside multimodal inspection (`generation`, `perception`).
 - `other`: Specialized or unmapped tools fallback.
 
 ### Tool Mapping Logic

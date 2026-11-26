@@ -13,11 +13,29 @@
     {
       "id": "web_browser",
       "name": "Web & Browser",
-      "description": "Web search, URL fetching, and browser automation.",
+      "description": "General web search, URL fetching, and browser automation.",
       "subcategories": [
         { "id": "web_search", "name": "Web Search" },
         { "id": "web_fetch", "name": "Web Fetch" },
         { "id": "browser_automation", "name": "Browser Automation" }
+      ]
+    },
+    {
+      "id": "domain_data",
+      "name": "Domain & Live Data",
+      "description": "Structured vertical data APIs for finance, weather, sports, places, and live lookups.",
+      "subcategories": [
+        { "id": "finance", "name": "Finance & Markets" },
+        { "id": "live_data", "name": "Weather, Sports, Places & Live Data" }
+      ]
+    },
+    {
+      "id": "ui_artifacts",
+      "name": "Rich UI & Artifacts",
+      "description": "Inline interactive UI cards, generative widgets, hosted artifacts, and first-party docs.",
+      "subcategories": [
+        { "id": "ui_widgets", "name": "UI Widgets & Cards" },
+        { "id": "artifacts_docs", "name": "Artifacts & Docs" }
       ]
     },
     {
@@ -42,7 +60,7 @@
     {
       "id": "memory_interaction",
       "name": "Memory & Interaction",
-      "description": "Cross-session memory, user prompts, and settings.",
+      "description": "Cross-session memory, user prompts, settings, and app/UI chrome control.",
       "subcategories": [
         { "id": "memory", "name": "Memory & Context" },
         { "id": "interaction", "name": "User Interaction & Settings" },
@@ -51,10 +69,10 @@
     },
     {
       "id": "media_perception",
-      "name": "Media & Perception",
-      "description": "Image/audio/UI generation and multimodal inspection.",
+      "name": "Media & Multimodal",
+      "description": "Image, video, and audio generation alongside multimodal visual inspection.",
       "subcategories": [
-        { "id": "generation", "name": "Asset & UI Generation" },
+        { "id": "generation", "name": "Media Generation" },
         { "id": "perception", "name": "Multimodal Perception" }
       ]
     },

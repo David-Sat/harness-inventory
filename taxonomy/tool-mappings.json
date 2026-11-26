@@ -671,14 +671,14 @@
       "subcategory": "execution"
     },
     "chart_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_chart",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "comparison_card_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_comparison_card",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "create_file": {
       "category": "workspace_code",
@@ -691,14 +691,14 @@
       "subcategory": "interaction"
     },
     "featured_card_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_featured_card",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "fetch_sports_data": {
-      "category": "web_browser",
+      "category": "domain_data",
       "canonical": "fetch_sports_data",
-      "subcategory": "web_fetch"
+      "subcategory": "live_data"
     },
     "image_search": {
       "category": "web_browser",
@@ -706,39 +706,39 @@
       "subcategory": "web_search"
     },
     "itinerary_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_itinerary",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "link_preview_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_link_preview",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "message_compose_v1": {
-      "category": "memory_interaction",
+      "category": "ui_artifacts",
       "canonical": "compose_message",
-      "subcategory": "interaction"
+      "subcategory": "ui_widgets"
     },
     "options_card_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_options_card",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "places_list_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_places_list",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "places_map_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_places_map",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "places_search": {
-      "category": "web_browser",
+      "category": "domain_data",
       "canonical": "search_places",
-      "subcategory": "web_search"
+      "subcategory": "live_data"
     },
     "present_files": {
       "category": "workspace_code",
@@ -746,19 +746,19 @@
       "subcategory": "file_ops"
     },
     "product_carousel_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_product_carousel",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "quiz_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_quiz",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "recipe_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_recipe",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "recommend_claude_apps": {
       "category": "integrations",
@@ -781,9 +781,9 @@
       "subcategory": "plugins"
     },
     "step_card_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_step_card",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "str_replace": {
       "category": "workspace_code",
@@ -806,9 +806,9 @@
       "subcategory": "plugins"
     },
     "translation_display_v0": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_translation_card",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "view": {
       "category": "workspace_code",
@@ -816,9 +816,9 @@
       "subcategory": "file_ops"
     },
     "weather_fetch": {
-      "category": "web_browser",
+      "category": "domain_data",
       "canonical": "fetch_weather",
-      "subcategory": "web_fetch"
+      "subcategory": "live_data"
     },
     "web_fetch": {
       "category": "web_browser",
@@ -826,14 +826,14 @@
       "subcategory": "web_fetch"
     },
     "visualize:read_me": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "read_visualizer_spec",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "visualize:show_widget": {
-      "category": "media_perception",
+      "category": "ui_artifacts",
       "canonical": "render_visual_widget",
-      "subcategory": "generation"
+      "subcategory": "ui_widgets"
     },
     "search_marketplace": {
       "category": "integrations",
@@ -1166,13 +1166,13 @@
       "canonical": "allow_cowork_file_delete"
     },
     "mcp__cowork__create_artifact": {
-      "category": "workspace_code",
-      "subcategory": "file_ops",
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
       "canonical": "create_artifact"
     },
     "mcp__cowork__list_artifacts": {
-      "category": "workspace_code",
-      "subcategory": "file_ops",
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
       "canonical": "list_artifacts"
     },
     "mcp__cowork__present_files": {
@@ -1186,8 +1186,8 @@
       "canonical": "request_cowork_directory"
     },
     "mcp__cowork__update_artifact": {
-      "category": "workspace_code",
-      "subcategory": "file_ops",
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
       "canonical": "update_artifact"
     },
     "mcp__terminal__list_terminal_tabs": {
@@ -1724,6 +1724,496 @@
       "category": "workspace_code",
       "subcategory": "execution",
       "canonical": "write_stdin"
+    },
+    "Artifact": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "artifact"
+    },
+    "ArtifactComments": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "artifact_comments"
+    },
+    "ArtifactData": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "artifact_data"
+    },
+    "ListConnectors": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "list_connectors"
+    },
+    "ListMcpResourcesTool": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "list_mcp_resources"
+    },
+    "ListPlugins": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "list_plugins"
+    },
+    "ListSkills": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "list_skills"
+    },
+    "ReadMcpResourceDirTool": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "read_mcp_resource_dir"
+    },
+    "ReadMcpResourceTool": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "read_mcp_resource"
+    },
+    "ReadNotifications": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "read_notifications"
+    },
+    "SearchMcpRegistry": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "search_mcp_registry"
+    },
+    "SearchPlugins": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "search_plugins"
+    },
+    "SearchSkills": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "search_skills"
+    },
+    "SendUserFile": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "send_user_file"
+    },
+    "SendUserMessage": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "send_user_message"
+    },
+    "ShowOnboardingRolePicker": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "show_onboarding_role_picker"
+    },
+    "SuggestConnectors": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "suggest_connectors"
+    },
+    "SuggestPluginInstall": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "suggest_plugin_install"
+    },
+    "SuggestSkills": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "suggest_skills"
+    },
+    "ToolSearch": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "tool_search"
+    },
+    "mcp__Claude_Docs__batch": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "claude_docs_batch"
+    },
+    "mcp__Claude_Docs__create": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "claude_docs_create"
+    },
+    "mcp__Claude_Docs__delete": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "claude_docs_delete"
+    },
+    "mcp__Claude_Docs__export": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "claude_docs_export"
+    },
+    "mcp__Claude_Docs__guide": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "claude_docs_guide"
+    },
+    "mcp__Claude_Docs__query": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "claude_docs_query"
+    },
+    "mcp__Claude_Docs__read": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "claude_docs_read"
+    },
+    "mcp__Claude_Docs__update": {
+      "category": "ui_artifacts",
+      "subcategory": "artifacts_docs",
+      "canonical": "claude_docs_update"
+    },
+    "mcp__claude-code-remote__add_repo": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "add_github_repo"
+    },
+    "mcp__claude-code-remote__list_repos": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "list_github_repos"
+    },
+    "mcp__claude_ai__current_time": {
+      "category": "agents_scheduling",
+      "subcategory": "scheduling",
+      "canonical": "current_time"
+    },
+    "mcp__claude_ai__end_conversation": {
+      "category": "agents_scheduling",
+      "subcategory": "session_mgmt",
+      "canonical": "end_conversation"
+    },
+    "mcp__claude_ai__image_search": {
+      "category": "web_browser",
+      "subcategory": "web_search",
+      "canonical": "image_search"
+    },
+    "mcp__claude_ai__read_research_report": {
+      "category": "web_browser",
+      "subcategory": "web_fetch",
+      "canonical": "read_research_report"
+    },
+    "mcp__claude_ai__show_recommendation_cards": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "show_recommendation_cards"
+    },
+    "mcp__claude_ai__us_election_info": {
+      "category": "domain_data",
+      "subcategory": "live_data",
+      "canonical": "us_election_info"
+    },
+    "mcp__visualize__read_me": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "visualize_read_me"
+    },
+    "mcp__visualize__show_widget": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "show_widget"
+    },
+    "mcp__widgets__chart_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "chart_display"
+    },
+    "mcp__widgets__comparison_card_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "comparison_card_display"
+    },
+    "mcp__widgets__featured_card_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "featured_card_display"
+    },
+    "mcp__widgets__fetch_sports_data": {
+      "category": "domain_data",
+      "subcategory": "live_data",
+      "canonical": "fetch_sports_data"
+    },
+    "mcp__widgets__itinerary_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "itinerary_display"
+    },
+    "mcp__widgets__link_preview_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "link_preview_display"
+    },
+    "mcp__widgets__message_compose_v1": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "message_compose"
+    },
+    "mcp__widgets__options_card_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "options_card_display"
+    },
+    "mcp__widgets__places_list_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "places_list_display"
+    },
+    "mcp__widgets__places_map_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "places_map_display"
+    },
+    "mcp__widgets__places_search": {
+      "category": "domain_data",
+      "subcategory": "live_data",
+      "canonical": "places_search"
+    },
+    "mcp__widgets__product_carousel_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "product_carousel_display"
+    },
+    "mcp__widgets__quiz_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "quiz_display"
+    },
+    "mcp__widgets__recipe_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "recipe_display"
+    },
+    "mcp__widgets__step_card_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "step_card_display"
+    },
+    "mcp__widgets__translation_display_v0": {
+      "category": "ui_artifacts",
+      "subcategory": "ui_widgets",
+      "canonical": "translation_display"
+    },
+    "mcp__widgets__weather_fetch": {
+      "category": "domain_data",
+      "subcategory": "live_data",
+      "canonical": "weather_fetch"
+    },
+    "propose_skills": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "propose_skills"
+    },
+    "create_image": {
+      "category": "media_perception",
+      "subcategory": "generation",
+      "canonical": "create_image"
+    },
+    "create_video": {
+      "category": "media_perception",
+      "subcategory": "generation",
+      "canonical": "create_video"
+    },
+    "weather_forecast": {
+      "category": "domain_data",
+      "subcategory": "live_data",
+      "canonical": "weather_forecast"
+    },
+    "sports_search": {
+      "category": "domain_data",
+      "subcategory": "live_data",
+      "canonical": "sports_search"
+    },
+    "get_device_location": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "get_device_location"
+    },
+    "ask_user_question": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "ask_user_question"
+    },
+    "call_external_tool": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "call_external_tool"
+    },
+    "confirm_action": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "confirm_action"
+    },
+    "describe_external_tools": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "describe_external_tools"
+    },
+    "execute_python": {
+      "category": "workspace_code",
+      "subcategory": "execution",
+      "canonical": "execute_python"
+    },
+    "fetch_url": {
+      "category": "web_browser",
+      "subcategory": "web_fetch",
+      "canonical": "fetch_url"
+    },
+    "list_external_tools": {
+      "category": "integrations",
+      "subcategory": "connectors",
+      "canonical": "list_external_tools"
+    },
+    "finance_tickers_lookup": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_tickers_lookup"
+    },
+    "finance_quotes": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_quotes"
+    },
+    "finance_watchlist_fetch": {
+      "category": "memory_interaction",
+      "subcategory": "memory",
+      "canonical": "finance_watchlist_fetch"
+    },
+    "finance_earnings_history": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_earnings_history"
+    },
+    "finance_earnings_schedule": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_earnings_schedule"
+    },
+    "finance_earnings_transcript": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_earnings_transcript"
+    },
+    "finance_institutional_holders": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_institutional_holders"
+    },
+    "finance_insider_transactions": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_insider_transactions"
+    },
+    "finance_ohlcv_histories": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_ohlcv_histories"
+    },
+    "finance_company_financials": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_company_financials"
+    },
+    "finance_financials": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_financials"
+    },
+    "finance_stock_screener": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_stock_screener"
+    },
+    "finance_company_peers": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_company_peers"
+    },
+    "finance_company_profile": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_company_profile"
+    },
+    "finance_market_gainers": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_market_gainers"
+    },
+    "finance_market_losers": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_market_losers"
+    },
+    "finance_market_most_active": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_market_most_active"
+    },
+    "finance_politician_list": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_politician_list"
+    },
+    "finance_politician_holdings": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_politician_holdings"
+    },
+    "finance_politician_trades": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_politician_trades"
+    },
+    "finance_politician_ticker_holders": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_politician_ticker_holders"
+    },
+    "finance_segments": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_segments"
+    },
+    "finance_estimates": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_estimates"
+    },
+    "finance_adjusted_metrics": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_adjusted_metrics"
+    },
+    "finance_analyst_research": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_analyst_research"
+    },
+    "finance_company_ratios": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_company_ratios"
+    },
+    "finance_macro_snapshot": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_macro_snapshot"
+    },
+    "finance_macro_history": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_macro_history"
+    },
+    "finance_etf_holdings": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_etf_holdings"
+    },
+    "finance_private_company_info": {
+      "category": "domain_data",
+      "subcategory": "finance",
+      "canonical": "finance_private_company_info"
     }
   }
 }

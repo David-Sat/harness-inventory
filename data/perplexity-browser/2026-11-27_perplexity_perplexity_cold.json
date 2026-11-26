@@ -1,0 +1,1622 @@
+{
+    "schema_version": "0.1",
+    "harness_reported": "unknown",
+    "model_reported": "Perplexity",
+    "tool_count_reported": 37,
+    "completeness": "complete",
+    "omissions_note": "",
+    "tools": [
+        {
+            "name": "call_external_tool",
+            "description": "Execute a tool on an external connector (send an email, create a Notion page, search Slack, search GitHub, etc.). If a previous tool call returned a validation error, READ the error message and retry with the corrected shape — do not give up and explain manual alternatives to the user; the connector tools are how this query gets answered.\n\nIMPORTANT: For irreversible actions (send_*, post_*, create_*, save_*, update_*, delete_*, add_*, remove_*, make_*, export_*, or any tool that changes external state): (1) resolve ambiguous references first — look up the actual user, channel, file ID, etc. — before asking for confirmation; (2) then call `confirm_action` with the fully-resolved target in `question` (e.g., \"Send a DM to Alice Bell (@abell)?\", not \"Send a message to alice?\") and the complete draft in `placeholder`; (3) perform the action with exactly the target and content the user approved — don't change recipients, IDs, or content after approval. If new information would change the action, call `confirm_action` again.\n\nSeparately, workspace policy may require the user's explicit approval for a specific tool. When that happens this call pauses with approval_required=true and the user answers an approval prompt out-of-band — conversation text is never that approval. If the pause result later shows the user allowed it, call this tool again with the exact same source_id, tool_name, and arguments; if it shows deny, do not retry unless the user asks again later.\n\nIf the response has requires_auth=true, the connector needs OAuth: surface the auth_url to the user, then re-issue the call after they authenticate. Premium-datasource tools (Cashmere, NEJM, etc.) automatically register their sources as citations; cite them with the provided source ids using bracketed  markers.",
+            "parameters": [
+                {
+                    "name": "user_description",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "A brief, user-friendly description of what you're doing. Example: 'Searching your emails for receipts' or 'Creating a new Notion page'. Shown in the activity timeline."
+                },
+                {
+                    "name": "tool_name",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Exact tool name from describe_external_tools results (e.g. 'search_email', 'connect')."
+                },
+                {
+                    "name": "source_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The source_id from list_external_tools results (e.g. 'gcal', 'notion_mcp'). Use 'gcal' for both Gmail and Google Calendar. Required for routing."
+                },
+                {
+                    "name": "arguments",
+                    "type": "object",
+                    "required": false,
+                    "enum": null,
+                    "description": "Arguments for the connector tool, nested under this field. Pass `{}` (or omit) for tools that take no parameters."
+                }
+            ]
+        },
+        {
+            "name": "confirm_action",
+            "description": "Request user confirmation before any irreversible, expensive, or side-effecting action — sending communications, making purchases, creating/updating/deleting records via external connectors. Pass the exact `intended_source_id`, `intended_tool_name`, and `intended_arguments` of the upcoming call_external_tool call so the gate can bind this approval to that specific write. Also pass the resolved arguments in `placeholder` for the user to review. The user approves or denies on their next message.",
+            "parameters": [
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Short action label (e.g., 'send', 'create', 'delete', 'purchase')."
+                },
+                {
+                    "name": "question",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Brief confirmation question for the user, ending with a question mark."
+                },
+                {
+                    "name": "placeholder",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The exact arguments that will be passed to the upcoming write tool — every field that will be sent. Don't summarize; show the resolved data. Anything missing here is something the user can't review."
+                },
+                {
+                    "name": "intended_source_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The `source_id` of the connector you will invoke immediately after this confirmation (e.g., 'linear_native', 'slack')."
+                },
+                {
+                    "name": "intended_tool_name",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The `tool_name` of the upcoming call_external_tool call (e.g., 'save_issue', 'post_message'). Must match exactly."
+                },
+                {
+                    "name": "intended_arguments",
+                    "type": "object",
+                    "required": false,
+                    "enum": null,
+                    "description": "The exact `arguments` dict you will pass to the upcoming call_external_tool call. The write gate compares this verbatim against the actual call's arguments; any mismatch fails closed and you must request fresh confirmation."
+                }
+            ]
+        },
+        {
+            "name": "describe_external_tools",
+            "description": "Fetch full descriptions and input schemas for specific tools within a single connector. Always call this before call_external_tool — the list_external_tools response only contains truncated descriptions and no input schemas, so you don't yet know what arguments to pass. Exception: the 'connect' tool has an empty schema and can be invoked directly.",
+            "parameters": [
+                {
+                    "name": "source_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Connector source ID (e.g. 'google_drive', 'slack', 'notion'). Use the source_id returned by list_external_tools."
+                },
+                {
+                    "name": "tool_names",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Names of tools (within the given source) to describe. Use the tool names returned by list_external_tools for this source."
+                }
+            ]
+        },
+        {
+            "name": "execute_python",
+            "description": "Executes Python code in a Jupyter notebook environment that keeps state across multiple calls within the current response. Variables, functions, and imports persist between executions in that response, enabling iterative development and analysis. Each new user message starts a fresh environment. Each execution has a 30-second timeout and returns standard output or error messages. This tool supports data analysis, calculations, algorithm implementation, file processing, and chart creation. For charts and plots, write matplotlib code that saves PNG files to `output/`; saved images are shown to the user. Message-attached files are pre-loaded into the current working directory before your first execution—access them by their exact filename (e.g. open('report.pdf')), never by URL or an absolute path like /mnt/data, which does not exist in this environment. The environment includes standard data science libraries, which can be accessed via import statements. To read PDFs, use pypdf or pdfplumber; PyMuPDF (fitz) and PyPDF2 are not installed. Write the outputs of your data analysis to a file—CSV for tabular data, or a document file such as PDF when the user asks for one. DO NOT use this tool for simple calculations or lookups that can be answered directly without code execution. DO NOT include verbose comments explaining your reasoning in the code—perform all reasoning before calling this tool. Code should be concise and focused on actual computation, not documentation.",
+            "parameters": [
+                {
+                    "name": "code",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The Python code to execute. Code must be syntactically valid and properly indented. Variables, functions, and imported modules persist across calls within this response only. Each new user message starts a fresh Python session: state and files created by code in earlier turns are not available, so re-run any needed imports and definitions in the same call that uses them. DO NOT include excessive inline comments or reasoning—code should be self-explanatory. Avoid using print() statements with only static text; code should produce computed results, not echo predetermined conclusions."
+                }
+            ]
+        },
+        {
+            "name": "fetch_url",
+            "description": "Navigate to URLs and extract their content. Returns the page title and text content for each URL. Use this to read the full content of web pages found via search_web.",
+            "parameters": [
+                {
+                    "name": "urls",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Up to 3 URLs to navigate to and extract content from. Prioritize the pages most important to the answer."
+                }
+            ]
+        },
+        {
+            "name": "list_external_tools",
+            "description": "Discover available external connectors (Gmail, Slack, Notion, Google Drive, etc.) and their tools. Optionally filter by query keywords. Returns each connector's source_id, display name, connection status, and a list of tool name/description summaries. Call describe_external_tools afterwards for any tool you intend to invoke — descriptions here are truncated and don't include input schemas. If a connector's status is DISCONNECTED, tell the user to connect the service via the Connectors page in their settings, then retry.",
+            "parameters": [
+                {
+                    "name": "user_description",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "A brief, user-friendly label for what you're looking for. Example: 'Finding email integrations' or 'Checking available Slack tools'. Shown in the activity timeline."
+                },
+                {
+                    "name": "queries",
+                    "type": "array",
+                    "required": false,
+                    "enum": null,
+                    "description": "Search keywords to filter connectors and tools. Use short, single-word queries, with at most 3 per call. Multiple queries are run in parallel. Case-insensitive. Use 'select:<source_id>' (e.g. 'select:google_drive,github') to fetch a single connector's tools by exact ID."
+                }
+            ]
+        },
+        {
+            "name": "search_web",
+            "description": "Searches the web for current and factual information, returning relevant results with titles, URLs, and content snippets. Use for questions about up-to-date or externally verified information. Structure your search by independent intents: each entry in `searches` is executed as a separate search for ONE specific entity or sub-question, with one short keyword query in `query`.\n\nBest practices:\n- Use a single entry in `searches` when the user asks about one topic or question\n- Create a separate entry in `searches` for each distinct entity, person, product, or independent sub-question (up to 3 entries per call):\n  Preferred: {\"searches\": [{\"query\": \"Brand A review\"}, {\"query\": \"Brand B review\"}]}\n  Not: {\"searches\": [{\"query\": \"Brand A vs Brand B review\"}]}\n- Keep each search focused and omit filler words.\n- Do not add identifiers that were not provided by the user, prior conversation, or tool results. This includes years, editions, hosts, venues, candidates, opponents, model names, titles, and versions.\n- For ambiguous recurring or time-sensitive topics, use neutral freshness terms such as \"latest\", \"next\", or \"upcoming\" instead of assuming a specific event, date, or outcome.",
+            "parameters": [
+                {
+                    "name": "language",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Two-letter ISO 639-1 code of the language the user wrote their question in (e.g. \"en\", \"ru\", \"de\"), regardless of the language of the queries. Always provide it."
+                },
+                {
+                    "name": "searches",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Independent search intents to execute in parallel. Create a separate search for each distinct entity, topic, or sub-question (at most 3 entries per call)."
+                }
+            ]
+        },
+        {
+            "name": "finance_tickers_lookup",
+            "description": "Resolve ticker symbols for stocks, ETFs, indexes, commodities, and crypto. Handles format variations (BRK.B vs BRK-B), fuzzy names, and international suffixes (.F, .L, .KS). Prerequisite for any tool that takes ticker_symbols. Requires the finance skill — call load_skill first.",
+            "parameters": [
+                {
+                    "name": "queries",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of search queries for any financial instrument. Pass through user's phrasing when possible. Example: for query 'what is the price of NVDA, Reliance, and SQ?' use [\"NVDA\", \"Reliance\", \"SQ\"]. More examples of possible input: 'Apple', 'AAPL', 'gold', 'Bitcoin', 'S&P 500', 'crude oil', 'VTI', 'BRK-A'."
+                }
+            ]
+        },
+        {
+            "name": "finance_quotes",
+            "description": "Real-time quotes for stocks, crypto, ETFs, or indexes — today's snapshot only. Returns csv_files. Use finance_tickers_lookup first. For price history use finance_ohlcv_histories.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"AAPL\"], [\"GOOGL\", \"META\", \"SNAP\"], [\"QQQ\"], [\"BTCUSD\"]."
+                },
+                {
+                    "name": "fields",
+                    "type": "array",
+                    "required": false,
+                    "enum": [
+                        "price",
+                        "currency",
+                        "change",
+                        "changesPercentage",
+                        "marketCap",
+                        "pe",
+                        "eps",
+                        "volume",
+                        "avgVolume",
+                        "dayLow",
+                        "dayHigh",
+                        "yearLow",
+                        "yearHigh",
+                        "previousClose",
+                        "open",
+                        "dividendYieldTTM",
+                        "afterHoursPrice",
+                        "afterHoursChange",
+                        "afterHoursPercentChange"
+                    ],
+                    "description": "Required list of quote fields to include. Only request fields needed for the analysis."
+                }
+            ]
+        },
+        {
+            "name": "finance_watchlist_fetch",
+            "description": "User's Perplexity Finance watchlist (stocks they track) — not their brokerage holdings. Requires the finance skill — call load_skill first.",
+            "parameters": [
+                {
+                    "name": "symbols",
+                    "type": "array",
+                    "required": false,
+                    "enum": null,
+                    "description": "List of ticker symbols in the user's watchlist."
+                }
+            ]
+        },
+        {
+            "name": "finance_earnings_history",
+            "description": "Historical earnings actuals vs consensus estimates, beat/miss, and post-earnings price moves. Returns csv_files. Use finance_tickers_lookup first.\n\nUSAGE PATTERNS:\n\n1. ACTUALS VS CONSENSUS ESTIMATES:\n- \"AAPL earnings actuals vs consensus estimates\" → ticker_symbols=[\"AAPL\"], limit=8\n- \"Tesla revenue and EPS beat/miss history\" → ticker_symbols=[\"TSLA\"], limit=8\n\n2. COMPARE EARNINGS ACROSS COMPANIES:\n- \"Compare AAPL and MSFT earnings history\" → ticker_symbols=[\"AAPL\", \"MSFT\"], limit=4\n\n3. HISTORICAL EARNINGS FOR SPECIFIC PERIOD (use as_of parameters to anchor the window):\n- \"NVDA earnings from Q3 2024 back 4 quarters\" → ticker_symbols=[\"NVDA\"], as_of_fiscal_year=2024, as_of_fiscal_quarter=3, limit=4\n  (returns Q3 2024, Q2 2024, Q1 2024, Q4 2023)\n\nNOTE: Uses fiscal year/quarter. Data goes backward from as_of period (or most recent if omitted).",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"AAPL\"], [\"NFLX\", \"DIS\", \"WBD\"], [\"AMD\"]."
+                },
+                {
+                    "name": "period_type",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "annual",
+                        "quarterly"
+                    ],
+                    "description": "Reporting period."
+                },
+                {
+                    "name": "as_of_fiscal_quarter",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The most recent fiscal quarter to include (1-4). Data goes backward from this quarter."
+                },
+                {
+                    "name": "as_of_fiscal_year",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The most recent fiscal year to include. Data goes backward from this year. Omit to use most recent available data."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "How many prior reporting periods to return, going backward from the as_of period."
+                }
+            ]
+        },
+        {
+            "name": "finance_earnings_schedule",
+            "description": "Upcoming and past earnings release dates for US companies. Returns citable csv_files.\n\nUSAGE PATTERNS:\n\n1. CALENDAR (all companies reporting within a date window):\n- \"earnings this week\" → start_date=\"2025-02-03\", end_date=\"2025-02-07\"\n\n2. TICKER + DATE RANGE (specific company within a date window):\n- \"Apple earnings in February\" → ticker_symbols=[\"AAPL\"], start_date=\"2025-02-01\", end_date=\"2025-02-28\"\n\n3. TICKER + FISCAL PERIOD (earnings date for a specific fiscal period):\n- \"Apple Q4 2024 earnings\" → ticker_symbols=[\"AAPL\"], as_of_fiscal_year=2024, as_of_fiscal_quarter=4\n\n4. MULTIPLE TICKERS (batch multiple companies in a single call):\n- \"when do the Magnificent 7 report next\" → ticker_symbols=[\"AAPL\", \"MSFT\", \"GOOGL\", \"AMZN\", \"META\", \"NVDA\", \"TSLA\"], direction=\"upcoming\"\n\n5. LAST N EARNINGS (most recent past earnings dates):\n- \"when were AAPL's last 3 earnings\" → ticker_symbols=[\"AAPL\"], direction=\"past\", limit=3\n\n6. NEXT N EARNINGS (upcoming scheduled earnings dates):\n- \"NVDA next 4 earnings dates\" → ticker_symbols=[\"NVDA\"], direction=\"upcoming\", limit=4\n- \"when does Apple report next\" → ticker_symbols=[\"AAPL\"], direction=\"upcoming\"\n\nNOTE: Batch multiple tickers in one call instead of calling once per ticker.\nNOTE: Past and upcoming dates are fetched separately. For both, call this tool twice.\nNOTE: For detailed earnings metrics (EPS, revenue, beat/miss), use finance_earnings_history.\nNOTE: For earnings call transcripts, use finance_earnings_transcript.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": false,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"MSFT\"], [\"GOOGL\", \"META\", \"SNAP\"], [\"JPM\"]. Leave empty for all earnings in date range."
+                },
+                {
+                    "name": "direction",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "past",
+                        "upcoming"
+                    ],
+                    "description": "Historical or future earnings dates. Omit when using date range or fiscal period filters."
+                },
+                {
+                    "name": "start_date",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Start of date range (YYYY-MM-DD). Use for calendar-based queries like 'this week' or 'next month'."
+                },
+                {
+                    "name": "end_date",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "End of date range (YYYY-MM-DD). Use with start_date for calendar-based queries."
+                },
+                {
+                    "name": "as_of_fiscal_year",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Fiscal year to look up. Use for period-based queries like 'Q4 2024'."
+                },
+                {
+                    "name": "as_of_fiscal_quarter",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Fiscal quarter to look up (1-4). Use with as_of_fiscal_year for specific quarter queries."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of earnings events to return per ticker. Use >1 for queries like 'last 4 quarters'."
+                }
+            ]
+        },
+        {
+            "name": "finance_earnings_transcript",
+            "description": "Earnings call transcript CSVs (LLM-selected passages or full verbatim rows) for a US company. Use finance_tickers_lookup first. Requires the finance skill — call load_skill first.\n\nUSAGE PATTERNS:\n\n1. RECENT TRANSCRIPT (omit as_of parameters, just use limit):\n- \"Tesla's latest earnings call\" → limit=1\n- \"Apple's last 3 earnings calls\" → limit=3\n\n2. HISTORICAL TRANSCRIPT (use as_of_fiscal_year/quarter + limit to select a range going backward):\n- \"Microsoft Q2 2023 earnings call\" → as_of_fiscal_year=2023, as_of_fiscal_quarter=2, limit=1\n- \"NVDA earnings calls from Q3 2024 back 3 quarters\" → as_of_fiscal_year=2024, as_of_fiscal_quarter=3, limit=3\n  (returns Q3 2024, Q2 2024, Q1 2024)\n\n3. FULL TRANSCRIPT (use return_full_transcript=true to include every verbatim transcript row):\n- \"Full transcript of NVDA Q3 2024 earnings\" → as_of_fiscal_year=2024, as_of_fiscal_quarter=3, limit=1, return_full_transcript=True\n\nNOTE: By default, the LLM selects the most relevant transcript passages for the query and returns them as CSV rows with per-cell timestamp deep-link citations.\nNOTE: Set return_full_transcript=true when every verbatim transcript row is needed. Both modes materialize one CSV per earnings call in the workspace; the only difference is selected rows versus all rows.\nNOTE: Uses fiscal year/quarter to select which earnings call(s) to fetch. Data goes backward from as_of period (or most recent if omitted). Use limit to fetch multiple calls (e.g. limit=3 for last 3 quarters).",
+            "parameters": [
+                {
+                    "name": "ticker_symbol",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Ticker symbol from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: 'NVDA', 'AMZN', 'META'."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Human-readable description of the earnings data request"
+                },
+                {
+                    "name": "as_of_fiscal_quarter",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The most recent fiscal quarter to include (1-4). Data goes backward from this quarter."
+                },
+                {
+                    "name": "as_of_fiscal_year",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The most recent fiscal year to include. Data goes backward from this year. Omit to use most recent available data."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of earnings periods to fetch going backward from as_of period (or from most recent if omitted)"
+                },
+                {
+                    "name": "return_full_transcript",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "If true, writes every verbatim transcript row to the CSV instead of only the LLM-selected rows."
+                }
+            ]
+        },
+        {
+            "name": "finance_institutional_holders",
+            "description": "Institutional holders (hedge funds, mutual funds, banks) for a US ticker. US-listed only. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"AAPL\"], [\"NVDA\", \"AMD\", \"INTC\"], [\"TSLA\"], [\"MSFT\"]. Maximum 50 tickers per call."
+                }
+            ]
+        },
+        {
+            "name": "finance_insider_transactions",
+            "description": "Insider transactions (Form 4 buys and sells by officers and directors) for a US ticker. US-listed only. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"AAPL\"], [\"NVDA\", \"AMD\", \"INTC\"], [\"TSLA\"], [\"MSFT\"]."
+                },
+                {
+                    "name": "months_lookback",
+                    "type": "integer",
+                    "required": true,
+                    "enum": null,
+                    "description": "Number of months of insider transaction history to retrieve. Example: months_lookback=3 shows all transactions from the last 3 months."
+                }
+            ]
+        },
+        {
+            "name": "finance_ohlcv_histories",
+            "description": "OHLCV price history (open, high, low, close, volume) for stocks, ETFs, crypto, or indexes. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"MSFT\"], [\"AAPL\", \"GOOGL\", \"MSFT\"], [\"SPY\"], [\"ETHUSD\"]."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Human-readable query describing what price history to fetch (e.g. \"Apple stock price history\" or \"Compare AAPL and MSFT prices\")."
+                },
+                {
+                    "name": "start_date_yyyy_mm_dd",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Start date in YYYY-MM-DD format (e.g. \"2024-01-01\")."
+                },
+                {
+                    "name": "end_date_yyyy_mm_dd",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "End date in YYYY-MM-DD format (e.g. \"2024-12-31\")."
+                },
+                {
+                    "name": "time_interval",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "1min",
+                        "5min",
+                        "15min",
+                        "30min",
+                        "1hour",
+                        "4hour",
+                        "1day",
+                        "1week",
+                        "1month"
+                    ],
+                    "description": "Optional—omit this field to use daily bars for date ranges under 180 days, or monthly bars for longer ranges. Only specify if user explicitly requests a particular granularity (e.g., 'show me daily prices' or 'minute-by-minute data'). Intraday values: \"1min\", \"5min\", \"15min\", \"30min\", \"1hour\", \"4hour\". Interday values: \"1day\", \"1week\", \"1month\"."
+                },
+                {
+                    "name": "fields",
+                    "type": "array",
+                    "required": false,
+                    "enum": [
+                        "open",
+                        "high",
+                        "low",
+                        "close",
+                        "volume"
+                    ],
+                    "description": "Required list of OHLCV price fields to include in the CSV. Only request fields needed for the analysis."
+                },
+                {
+                    "name": "extended_hours",
+                    "type": "boolean",
+                    "required": false,
+                    "enum": null,
+                    "description": "Set to true to include pre-market and after-hours trading data. Requires an explicit intraday time_interval. Only enable if the user specifically asks for extended hours or after-hours data."
+                }
+            ]
+        },
+        {
+            "name": "finance_company_financials",
+            "description": "Income statement, balance sheet, and cash flow for a company. Specify metrics by statement type — only statements with requested metrics are fetched. Returns csv_files. Use finance_tickers_lookup first.\n\nUSAGE PATTERNS:\n\n1. RECENT/CURRENT DATA (omit as_of parameters, just use limit):\n- \"Tesla's latest revenue\" → period=\"quarter\", limit=1, income_statement_metrics=[\"income_statement_total_revenues\"]\n- \"Berkshire's cash position\" → period=\"quarter\", limit=1, balance_sheet_metrics=[\"balance_sheet_cash_and_cash_equivalents\"]\n- \"Apple's last 5 years operating cash flow\" → period=\"annual\", limit=5, cash_flow_metrics=[\"cash_flow_statement_cash_from_operating_activities\"]\n- \"MU quarterly revenue over last 10 years\" → period=\"quarter\", limit=40, income_statement_metrics=[\"income_statement_total_revenues\"]\nNote: Use quarter (not annual) when user asks about current state - quarterly data is up to 3 months old vs up to 12 months for annual.\n\n2. HISTORICAL DATA (use as_of_fiscal_year to set the most recent period to include):\n- \"Tesla Q1 2020 balance sheet\" → period=\"quarter\", as_of_fiscal_year=2020, as_of_fiscal_quarter=1, limit=1\n- \"Rivian revenue from 2023 Q3 back 4 quarters\" → period=\"quarter\", as_of_fiscal_year=2023, as_of_fiscal_quarter=3, limit=4\n  (returns Q3 2023, Q2 2023, Q1 2023, Q4 2022)\n- \"Apple revenue from 2020 back 3 years\" → period=\"annual\", as_of_fiscal_year=2020, limit=3\n  (returns 2020, 2019, 2018)\n\n3. CROSS-STATEMENT:\n- \"AAPL profitability + cash\" → income_statement_metrics=[\"income_statement_consolidated_net_income\"], balance_sheet_metrics=[\"balance_sheet_cash_and_cash_equivalents\"], cash_flow_metrics=[\"cash_flow_statement_cash_from_operating_activities\"]\n\n4. TTM:\n- \"NVDA TTM gross profit\" → period=\"ttm\", income_statement_metrics=[\"income_statement_gross_profit\"]\n\n5. GROWTH CALCULATIONS (fetch multiple periods to compare):\n- \"AAPL YoY revenue growth\" → period=\"annual\", limit=2, income_statement_metrics=[\"income_statement_total_revenues\"]\n- \"Tesla quarterly EPS trend\" → period=\"quarter\", limit=4, income_statement_metrics=[\"income_statement_basic_eps\"]\n  (Calculate: (current - previous) / previous)\n\n6. DERIVED METRICS (fetch component fields for calculation):\n- \"MSFT book value per share\" → balance_sheet_metrics=[\"balance_sheet_total_shareholders_equity\"], income_statement_metrics=[\"income_statement_basic_weighted_average_shares_outstanding\"]\n- \"Apple debt-to-equity ratio\" → balance_sheet_metrics=[\"balance_sheet_total_debt\", \"balance_sheet_total_shareholders_equity\"]\n- \"GOOG current ratio\" → balance_sheet_metrics=[\"balance_sheet_total_current_assets\", \"balance_sheet_total_current_liabilities\"]\n- \"BRK.A Graham number\" → income_statement_metrics=[\"income_statement_basic_eps\", \"income_statement_basic_weighted_average_shares_outstanding\"], balance_sheet_metrics=[\"balance_sheet_total_shareholders_equity\"]\n  (Calculate: bookValue = equity/shares, then √(22.5 × eps × bookValue))\n\nNOTE: Uses fiscal year/quarter. Empty arrays = that statement type won't be fetched.\n\nFIELD FORMATS:\n- Ratio fields (ratio_ebitda_margin, etc.): are decimals: 0.65 = 65%\n- income_statement_basic_eps/income_statement_diluted_eps: are currency per share: 0.39 = $0.39\n- income_statement_basic_weighted_average_shares_outstanding: fields are raw counts\n- All other numeric fields: are raw currency in reportedCurrency (not abbreviated)",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"MSFT\"], [\"JNJ\", \"PFE\", \"ABT\"], [\"TCS.NS\"]."
+                },
+                {
+                    "name": "period",
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                        "annual",
+                        "quarter",
+                        "ttm"
+                    ],
+                    "description": "Reporting period."
+                },
+                {
+                    "name": "as_of_fiscal_year",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The most recent fiscal year to include. Data goes backward from this year. Omit to use most recent available data."
+                },
+                {
+                    "name": "as_of_fiscal_quarter",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The most recent fiscal quarter to include (1-4). Data goes backward from this quarter. Only used with quarter period."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of periods to fetch going backward from as_of_fiscal_year (or from most recent if omitted)"
+                },
+                {
+                    "name": "income_statement_metrics",
+                    "type": "array",
+                    "required": false,
+                    "enum": [
+                        "income_statement_total_revenues",
+                        "income_statement_cost_of_sales",
+                        "income_statement_gross_profit",
+                        "income_statement_selling_general_and_administrative_expenses",
+                        "income_statement_general_and_administrative_expenses",
+                        "income_statement_selling_and_marketing_expenses",
+                        "income_statement_research_and_development_expenses",
+                        "income_statement_operating_profit",
+                        "income_statement_interest_income",
+                        "income_statement_interest_expense",
+                        "income_statement_income_before_provision_for_income_taxes",
+                        "income_statement_provision_for_income_taxes",
+                        "income_statement_consolidated_net_income",
+                        "income_statement_net_income_attributable_to_minority_interests_and_other",
+                        "income_statement_net_income_attributable_to_common_shareholders",
+                        "income_statement_basic_eps",
+                        "income_statement_diluted_eps",
+                        "income_statement_basic_weighted_average_shares_outstanding",
+                        "income_statement_diluted_weighted_average_shares_outstanding",
+                        "income_statement_non_operating_income",
+                        "income_statement_non_operating_income_or_expense",
+                        "income_statement_benefits_and_claims",
+                        "income_statement_compensation_expenses",
+                        "income_statement_depreciation_and_amortization_expenses",
+                        "income_statement_investment_expense",
+                        "income_statement_investment_income",
+                        "income_statement_net_gains_losses_on_investments",
+                        "income_statement_net_income_attributable_to_discontinued_operations",
+                        "income_statement_net_income_attributable_to_preferred_dividends",
+                        "income_statement_net_interest_income",
+                        "income_statement_net_premiums_earned",
+                        "income_statement_non_interest_income",
+                        "income_statement_other_non_interest_expenses",
+                        "income_statement_other_operating_expenses",
+                        "income_statement_other_revenues",
+                        "income_statement_policy_amortization_costs",
+                        "income_statement_provision_for_credit_losses",
+                        "income_statement_total_non_interest_expense",
+                        "income_statement_total_other_revenues",
+                        "income_statement_total_revenues_after_provision_for_credit_losses",
+                        "income_statement_total_revenues_before_provision_for_credit_losses",
+                        "income_statement_transaction_based_revenues",
+                        "ratio_gross_profit_margin",
+                        "ratio_operating_margin",
+                        "ratio_ebitda_margin",
+                        "ratio_net_profit_margin",
+                        "ratio_effective_tax_rate",
+                        "ratio_pre_tax_profit_margin"
+                    ],
+                    "description": "Revenue, profitability, and earnings metrics."
+                },
+                {
+                    "name": "balance_sheet_metrics",
+                    "type": "array",
+                    "required": false,
+                    "enum": [
+                        "balance_sheet_cash_and_cash_equivalents",
+                        "balance_sheet_short_term_investments",
+                        "balance_sheet_accounts_receivable",
+                        "balance_sheet_total_trade_receivables",
+                        "balance_sheet_inventories",
+                        "balance_sheet_other_current_assets",
+                        "balance_sheet_total_current_assets",
+                        "balance_sheet_net_property_plant_and_equipment",
+                        "balance_sheet_goodwill",
+                        "balance_sheet_net_intangible_assets",
+                        "balance_sheet_long_term_investments",
+                        "balance_sheet_other_non_current_assets",
+                        "balance_sheet_other_non_earning_assets",
+                        "balance_sheet_other_assets",
+                        "balance_sheet_total_assets",
+                        "balance_sheet_accounts_payable",
+                        "balance_sheet_short_term_debt",
+                        "balance_sheet_unearned_revenue",
+                        "balance_sheet_other_current_liabilities",
+                        "balance_sheet_total_current_liabilities",
+                        "balance_sheet_long_term_debt",
+                        "balance_sheet_other_long_term_liabilities",
+                        "balance_sheet_total_long_term_liabilities",
+                        "balance_sheet_other_liabilities",
+                        "balance_sheet_total_liabilities",
+                        "balance_sheet_preferred_stock",
+                        "balance_sheet_common_stock",
+                        "balance_sheet_retained_earnings",
+                        "balance_sheet_accumulated_other_comprehensive_income",
+                        "balance_sheet_total_shareholders_equity",
+                        "balance_sheet_total_common_shareholders_equity",
+                        "balance_sheet_total_investments",
+                        "balance_sheet_total_debt",
+                        "balance_sheet_total_cash_and_cash_equivalents",
+                        "balance_sheet_total_liabilities_and_shareholders_equity",
+                        "balance_sheet_accrued_expenses",
+                        "balance_sheet_additional_paid_in_capital",
+                        "balance_sheet_current_portion_of_leases",
+                        "balance_sheet_leases",
+                        "balance_sheet_other_long_term_assets",
+                        "balance_sheet_accrued_interest_and_accounts_receivable",
+                        "balance_sheet_claims_reserves",
+                        "balance_sheet_current_portion_of_long_term_debt",
+                        "balance_sheet_debt_securities",
+                        "balance_sheet_deferred_acquisition_costs",
+                        "balance_sheet_equity_and_preferred_securities",
+                        "balance_sheet_gross_loans",
+                        "balance_sheet_interest_bearing_deposits",
+                        "balance_sheet_less_allowance_for_loan_losses",
+                        "balance_sheet_minority_interests_and_other",
+                        "balance_sheet_net_loans",
+                        "balance_sheet_noninterest_bearing_deposits",
+                        "balance_sheet_other_investments",
+                        "balance_sheet_other_receivables",
+                        "balance_sheet_recontract_assets",
+                        "balance_sheet_restricted_cash_and_segregated_assets",
+                        "balance_sheet_securities_and_investments",
+                        "balance_sheet_securities_borrowed",
+                        "balance_sheet_securities_loaned",
+                        "balance_sheet_short_term_borrowings",
+                        "balance_sheet_short_term_interbank_borrowing_and_repurchase_agreements",
+                        "balance_sheet_short_term_interbank_lending_and_reverse_repurchase_agreements",
+                        "balance_sheet_total_deposits",
+                        "balance_sheet_trading_assets",
+                        "balance_sheet_trading_liabilities",
+                        "balance_sheet_treasury_stock",
+                        "balance_sheet_unearned_premiums"
+                    ],
+                    "description": "Assets, liabilities, and equity metrics."
+                },
+                {
+                    "name": "cash_flow_metrics",
+                    "type": "array",
+                    "required": false,
+                    "enum": [
+                        "cash_flow_statement_net_income",
+                        "cash_flow_statement_depreciation_and_amortization",
+                        "cash_flow_statement_share_based_compensation_expense",
+                        "cash_flow_statement_other_adjustments",
+                        "cash_flow_statement_changes_in_trade_receivables",
+                        "cash_flow_statement_changes_in_accounts_payable",
+                        "cash_flow_statement_changes_in_accrued_expenses",
+                        "cash_flow_statement_changes_in_unearned_revenue",
+                        "cash_flow_statement_changes_in_other_operating_activities",
+                        "cash_flow_statement_cash_from_operating_activities",
+                        "cash_flow_statement_purchases_of_property_plant_and_equipment",
+                        "cash_flow_statement_proceeds_from_sale_of_property_plant_and_equipment",
+                        "cash_flow_statement_purchases_of_investments",
+                        "cash_flow_statement_proceeds_from_sale_of_investments",
+                        "cash_flow_statement_payments_for_business_acquisitions",
+                        "cash_flow_statement_other_investing_activities",
+                        "cash_flow_statement_cash_from_investing_activities",
+                        "cash_flow_statement_issuance_of_long_term_debt",
+                        "cash_flow_statement_repayments_of_long_term_debt",
+                        "cash_flow_statement_net_issuance_or_repayments_of_long_term_debt",
+                        "cash_flow_statement_issuance_of_common_shares",
+                        "cash_flow_statement_repurchases_of_common_shares",
+                        "cash_flow_statement_net_issuance_or_repurchases_of_common_shares",
+                        "cash_flow_statement_issuance_of_preferred_shares",
+                        "cash_flow_statement_net_issuance_or_repurchases_of_preferred_shares",
+                        "cash_flow_statement_common_share_dividends_paid",
+                        "cash_flow_statement_other_financing_activities",
+                        "cash_flow_statement_cash_from_financing_activities",
+                        "cash_flow_statement_effect_of_exchange_rate_changes_on_cash_and_cash_equivalents",
+                        "cash_flow_statement_increase_or_decrease_in_cash_cash_equivalents_and_restricted_cash",
+                        "cash_flow_statement_cash_cash_equivalents_and_restricted_cash_at_beginning_of_period",
+                        "cash_flow_statement_changes_in_accrued_interest_and_accounts_receivable",
+                        "cash_flow_statement_changes_in_claims_reserves",
+                        "cash_flow_statement_changes_in_deferred_acquisition_costs",
+                        "cash_flow_statement_changes_in_income_taxes_payable",
+                        "cash_flow_statement_changes_in_inventories",
+                        "cash_flow_statement_changes_in_receivables",
+                        "cash_flow_statement_changes_in_recontract_assets",
+                        "cash_flow_statement_changes_in_restricted_cash_and_segregated_assets",
+                        "cash_flow_statement_changes_in_securities_borrowed",
+                        "cash_flow_statement_changes_in_trading_assets",
+                        "cash_flow_statement_changes_in_trading_liabilities",
+                        "cash_flow_statement_changes_in_unearned_premiums",
+                        "cash_flow_statement_issuance_of_short_term_debt",
+                        "cash_flow_statement_net_change_in_deposits",
+                        "cash_flow_statement_net_change_in_loans_held_for_investment",
+                        "cash_flow_statement_net_change_in_loans_held_for_sale",
+                        "cash_flow_statement_net_change_in_securities_and_investments",
+                        "cash_flow_statement_net_change_in_short_term_interbank_borrowing_and_repurchase_agreements",
+                        "cash_flow_statement_net_change_in_short_term_interbank_lending_and_reverse_repurchase_agreements",
+                        "cash_flow_statement_net_issuance_or_repayments_of_short_term_debt",
+                        "cash_flow_statement_preferred_share_dividends_paid",
+                        "cash_flow_statement_proceeds_from_business_divestments",
+                        "cash_flow_statement_purchases_of_intangible_assets",
+                        "cash_flow_statement_repayments_of_short_term_debt",
+                        "cash_flow_statement_repurchases_of_preferred_shares"
+                    ],
+                    "description": "Operating, investing, and financing cash flows."
+                }
+            ]
+        },
+        {
+            "name": "finance_financials",
+            "description": "Income statement, balance sheet, and cash flow for a company. Specify metrics by statement type — only statements with requested metrics are fetched. Returns csv_files. Use finance_tickers_lookup first.\n\nUSAGE PATTERNS:\n\n1. RECENT/CURRENT DATA (omit as_of parameters, just use limit):\n- \"Tesla's latest revenue\" → period=\"quarter\", limit=1, income_statement_metrics=[\"revenue\"]\n- \"Berkshire's cash position\" → period=\"quarter\", limit=1, balance_sheet_metrics=[\"cashAndCashEquivalents\"]\n- \"Apple's last 5 years FCF\" → period=\"annual\", limit=5, cash_flow_metrics=[\"freeCashFlow\"]\n- \"MU quarterly revenue over last 10 years\" → period=\"quarter\", limit=40, income_statement_metrics=[\"revenue\"]\nNote: Use quarter (not annual) when user asks about current state - quarterly data is up to 3 months old vs up to 12 months for annual.\n\n2. HISTORICAL DATA (use as_of_fiscal_year to set the most recent period to include):\n- \"Tesla Q1 2020 balance sheet\" → period=\"quarter\", as_of_fiscal_year=2020, as_of_fiscal_quarter=1, limit=1\n- \"Rivian revenue from 2023 Q3 back 4 quarters\" → period=\"quarter\", as_of_fiscal_year=2023, as_of_fiscal_quarter=3, limit=4\n  (returns Q3 2023, Q2 2023, Q1 2023, Q4 2022)\n- \"Apple revenue from 2020 back 3 years\" → period=\"annual\", as_of_fiscal_year=2020, limit=3\n  (returns 2020, 2019, 2018)\n\n3. CROSS-STATEMENT:\n- \"AAPL profitability + cash\" → income_statement_metrics=[\"netIncome\"], balance_sheet_metrics=[\"cashAndCashEquivalents\"], cash_flow_metrics=[\"freeCashFlow\"]\n\n4. TTM:\n- \"NVDA TTM gross profit\" → period=\"ttm\", income_statement_metrics=[\"grossProfit\"]\n\n5. GROWTH CALCULATIONS (fetch multiple periods to compare):\n- \"AAPL YoY revenue growth\" → period=\"annual\", limit=2, income_statement_metrics=[\"revenue\"]\n- \"Tesla quarterly EPS trend\" → period=\"quarter\", limit=4, income_statement_metrics=[\"eps\"]\n  (Calculate: (current - previous) / previous)\n\n6. DERIVED METRICS (fetch component fields for calculation):\n- \"MSFT book value per share\" → balance_sheet_metrics=[\"totalStockholdersEquity\"], income_statement_metrics=[\"weightedAverageSharesOutstanding\"]\n- \"Apple debt-to-equity ratio\" → balance_sheet_metrics=[\"totalDebt\", \"totalStockholdersEquity\"]\n- \"GOOG current ratio\" → balance_sheet_metrics=[\"totalCurrentAssets\", \"totalCurrentLiabilities\"]\n- \"BRK.A Graham number\" → income_statement_metrics=[\"eps\", \"weightedAverageSharesOutstanding\"], balance_sheet_metrics=[\"totalStockholdersEquity\"]\n  (Calculate: bookValue = equity/shares, then √(22.5 × eps × bookValue))\n\nNOTE: Uses fiscal year/quarter. Empty arrays = that statement type won't be fetched.\n\nFIELD FORMATS:\n- Ratio fields (ebitdaRatio, etc.): are decimals: 0.65 = 65%\n- eps/epsDiluted: are currency per share: 0.39 = $0.39\n- weightedAverageSharesOutstanding: fields are raw counts\n- All other numeric fields: are raw currency in reportedCurrency (not abbreviated)",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"NVDA\"], [\"UNH\", \"CI\", \"HUM\"], [\"RELIANCE.NS\"]."
+                },
+                {
+                    "name": "period",
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                        "annual",
+                        "quarter",
+                        "ttm"
+                    ],
+                    "description": "Reporting period."
+                },
+                {
+                    "name": "as_of_fiscal_year",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The most recent fiscal year to include. Data goes backward from this year. Omit to use most recent available data."
+                },
+                {
+                    "name": "as_of_fiscal_quarter",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "The most recent fiscal quarter to include (1-4). Data goes backward from this quarter. Only used with quarter period."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of periods to fetch going backward from as_of_fiscal_year (or from most recent if omitted)"
+                },
+                {
+                    "name": "income_statement_metrics",
+                    "type": "array",
+                    "required": false,
+                    "enum": [
+                        "revenue",
+                        "costOfRevenue",
+                        "grossProfit",
+                        "researchAndDevelopmentExpenses",
+                        "generalAndAdministrativeExpenses",
+                        "sellingAndMarketingExpenses",
+                        "sellingGeneralAndAdministrativeExpenses",
+                        "otherExpenses",
+                        "operatingExpenses",
+                        "costAndExpenses",
+                        "netInterestIncome",
+                        "interestIncome",
+                        "interestExpense",
+                        "depreciationAndAmortization",
+                        "ebitda",
+                        "ebitdaRatio",
+                        "ebit",
+                        "nonOperatingIncomeExcludingInterest",
+                        "operatingIncome",
+                        "totalOtherIncomeExpensesNet",
+                        "incomeBeforeTax",
+                        "incomeTaxExpense",
+                        "netIncomeFromContinuingOperations",
+                        "netIncomeFromDiscontinuedOperations",
+                        "otherAdjustmentsToNetIncome",
+                        "netIncome",
+                        "netIncomeDeductions",
+                        "bottomLineNetIncome",
+                        "eps",
+                        "epsDiluted",
+                        "weightedAverageSharesOutstanding",
+                        "weightedAverageSharesOutstandingDiluted"
+                    ],
+                    "description": "Revenue, profitability, and earnings metrics."
+                },
+                {
+                    "name": "balance_sheet_metrics",
+                    "type": "array",
+                    "required": false,
+                    "enum": [
+                        "cashAndCashEquivalents",
+                        "shortTermInvestments",
+                        "cashAndShortTermInvestments",
+                        "netReceivables",
+                        "accountsReceivables",
+                        "otherReceivables",
+                        "inventory",
+                        "prepaidExpenses",
+                        "otherCurrentAssets",
+                        "totalCurrentAssets",
+                        "propertyPlantEquipmentNet",
+                        "goodwill",
+                        "intangibleAssets",
+                        "goodwillAndIntangibleAssets",
+                        "longTermInvestments",
+                        "taxAssets",
+                        "otherNonCurrentAssets",
+                        "totalNonCurrentAssets",
+                        "otherAssets",
+                        "totalAssets",
+                        "totalPayables",
+                        "accountsPayables",
+                        "otherPayables",
+                        "accruedExpenses",
+                        "shortTermDebt",
+                        "capitalLeaseObligationsCurrent",
+                        "taxPayables",
+                        "deferredRevenue",
+                        "otherCurrentLiabilities",
+                        "totalCurrentLiabilities",
+                        "longTermDebt",
+                        "capitalLeaseObligationsNonCurrent",
+                        "deferredRevenueNonCurrent",
+                        "deferredTaxLiabilitiesNonCurrent",
+                        "otherNonCurrentLiabilities",
+                        "totalNonCurrentLiabilities",
+                        "otherLiabilities",
+                        "capitalLeaseObligations",
+                        "totalLiabilities",
+                        "treasuryStock",
+                        "preferredStock",
+                        "commonStock",
+                        "retainedEarnings",
+                        "additionalPaidInCapital",
+                        "accumulatedOtherComprehensiveIncomeLoss",
+                        "otherStockholdersEquity",
+                        "totalStockholdersEquity",
+                        "totalEquity",
+                        "minorityInterest",
+                        "totalLiabilitiesAndTotalEquity",
+                        "totalInvestments",
+                        "totalDebt",
+                        "netDebt"
+                    ],
+                    "description": "Assets, liabilities, and equity metrics."
+                },
+                {
+                    "name": "cash_flow_metrics",
+                    "type": "array",
+                    "required": false,
+                    "enum": [
+                        "netIncome",
+                        "depreciationAndAmortization",
+                        "deferredIncomeTax",
+                        "stockBasedCompensation",
+                        "changeInWorkingCapital",
+                        "accountsReceivables",
+                        "inventory",
+                        "accountsPayables",
+                        "otherWorkingCapital",
+                        "otherNonCashItems",
+                        "netCashProvidedByOperatingActivities",
+                        "investmentsInPropertyPlantAndEquipment",
+                        "acquisitionsNet",
+                        "purchasesOfInvestments",
+                        "salesMaturitiesOfInvestments",
+                        "otherInvestingActivities",
+                        "netCashProvidedByInvestingActivities",
+                        "netDebtIssuance",
+                        "longTermNetDebtIssuance",
+                        "shortTermNetDebtIssuance",
+                        "netStockIssuance",
+                        "netCommonStockIssuance",
+                        "commonStockIssuance",
+                        "commonStockRepurchased",
+                        "netPreferredStockIssuance",
+                        "netDividendsPaid",
+                        "commonDividendsPaid",
+                        "preferredDividendsPaid",
+                        "otherFinancingActivities",
+                        "netCashProvidedByFinancingActivities",
+                        "effectOfForexChangesOnCash",
+                        "netChangeInCash",
+                        "cashAtEndOfPeriod",
+                        "cashAtBeginningOfPeriod",
+                        "operatingCashFlow",
+                        "capitalExpenditure",
+                        "freeCashFlow",
+                        "incomeTaxesPaid",
+                        "interestPaid"
+                    ],
+                    "description": "Operating, investing, and financing cash flows."
+                }
+            ]
+        },
+        {
+            "name": "finance_stock_screener",
+            "description": "Screen public equities with live PostgreSQL schema discovery and read-only SQL. Returns csv_files.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The original human-readable stock screening request."
+                },
+                {
+                    "name": "sql",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "One read-only PostgreSQL SELECT statement that implements the request."
+                },
+                {
+                    "name": "max_rows",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Maximum number of results (default: 400)."
+                },
+                {
+                    "name": "timeout_s",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Timeout in seconds (default: 10)."
+                }
+            ]
+        },
+        {
+            "name": "finance_company_peers",
+            "description": "Peer and comparable companies for a ticker. Individual companies only — not ETFs or funds. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbol",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Ticker symbol from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: 'NFLX', 'SHOP', 'RELIANCE.NS'."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query about peer companies."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Action being performed, written in present progressive tense. Describe the peer company search being performed. Example: \"Finding peer companies for AAPL\""
+                }
+            ]
+        },
+        {
+            "name": "finance_company_profile",
+            "description": "Industry, sector, CEO, employees, website, and description for a company. Individual companies only — not ETFs or funds. Does not include market cap — for that use finance_quotes. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"TSLA\"], [\"SHOP\", \"MELI\", \"SE\"], [\"7203.T\"]."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query about company information."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Action being performed, written in present progressive tense. Describe the company profile data being retrieved. Example: \"Fetching company profile for AAPL\""
+                }
+            ]
+        },
+        {
+            "name": "finance_market_gainers",
+            "description": "Top market gainers today: stocks or crypto with the largest price increases. Returns csv_files. For losers use finance_market_losers; for most actively traded use finance_market_most_active.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query about market gainers."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Action being performed, written in present progressive tense. Example: \"Fetching top market gainers for US stocks\""
+                },
+                {
+                    "name": "market_type",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "market",
+                        "crypto"
+                    ],
+                    "description": "Type of market: 'market' for stocks, 'crypto' for cryptocurrencies."
+                },
+                {
+                    "name": "country",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "IN",
+                        "US"
+                    ],
+                    "description": "Country for stock market data. Only applies when market_type='market'."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Maximum number of results (default: 10)."
+                }
+            ]
+        },
+        {
+            "name": "finance_market_losers",
+            "description": "Top market losers today: stocks or crypto with the largest price declines. Returns csv_files. For gainers use finance_market_gainers; for most actively traded use finance_market_most_active.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query about market losers."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Action being performed, written in present progressive tense. Example: \"Fetching top market losers for US stocks\""
+                },
+                {
+                    "name": "market_type",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "market",
+                        "crypto"
+                    ],
+                    "description": "Type of market: 'market' for stocks, 'crypto' for cryptocurrencies."
+                },
+                {
+                    "name": "country",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "IN",
+                        "US"
+                    ],
+                    "description": "Country for stock market data. Only applies when market_type='market'."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Maximum number of results (default: 10)."
+                }
+            ]
+        },
+        {
+            "name": "finance_market_most_active",
+            "description": "Most actively traded stocks today by volume. Stocks only — not crypto. Returns csv_files. For gainers use finance_market_gainers; for losers use finance_market_losers.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query about most actively traded stocks."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Action being performed, written in present progressive tense. Example: \"Fetching most actively traded US stocks\""
+                },
+                {
+                    "name": "market_type",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Always 'market' for stocks. Most active is not available for crypto."
+                },
+                {
+                    "name": "country",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "IN",
+                        "US"
+                    ],
+                    "description": "Country for stock market data."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Maximum number of results (default: 10)."
+                }
+            ]
+        },
+        {
+            "name": "finance_politician_list",
+            "description": "Search tracked Congressional politicians by keyword (name match). Returns citable csv_files with politician IDs required by finance_politician_trades and finance_politician_holdings.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query about politicians."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Action being performed, written in present progressive tense. Example: \"Looking up Nancy Pelosi\""
+                },
+                {
+                    "name": "keywords",
+                    "type": "array",
+                    "required": false,
+                    "enum": null,
+                    "description": "Search keywords to filter politicians by name (OR matching). Example: [\"nancy pelosi\"] or [\"pelosi\", \"cruz\"]"
+                }
+            ]
+        },
+        {
+            "name": "finance_politician_holdings",
+            "description": "Full stock portfolio (stocks, options, crypto with estimated amounts) for a politician. Returns csv_files. Resolve politician_id via finance_politician_list first.",
+            "parameters": [
+                {
+                    "name": "politician_id",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Politician ID for direct lookup."
+                },
+                {
+                    "name": "politician_name",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Politician name to search for (used to find politician_id if not known)."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query about politician holdings."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Action being performed, written in present progressive tense. Example: \"Fetching Nancy Pelosi's portfolio\""
+                }
+            ]
+        },
+        {
+            "name": "finance_politician_trades",
+            "description": "Recent congressional stock trades with dates, amounts, and filing delays. Filterable by politician_id or ticker. Returns csv_files.",
+            "parameters": [
+                {
+                    "name": "politician_id",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Politician ID to filter transactions by a specific politician."
+                },
+                {
+                    "name": "ticker_symbol",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Ticker symbol from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: 'NVDA', 'AAPL', 'LMT'."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query about politician trades."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Action being performed, written in present progressive tense. Example: \"Fetching recent politician trades for NVDA\""
+                }
+            ]
+        },
+        {
+            "name": "finance_politician_ticker_holders",
+            "description": "Politicians who hold a given ticker, with estimated holding amounts. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbol",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Ticker symbol from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: 'GOOG', 'TSLA', 'BA'."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query about ticker holders."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Action being performed, written in present progressive tense. Example: \"Fetching politician holders for NVDA\""
+                }
+            ]
+        },
+        {
+            "name": "finance_segments",
+            "description": "Segment-level revenue and operating KPIs not in financial statements: revenue and profit by business line or geography, ARPU, GMV, take rate, store count, DAU/MAU, NRR/ARR, ASP, unit volumes, NIM. Use this — not finance_company_financials — for revenue builds, unit economics, or any operating metric by division. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"AMZN\"], [\"DIS\", \"NFLX\", \"WBD\"], [\"RELIANCE.NS\"]."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "What segment data or KPIs you need. Examples: 'revenue by business segment', 'subscriber count and ARPU', 'unit economics (GMV, take rate)', 'geographic revenue split', 'key business drivers', 'store count and comparable sales'."
+                },
+                {
+                    "name": "period_type",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "annual",
+                        "quarterly"
+                    ],
+                    "description": "Reporting period."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of most recent periods to return (e.g. 5 = last 5 years for annual, last 5 quarters for quarterly)."
+                }
+            ]
+        },
+        {
+            "name": "finance_estimates",
+            "description": "Consensus analyst estimates (EPS, revenue, EBITDA) for forward periods. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"GOOGL\"], [\"NVDA\", \"AMD\", \"INTC\"], [\"TCS.NS\"]."
+                },
+                {
+                    "name": "period_type",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "annual",
+                        "quarterly"
+                    ],
+                    "description": "Reporting period."
+                }
+            ]
+        },
+        {
+            "name": "finance_adjusted_metrics",
+            "description": "Adjusted (non-GAAP) metrics: adjusted EPS, adjusted EBITDA, free cash flow, and other management-reported figures for valuation and peer comparison. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"AAPL\"], [\"TSLA\", \"RIVN\", \"LCID\"], [\"RELIANCE.NS\"]."
+                },
+                {
+                    "name": "period_type",
+                    "type": "string",
+                    "required": false,
+                    "enum": [
+                        "annual",
+                        "quarterly"
+                    ],
+                    "description": "Reporting period."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of most recent periods to return."
+                }
+            ]
+        },
+        {
+            "name": "finance_analyst_research",
+            "description": "Analyst price targets (average, median, high, low) and rating changes with bullish/bearish/neutral breakdown. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"NVDA\"], [\"AMZN\", \"SHOP\", \"MELI\"], [\"CRM\"]."
+                },
+                {
+                    "name": "limit",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Maximum number of individual analyst ratings to return."
+                }
+            ]
+        },
+        {
+            "name": "finance_company_ratios",
+            "description": "Annual financial ratios time-series: valuation (P/E, EV/EBITDA, P/S, EV/Revenue, EV/FCF), margins (gross, operating, net, FCF), returns (ROE, ROA, ROIC), capital efficiency, financial health (D/E, current ratio, interest coverage), per-share metrics, dividends. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"AAPL\"], [\"META\", \"SNAP\", \"PINS\"], [\"ASML\"]."
+                },
+                {
+                    "name": "ratio_ids",
+                    "type": "array",
+                    "required": false,
+                    "enum": [
+                        "ratio_adjusted_price_to_sales",
+                        "ratio_return_on_invested_capital",
+                        "ratio_return_on_assets",
+                        "ratio_return_on_equity",
+                        "ratio_return_on_total_capital",
+                        "ratio_return_on_capital_employed",
+                        "ratio_return_on_tangible_assets",
+                        "ratio_receivables_turnover",
+                        "ratio_dso",
+                        "ratio_payables_turnover",
+                        "ratio_dpo",
+                        "ratio_inventory_turnover",
+                        "ratio_dio",
+                        "ratio_cash_conversion_cycle",
+                        "ratio_asset_turnover",
+                        "ratio_fixed_asset_turnover",
+                        "ratio_operating_cycle",
+                        "ratio_capex_to_ocf",
+                        "ratio_capex_to_revenue",
+                        "ratio_capex_to_depreciation",
+                        "ratio_rd_to_revenue",
+                        "ratio_sga_to_revenue",
+                        "ratio_sbc_to_revenue",
+                        "calculated_dividends_per_share",
+                        "ratio_payout_ratio",
+                        "company_data_total_employees",
+                        "calculated_total_debt",
+                        "calculated_net_debt",
+                        "ratio_current_ratio",
+                        "ratio_quick_ratio",
+                        "ratio_cash_ratio",
+                        "ratio_debt_ratio",
+                        "ratio_assets_to_equity",
+                        "ratio_cash_flow_to_debt_ratio",
+                        "ratio_long_term_debt_to_assets",
+                        "ratio_intangibles_to_total_assets",
+                        "calculated_net_current_asset_value",
+                        "ratio_goodwill_to_assets",
+                        "ratio_debt_to_equity",
+                        "ratio_total_debt_to_capitalization",
+                        "ratio_long_term_debt_to_capitalization",
+                        "ratio_long_term_debt_to_equity",
+                        "ratio_net_debt_to_ebitda",
+                        "ratio_ebit_to_interest_expense",
+                        "ratio_ebitda_to_interest_expense",
+                        "ratio_ebitda_minus_capex_to_interest_expense",
+                        "ratio_gross_profit_margin",
+                        "ratio_operating_margin",
+                        "ratio_ebitda_margin",
+                        "ratio_net_profit_margin",
+                        "ratio_effective_tax_rate",
+                        "ratio_pre_tax_profit_margin",
+                        "ratio_fcf_margin",
+                        "ratio_ocf_to_sales",
+                        "ratio_ocf_to_net_income",
+                        "ratio_fcf_to_ocf",
+                        "ratio_fcf_to_net_income",
+                        "ratio_fcf_to_ebitda",
+                        "calculated_fcf",
+                        "calculated_ebitda",
+                        "calculated_nopat",
+                        "calculated_levered_free_cash_flow",
+                        "calculated_unlevered_free_cash_flow",
+                        "calculated_net_change_in_cash",
+                        "calculated_book_value",
+                        "calculated_tangible_book_value",
+                        "ratio_revenue_per_share",
+                        "ratio_basic_eps",
+                        "ratio_diluted_eps",
+                        "ratio_book_value_per_share",
+                        "ratio_tangible_book_value_per_share",
+                        "ratio_cash_per_share",
+                        "ratio_operating_cash_flow_per_share",
+                        "ratio_free_cash_flow_per_share",
+                        "ratio_capex_per_share",
+                        "ratio_weighted_avg_shares_outstanding",
+                        "ratio_weighted_avg_shares_outstanding_dil",
+                        "ratio_basic_ordinary_eps",
+                        "ratio_diluted_ordinary_eps",
+                        "ratio_ordinary_weighted_average_shares_outstanding",
+                        "ratio_ordinary_weighted_average_shares_outstanding_diluted",
+                        "ratio_buyback_yield",
+                        "ratio_debt_paydown_yield",
+                        "ratio_shareholder_yield",
+                        "ratio_price_to_sales",
+                        "ratio_price_to_gross_profit",
+                        "ratio_price_to_earnings",
+                        "ratio_earnings_yield",
+                        "ratio_price_to_ocf",
+                        "ratio_price_to_fcf",
+                        "ratio_fcf_yield",
+                        "ratio_price_to_book",
+                        "ratio_ev_to_sales",
+                        "ratio_ev_to_gross_profit",
+                        "ratio_ev_to_ebitda",
+                        "ratio_ev_to_ebit",
+                        "ratio_ev_to_ocf",
+                        "ratio_ev_to_fcf",
+                        "market_data_share_price",
+                        "market_data_total_shares_outstanding",
+                        "market_data_total_ordinary_shares_outstanding",
+                        "calculated_market_cap",
+                        "calculated_tev",
+                        "calculated_dividend_yield"
+                    ],
+                    "description": "Which ratios to fetch. Leave empty for all."
+                }
+            ]
+        },
+        {
+            "name": "finance_macro_snapshot",
+            "description": "Latest macroeconomic indicator values for one or more countries, searchable by keyword. ~15,000 series across 196+ countries from official statistical agencies. Returns csv_files.",
+            "parameters": [
+                {
+                    "name": "countries",
+                    "type": "array",
+                    "required": false,
+                    "enum": null,
+                    "description": "Country names (e.g. ['United States', 'Japan', 'Germany']). Use full English names. Case-insensitive. Required unless keywords is set."
+                },
+                {
+                    "name": "keywords",
+                    "type": "array",
+                    "required": false,
+                    "enum": null,
+                    "description": "Search terms to filter indicators by name (e.g. ['GDP', 'inflation', 'bond yield', 'interest rate']). Each keyword is matched against indicator names. Use short, broad terms — official names vary by source (e.g. 'bond yield' not 'Treasury yield', 'interest rate' not 'fed funds rate')."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Brief description of what you are looking up and why."
+                }
+            ]
+        },
+        {
+            "name": "finance_macro_history",
+            "description": "Historical time-series for macroeconomic indicators by country. ~15,000 series across 196+ countries. Returns csv_files.",
+            "parameters": [
+                {
+                    "name": "countries",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Country names (e.g. ['United States', 'Canada']). Use full English names. Case-insensitive."
+                },
+                {
+                    "name": "keywords",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Search terms to filter indicators by name (e.g. ['GDP', 'inflation', 'unemployment']). Each keyword is matched fuzzily against indicator names. Use short, broad terms rather than exact indicator names."
+                },
+                {
+                    "name": "start_date_yyyy_mm_dd",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Start date in YYYY-MM-DD format (e.g. '2010-01-01')."
+                },
+                {
+                    "name": "end_date_yyyy_mm_dd",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "End date in YYYY-MM-DD format (e.g. '2023-12-31')."
+                },
+                {
+                    "name": "action",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "Brief description of what you are looking up and why."
+                }
+            ]
+        },
+        {
+            "name": "finance_etf_holdings",
+            "description": "Holdings (constituents) of one or more US-listed ETFs. Returns csv_files. Use finance_tickers_lookup first.",
+            "parameters": [
+                {
+                    "name": "ticker_symbols",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ticker symbols from a prior tool call (prefer finance_tickers_lookup for ticker resolution). Examples: [\"QQQ\"], [\"SPY\", \"IWM\", \"DIA\"], [\"ARKK\"], [\"KWEB\"]."
+                },
+                {
+                    "name": "ticker_names",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of ETF names corresponding to ticker_symbols (e.g., ['KraneShares CSI China Internet ETF'])."
+                },
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": false,
+                    "enum": null,
+                    "description": "The original user query requesting ETF holdings information."
+                }
+            ]
+        },
+        {
+            "name": "finance_private_company_info",
+            "description": "Forge private/pre-IPO profiles, prices, funding/fundraising history, capital raised, total raised, rounds, and marks. For IPO status or unavailable prices, verify with web. Returns citable csv_files. Requires the finance skill — call load_skill first.",
+            "parameters": [
+                {
+                    "name": "queries",
+                    "type": "array",
+                    "required": true,
+                    "enum": null,
+                    "description": "Array of company name search queries. Pass the user's phrasing. Example: [\"SpaceX\", \"Stripe\", \"Databricks\"]."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,308 @@
+{
+    "schema_version": "0.1",
+    "harness_reported": "ChatGPT",
+    "model_reported": "GPT-6",
+    "tool_count_reported": 17,
+    "completeness": "partial",
+    "omissions_note": "The visible tool definitions expose 17 top-level callable tools or tool entry points. The functions.exec interface also exposes dynamically discoverable nested tools through ALL_TOOLS; their complete schemas are not included in the currently visible definitions. Therefore, a complete inventory of every underlying tool and parameter cannot be verified. Internal implementation details and hidden tools are not accessible for verbatim reporting.",
+    "tools": [
+        {
+            "name": "web.run",
+            "description": "Use this tool to access information on the web. Web information from this tool helps you produce accurate, up-to-date, comprehensive, and trustworthy responses.",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": "ToolCallCompactV1 payload (UTF-8 text). Input must be ONE STRING (NOT JSON)."
+                }
+            ]
+        },
+        {
+            "name": "python.exec",
+            "description": "Execute Python code in your chain of thought. This tool should NOT be called to show code or visualizations to the user.",
+            "parameters": [
+                {
+                    "name": "code",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": "Python code to execute."
+                }
+            ]
+        },
+        {
+            "name": "python_user_visible.exec",
+            "description": "Execute Python code that the user should see, such as code that makes plots, displays tables or dataframes, or outputs user-visible files.",
+            "parameters": [
+                {
+                    "name": "code",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": "Python code to execute."
+                }
+            ]
+        },
+        {
+            "name": "container.exec",
+            "description": "Utilities for interacting with a container, for example, a Docker container.",
+            "parameters": [
+                {
+                    "name": "cmd",
+                    "type": "array[string]",
+                    "required": true,
+                    "enum": null,
+                    "description": "Command and arguments to execute."
+                },
+                {
+                    "name": "session_name",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Interactive session name."
+                },
+                {
+                    "name": "workdir",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Working directory."
+                },
+                {
+                    "name": "timeout",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Command timeout."
+                },
+                {
+                    "name": "env",
+                    "type": "object | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Environment variables."
+                },
+                {
+                    "name": "user",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Execution user."
+                }
+            ]
+        },
+        {
+            "name": "container.feed_chars",
+            "description": "Feed characters to an exec session's STDIN, wait for output, and optionally flush STDOUT/STDERR.",
+            "parameters": [
+                {
+                    "name": "session_name",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Interactive session name."
+                },
+                {
+                    "name": "chars",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Characters to feed."
+                },
+                {
+                    "name": "yield_time_ms",
+                    "type": "integer",
+                    "required": false,
+                    "enum": null,
+                    "description": "Milliseconds to wait."
+                }
+            ]
+        },
+        {
+            "name": "container.open_image",
+            "description": "Returns the image in the container at the given absolute path.",
+            "parameters": [
+                {
+                    "name": "path",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Absolute image path."
+                },
+                {
+                    "name": "user",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Execution user."
+                }
+            ]
+        },
+        {
+            "name": "container.download",
+            "description": "Download a file from a URL into the container filesystem.",
+            "parameters": [
+                {
+                    "name": "url",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "URL to download."
+                },
+                {
+                    "name": "filepath",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Destination file path."
+                }
+            ]
+        },
+        {
+            "name": "personal_context.search",
+            "description": "Retrieve user-specific personal context gathered from multiple underlying sources.",
+            "parameters": [
+                {
+                    "name": "query",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "The personal context to search for for the given user."
+                }
+            ]
+        },
+        {
+            "name": "bio.update",
+            "description": "Persist information across conversations, or submit a request to forget existing information.",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": "Plain text containing new or updated information or a request to forget information."
+                }
+            ]
+        },
+        {
+            "name": "image_gen.text2im",
+            "description": "Creates new images and edits existing images.",
+            "parameters": [
+                {
+                    "name": "prompt",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Deprecated parameter. Always pass null. Image generation or editing instructions are inferred automatically from the conversation context, so this field should not be used."
+                },
+                {
+                    "name": "size",
+                    "type": "string | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Image size."
+                },
+                {
+                    "name": "n",
+                    "type": "integer | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Number of images."
+                },
+                {
+                    "name": "transparent_background",
+                    "type": "boolean | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Whether to generate a transparent background."
+                },
+                {
+                    "name": "is_style_transfer",
+                    "type": "boolean | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Whether the user's request asks for a stylistic transformation of the image or subject."
+                },
+                {
+                    "name": "referenced_image_ids",
+                    "type": "array[string] | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Referenced image identifiers."
+                },
+                {
+                    "name": "animation",
+                    "type": "object | null",
+                    "required": false,
+                    "enum": null,
+                    "description": "Optional settings for assembling GIF from a spritesheet."
+                }
+            ]
+        },
+        {
+            "name": "safety_settings.get_family_info",
+            "description": "Read family status and product information for Parental Controls.",
+            "parameters": []
+        },
+        {
+            "name": "safety_settings.get_parental_controls",
+            "description": "Read one family member's controls.",
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Family member user ID returned by get_family_info."
+                }
+            ]
+        },
+        {
+            "name": "safety_settings.get_trusted_contact",
+            "description": "Read Trusted Contact setup, status, privacy, and notification information.",
+            "parameters": []
+        },
+        {
+            "name": "safety_settings.update_parental_control",
+            "description": "Request a control change after reading family information and parental controls. Requires explicit user approval.",
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Family member user ID returned by the latest get_family_info response."
+                },
+                {
+                    "name": "control_id",
+                    "type": "string",
+                    "required": true,
+                    "enum": null,
+                    "description": "Stable ID for the parental control to change."
+                },
+                {
+                    "name": "value",
+                    "type": "boolean | object | array[string]",
+                    "required": true,
+                    "enum": null,
+                    "description": "The complete new value for a toggle, schedule, or multi-select control."
+                }
+            ]
+        },
+        {
+            "name": "functions.exec",
+            "description": "Run JavaScript code to orchestrate/compose tool calls. All Code Mode tools are available on the global tools object. Tool names are exposed as normalized JavaScript identifiers. Deferred nested tools may be discovered through ALL_TOOLS.",
+            "parameters": [
+                {
+                    "name": "code",
+                    "type": "FREEFORM",
+                    "required": true,
+                    "enum": null,
+                    "description": "Raw JavaScript source text."
+                }
+            ]
+        }
+    ]
+}

@@ -74,6 +74,7 @@ function inferMetadata(harnessOrDir, fileName) {
   else if (s.includes('hermes') || s.includes('nous')) family = 'nous';
   else if (s.includes('pi') || s.includes('inflection')) family = 'inflection';
   else if (s.includes('grok') || s.includes('xai')) family = 'xai';
+  else if (s.includes('perplexity')) family = 'perplexity';
 
   let harness_type = 'conversational';
   if (s.includes('antigravity') || s.includes('claude-code-code') || s.includes('claude-code-cli') || s.includes('codex')) {
