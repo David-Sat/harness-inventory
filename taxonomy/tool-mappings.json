@@ -2214,6 +2214,156 @@
       "category": "domain_data",
       "subcategory": "finance",
       "canonical": "finance_private_company_info"
+    },
+    "user_settings__get_user_settings": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "get_settings"
+    },
+    "user_settings__set_setting": {
+      "category": "memory_interaction",
+      "subcategory": "interaction",
+      "canonical": "set_setting"
+    },
+    "mcp__Browser__get_tab_context": {
+      "category": "web_browser",
+      "subcategory": "browser_automation",
+      "canonical": "browser_get_tab_context"
+    },
+    "mcp__Browser__list_tabs": {
+      "category": "web_browser",
+      "subcategory": "browser_automation",
+      "canonical": "browser_list_tabs"
+    },
+    "mcp__Automations__create": {
+      "category": "agents_scheduling",
+      "subcategory": "scheduling",
+      "canonical": "create_automation"
+    },
+    "mcp__Automations__get": {
+      "category": "agents_scheduling",
+      "subcategory": "scheduling",
+      "canonical": "get_automation"
+    },
+    "mcp__Automations__list_event_sources": {
+      "category": "agents_scheduling",
+      "subcategory": "scheduling",
+      "canonical": "list_automation_event_sources"
+    },
+    "mcp__Automations__notify_parent": {
+      "category": "agents_scheduling",
+      "subcategory": "orchestration",
+      "canonical": "automation_notify_parent"
+    },
+    "mcp__Automations__peek": {
+      "category": "agents_scheduling",
+      "subcategory": "scheduling",
+      "canonical": "peek_automation"
+    },
+    "mcp__Automations__run_now": {
+      "category": "agents_scheduling",
+      "subcategory": "scheduling",
+      "canonical": "run_automation_now"
+    },
+    "mcp__Automations__update": {
+      "category": "agents_scheduling",
+      "subcategory": "scheduling",
+      "canonical": "update_automation"
+    },
+    "mcp__Plugin_Management__get_app_permissions": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "get_app_permissions"
+    },
+    "mcp__Plugin_Management__get_plugin_dependencies": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "get_plugin_dependencies"
+    },
+    "mcp__Plugin_Management__search_plugins": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "search_plugins"
+    },
+    "mcp__Plugin_Management__suggest_plugins": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "suggest_plugins"
+    },
+    "mcp__Plugin_Management__uninstall_app": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "uninstall_app"
+    },
+    "mcp__Plugin_Management__update_app_permissions": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "update_app_permissions"
+    },
+    "files__create_reference_image": {
+      "category": "media_perception",
+      "subcategory": "generation",
+      "canonical": "create_reference_image"
+    },
+    "files__update_reference_image": {
+      "category": "media_perception",
+      "subcategory": "generation",
+      "canonical": "update_reference_image"
+    },
+    "files__delete_reference_image": {
+      "category": "media_perception",
+      "subcategory": "generation",
+      "canonical": "delete_reference_image"
+    },
+    "files__list_reference_images": {
+      "category": "media_perception",
+      "subcategory": "generation",
+      "canonical": "list_reference_images"
+    },
+    "files__list": {
+      "category": "workspace_code",
+      "subcategory": "file_ops",
+      "canonical": "list_files"
+    },
+    "files__search": {
+      "category": "workspace_code",
+      "subcategory": "search",
+      "canonical": "search_files"
+    },
+    "files__read": {
+      "category": "workspace_code",
+      "subcategory": "file_ops",
+      "canonical": "read_file"
+    },
+    "files__find": {
+      "category": "workspace_code",
+      "subcategory": "search",
+      "canonical": "find_in_file"
+    },
+    "files__materialize": {
+      "category": "workspace_code",
+      "subcategory": "file_ops",
+      "canonical": "materialize_file"
+    },
+    "files__manage_library": {
+      "category": "workspace_code",
+      "subcategory": "file_ops",
+      "canonical": "manage_file_library"
+    },
+    "files__share": {
+      "category": "workspace_code",
+      "subcategory": "file_ops",
+      "canonical": "share_file"
+    },
+    "skills__read": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "read_skill"
+    },
+    "skills__list": {
+      "category": "integrations",
+      "subcategory": "plugins",
+      "canonical": "list_skills"
     }
   }
 }

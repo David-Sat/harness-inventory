@@ -1,0 +1,819 @@
+{
+  "schema_version": "0.1",
+  "harness_reported": "ChatGPT",
+  "model_reported": "GPT-6",
+  "tool_count_reported": 45,
+  "completeness": "complete",
+  "omissions_note": "Captured in an active session after inspecting ALL_TOOLS and the global tools object via functions.exec in 3 batches: 15 top-level callable tools + 30 deferred Code Mode tools across 6 namespaces (user_settings: 2, mcp__Browser: 2, mcp__Automations: 7, mcp__Plugin_Management: 6, files: 11, skills: 2). Note: rich vertical search/widgets are bundled inside web.run (GenUI operations), and mode-gated tools such as Canvas were not loaded in this session.",
+  "tools": [
+    {
+      "name": "web.run",
+      "description": "Use this tool to access information on the web. Web information from this tool helps produce accurate, up-to-date, comprehensive, and trustworthy responses.",
+      "parameters": [
+        {
+          "name": "input",
+          "type": "FREEFORM string",
+          "required": true,
+          "enum": null,
+          "description": "Newline-separated records specifying web operations, including search, open, click, find, image, product, business, availability, and GenUI operations."
+        }
+      ]
+    },
+    {
+      "name": "python.exec",
+      "description": "Execute Python code in your chain of thought for private analysis and computation.",
+      "parameters": [
+        {
+          "name": "code",
+          "type": "FREEFORM",
+          "required": true,
+          "enum": null,
+          "description": "Python code to execute."
+        }
+      ]
+    },
+    {
+      "name": "python_user_visible.exec",
+      "description": "Execute Python code that the user should see, such as code that makes plots, displays tables or dataframes, or outputs user-visible files.",
+      "parameters": [
+        {
+          "name": "code",
+          "type": "FREEFORM",
+          "required": true,
+          "enum": null,
+          "description": "Python code to execute in the user-visible environment."
+        }
+      ]
+    },
+    {
+      "name": "container.exec",
+      "description": "Utilities for interacting with a container, for example, a Docker container.",
+      "parameters": [
+        {
+          "name": "cmd",
+          "type": "array[string]",
+          "required": true,
+          "enum": null,
+          "description": "Command and arguments to execute."
+        },
+        {
+          "name": "session_name",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Interactive session name."
+        },
+        {
+          "name": "workdir",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Working directory."
+        },
+        {
+          "name": "timeout",
+          "type": "integer | null",
+          "required": false,
+          "enum": null,
+          "description": "Execution timeout."
+        },
+        {
+          "name": "env",
+          "type": "object | null",
+          "required": false,
+          "enum": null,
+          "description": "Environment variables."
+        },
+        {
+          "name": "user",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "User identity for execution."
+        }
+      ]
+    },
+    {
+      "name": "container.feed_chars",
+      "description": "Feed characters to an exec session's STDIN. Then, wait for output, flush STDOUT/STDERR, and show the results.",
+      "parameters": [
+        {
+          "name": "session_name",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Interactive session name."
+        },
+        {
+          "name": "chars",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Characters to send to standard input."
+        },
+        {
+          "name": "yield_time_ms",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "Time to wait for output in milliseconds."
+        }
+      ]
+    },
+    {
+      "name": "container.open_image",
+      "description": "Returns the image in the container at the given absolute path. Only supports jpg, jpeg, png, and webp image formats.",
+      "parameters": [
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Absolute path to the image."
+        },
+        {
+          "name": "user",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Optional user identity."
+        }
+      ]
+    },
+    {
+      "name": "container.download",
+      "description": "Download a file from a URL into the container filesystem.",
+      "parameters": [
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "URL of the file to download."
+        },
+        {
+          "name": "filepath",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Destination filesystem path."
+        }
+      ]
+    },
+    {
+      "name": "personal_context.search",
+      "description": "Retrieves user-specific personal context gathered from multiple underlying sources, such as linked accounts, prior interactions, and other personal context streams.",
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The personal context to search for."
+        }
+      ]
+    },
+    {
+      "name": "bio.update",
+      "description": "Persists information across conversations, allowing more personalized and helpful responses. Supports saving new or updated information and requests to forget existing information.",
+      "parameters": [
+        {
+          "name": "input",
+          "type": "FREEFORM string",
+          "required": true,
+          "enum": null,
+          "description": "Plain text containing new or updated information to persist, or a request to forget existing information."
+        }
+      ]
+    },
+    {
+      "name": "image_gen.text2im",
+      "description": "Creates new images and edits existing images. Returns a rendered image, not source code, editable structure, machine-readable data, or working interactions.",
+      "parameters": [
+        {
+          "name": "prompt",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Deprecated parameter. Always pass null. Image generation or editing instructions are inferred automatically from the conversation context."
+        },
+        {
+          "name": "size",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Image size."
+        },
+        {
+          "name": "n",
+          "type": "integer | null",
+          "required": false,
+          "enum": null,
+          "description": "Number of images."
+        },
+        {
+          "name": "transparent_background",
+          "type": "boolean | null",
+          "required": false,
+          "enum": null,
+          "description": "Whether to generate a transparent background."
+        },
+        {
+          "name": "is_style_transfer",
+          "type": "boolean | null",
+          "required": false,
+          "enum": null,
+          "description": "Whether the user's request asks for a stylistic transformation."
+        },
+        {
+          "name": "referenced_image_ids",
+          "type": "array[string] | null",
+          "required": false,
+          "enum": null,
+          "description": "Referenced image identifiers."
+        },
+        {
+          "name": "animation",
+          "type": "object | null",
+          "required": false,
+          "enum": null,
+          "description": "Optional settings for assembling a GIF from a spritesheet, including rows, columns, frame duration, and frame count, or disabling animation for a static image."
+        }
+      ]
+    },
+    {
+      "name": "safety_settings.get_family_info",
+      "description": "Call first for any Parental Controls question or action, including unnamed children. Returns Family status, product information, and authorized member IDs.",
+      "parameters": []
+    },
+    {
+      "name": "safety_settings.get_parental_controls",
+      "description": "Read one family member's controls. Call get_family_info first; use only its latest readable_targets; do not call if empty.",
+      "parameters": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Family member user ID returned by get_family_info."
+        }
+      ]
+    },
+    {
+      "name": "safety_settings.get_trusted_contact",
+      "description": "Call first for any Trusted Contact setup, status, privacy, or notification question. Returns product information and active, pending, or unconfigured status.",
+      "parameters": []
+    },
+    {
+      "name": "safety_settings.update_parental_control",
+      "description": "Request a control change after get_family_info and get_parental_controls. Use only an authorized ID from the latest family result and can_update_in_chat=true. Requires explicit user approval.",
+      "parameters": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Family member user ID returned by the latest get_family_info response."
+        },
+        {
+          "name": "control_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Stable ID for the parental control to change."
+        },
+        {
+          "name": "value",
+          "type": "boolean | object | array[string]",
+          "required": true,
+          "enum": null,
+          "description": "New value for the control. Can be a toggle, a schedule object, or selected values for a multi-select control."
+        }
+      ]
+    },
+    {
+      "name": "functions.exec",
+      "description": "Run JavaScript code to orchestrate and compose tool calls. Evaluates the provided JavaScript code in a fresh V8 isolate with top-level await support.",
+      "parameters": [
+        {
+          "name": "code",
+          "type": "FREEFORM",
+          "required": true,
+          "enum": null,
+          "description": "JavaScript source code to execute. All Code Mode tools are available on the global tools object."
+        }
+      ]
+    },
+    {
+      "name": "user_settings__get_user_settings",
+      "description": "Read the user's ChatGPT settings, including personality, accent color, and appearance.",
+      "parameters": []
+    },
+    {
+      "name": "user_settings__set_setting",
+      "description": "Change a supported ChatGPT setting, such as personality, accent color, or appearance.",
+      "parameters": [
+        {
+          "name": "setting",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The setting to change."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "The new setting value."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Browser__get_tab_context",
+      "description": "Read the content and context of a browser tab connected to ChatGPT.",
+      "parameters": [
+        {
+          "name": "tab_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the browser tab."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Browser__list_tabs",
+      "description": "List browser tabs available through the connected browser.",
+      "parameters": []
+    },
+    {
+      "name": "mcp__Automations__create",
+      "description": "Create a scheduled or recurring automation.",
+      "parameters": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Title of the automation."
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Instructions for the automation to perform."
+        },
+        {
+          "name": "schedule",
+          "type": "object",
+          "required": true,
+          "enum": null,
+          "description": "Schedule configuration for the automation."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Automations__get",
+      "description": "Retrieve details about a specific automation.",
+      "parameters": [
+        {
+          "name": "automation_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the automation."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Automations__list_event_sources",
+      "description": "List event sources available for automation triggers.",
+      "parameters": []
+    },
+    {
+      "name": "mcp__Automations__notify_parent",
+      "description": "Send a notification to the parent automation or orchestration context.",
+      "parameters": [
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Notification message."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Automations__peek",
+      "description": "Preview an automation or inspect its current state.",
+      "parameters": [
+        {
+          "name": "automation_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the automation."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Automations__run_now",
+      "description": "Run an existing automation immediately.",
+      "parameters": [
+        {
+          "name": "automation_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the automation."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Automations__update",
+      "description": "Update an existing automation.",
+      "parameters": [
+        {
+          "name": "automation_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the automation."
+        },
+        {
+          "name": "title",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Updated title."
+        },
+        {
+          "name": "prompt",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Updated instructions."
+        },
+        {
+          "name": "schedule",
+          "type": "object | null",
+          "required": false,
+          "enum": null,
+          "description": "Updated schedule configuration."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Plugin_Management__get_app_permissions",
+      "description": "Retrieve the permissions granted to a connected app.",
+      "parameters": [
+        {
+          "name": "app_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the app."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Plugin_Management__get_plugin_dependencies",
+      "description": "Retrieve dependencies for a plugin.",
+      "parameters": [
+        {
+          "name": "plugin_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the plugin."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Plugin_Management__search_plugins",
+      "description": "Search the plugin directory for apps and integrations.",
+      "parameters": [
+        {
+          "name": "query",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Search query for apps or plugins."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Plugin_Management__suggest_plugins",
+      "description": "Suggest relevant plugins for installation.",
+      "parameters": [
+        {
+          "name": "plugin_ids",
+          "type": "array[string]",
+          "required": true,
+          "enum": null,
+          "description": "Identifiers of plugins to suggest."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Plugin_Management__uninstall_app",
+      "description": "Uninstall or disconnect an app.",
+      "parameters": [
+        {
+          "name": "app_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the app to uninstall."
+        }
+      ]
+    },
+    {
+      "name": "mcp__Plugin_Management__update_app_permissions",
+      "description": "Update permissions granted to a connected app.",
+      "parameters": [
+        {
+          "name": "app_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the app."
+        },
+        {
+          "name": "permissions",
+          "type": "array[string]",
+          "required": true,
+          "enum": null,
+          "description": "Permissions to grant or update."
+        }
+      ]
+    },
+    {
+      "name": "files__create_reference_image",
+      "description": "Create a saved reference image for future image generation.",
+      "parameters": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Name for the reference image."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Description of the pictured subject."
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Image content or reference."
+        }
+      ]
+    },
+    {
+      "name": "files__update_reference_image",
+      "description": "Update a saved reference image.",
+      "parameters": [
+        {
+          "name": "reference_image_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the reference image."
+        },
+        {
+          "name": "name",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Updated name."
+        },
+        {
+          "name": "description",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Updated description."
+        }
+      ]
+    },
+    {
+      "name": "files__delete_reference_image",
+      "description": "Delete a saved reference image.",
+      "parameters": [
+        {
+          "name": "reference_image_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the reference image."
+        }
+      ]
+    },
+    {
+      "name": "files__list_reference_images",
+      "description": "List saved reference images.",
+      "parameters": []
+    },
+    {
+      "name": "files__list",
+      "description": "List files and folders in the user's file library.",
+      "parameters": [
+        {
+          "name": "path",
+          "type": "string | null",
+          "required": false,
+          "enum": null,
+          "description": "Library folder path."
+        },
+        {
+          "name": "scope",
+          "type": "object",
+          "required": false,
+          "enum": null,
+          "description": "Surfaces to list, such as the conversation or library."
+        }
+      ]
+    },
+    {
+      "name": "files__search",
+      "description": "Search files for relevant content.",
+      "parameters": [
+        {
+          "name": "search_query",
+          "type": "array[object]",
+          "required": true,
+          "enum": null,
+          "description": "Search queries, each containing a q field."
+        },
+        {
+          "name": "top_k",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "Maximum number of results to return."
+        },
+        {
+          "name": "scope",
+          "type": "object",
+          "required": false,
+          "enum": null,
+          "description": "Surfaces to search, such as conversation or library."
+        },
+        {
+          "name": "intent",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "nav",
+            "qa"
+          ],
+          "description": "Search intent."
+        }
+      ]
+    },
+    {
+      "name": "files__read",
+      "description": "Read file content or specified ranges.",
+      "parameters": [
+        {
+          "name": "ref_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "File reference identifier."
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "text",
+            "pages",
+            "image_file"
+          ],
+          "description": "Reading mode."
+        },
+        {
+          "name": "start_page",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "Starting page for page-based reading."
+        },
+        {
+          "name": "end_page",
+          "type": "integer",
+          "required": false,
+          "enum": null,
+          "description": "Ending page for page-based reading."
+        },
+        {
+          "name": "include_images",
+          "type": "boolean",
+          "required": false,
+          "enum": null,
+          "description": "Whether to include embedded images."
+        }
+      ]
+    },
+    {
+      "name": "files__find",
+      "description": "Find exact text or phrases in a known file.",
+      "parameters": [
+        {
+          "name": "ref_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "File reference identifier."
+        },
+        {
+          "name": "pattern",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Exact text or phrase to find."
+        }
+      ]
+    },
+    {
+      "name": "files__materialize",
+      "description": "Materialize a file into the working environment.",
+      "parameters": [
+        {
+          "name": "ref_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "File reference identifier."
+        },
+        {
+          "name": "destination_path",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Optional destination path."
+        }
+      ]
+    },
+    {
+      "name": "files__manage_library",
+      "description": "Perform operations that mutate the persistent file library, such as uploading, moving, renaming, or deleting files and folders.",
+      "parameters": [
+        {
+          "name": "operations",
+          "type": "array[object]",
+          "required": true,
+          "enum": null,
+          "description": "Library operations to perform."
+        }
+      ]
+    },
+    {
+      "name": "files__share",
+      "description": "Share a file or folder, change its access, or revoke sharing.",
+      "parameters": [
+        {
+          "name": "file_id",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Identifier of the file or folder."
+        },
+        {
+          "name": "access",
+          "type": "string",
+          "required": false,
+          "enum": null,
+          "description": "Sharing access level."
+        }
+      ]
+    },
+    {
+      "name": "skills__read",
+      "description": "Read the instructions or supporting files for an installed plugin skill.",
+      "parameters": [
+        {
+          "name": "uri",
+          "type": "string",
+          "required": true,
+          "enum": null,
+          "description": "Skill URI to read."
+        }
+      ]
+    },
+    {
+      "name": "skills__list",
+      "description": "List installed plugin skills.",
+      "parameters": []
+    }
+  ]
+}
